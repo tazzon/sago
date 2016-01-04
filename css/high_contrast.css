@@ -1,0 +1,95 @@
+/*
+high contrast
+*/
+
+body {
+  color: #073642;
+  background-color:#fdf6e3;
+}
+
+h3 {
+  color:#002b36;
+}
+
+.com_ok:before {
+    color:#dc322f;
+}
+.no_com:before {
+    color:#dc322f;
+}
+
+.help {
+  background-color:#eee85d;
+}
+
+#info,#menu {
+  color:#002b36;
+  /*background-color:rgba(235,235,235,0.8);*/
+    background-color:rgba(253,246,227,0.8);
+}
+#info_in {
+  background-color:#fdf6e3;
+}
+#info button {
+  background-color:#fdf6e3;
+  color:#002b36;
+}
+
+#chrono {
+  color:#002b36;
+}
+/*#menu {
+  background-color:rgba(253,246,227,0.8);
+}*/
+#menu button {
+  background-color:#fdf6e3;
+  color:#002b36;
+}
+#button_menu {
+ /*text-shadow:0.0em 0.0em 0.3em black;*/
+}
+
+#score {
+  color:black;
+  background-color:#dfdfdf;
+}
+
+button {
+  background-color:#002b36;
+  color:#fdf6e3;
+  /*box-shadow:0em 0em 1em rgba(0,0,0,0.5);*/
+}
+
+input[type=text] {
+  background-color:#eee8d5;
+  color:#002b36;
+  /*box-shadow:0 0 1em rgba(0,0,0,1)*/
+}
+
+input {
+  background-color:#eee8d5;
+  color:#002b36;
+  /*box-shadow:0 0 1em rgba(0,0,0,1)*/
+}
+
+.cellule_but {
+  background-color:#dfdfdf;
+  color:black;
+}
+
+.cellule_but_on {
+  background-color:#ffafaf;
+  color:black;
+}
+
+.online {
+  background: linear-gradient(0deg, rgba(0,132,0,1) 0%,rgba(0,0,0,0) 100%); 
+}
+.offline {
+  background: linear-gradient(0deg, rgba(204,0,0,1) 0%,rgba(0,0,0,0) 100%);
+}
+
+
+
+
+

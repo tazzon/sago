@@ -1,0 +1,89 @@
+/*
+low contrast
+*/
+
+body {
+  color: #fdf6e3;
+  background-color:#073642;
+}
+
+h3 {
+  color:#002b36;
+}
+
+.com_ok:before {
+    color:#859900;
+}
+.no_com:before {
+    color:#859900;
+}
+#button_menu {
+  /*text-shadow:0.0em 0.0em 1em;*/
+}
+.help {
+  background-color:#0055ff;
+}
+
+#info, #menu {
+  background-color:rgba(0,43,54,0.8);
+}
+#info_in {
+  color:#002b36;
+  background-color:#fdf6e3;
+}
+#info button {
+  background-color:#002b36;
+  color:#fdf6e3;
+}
+
+#chrono {
+  color:#fdf6e3;
+}
+/*#menu {
+  background-color:rgba(10,10,10,0.8);
+}*/
+
+#score {
+  color:black;
+  background-color:#dfdfdf;
+}
+
+button {
+  background-color:#eee8d5;
+  color: black;
+  box-shadow:0em 0em 1em rgba(0,0,0,0.5);
+}
+
+input[type=text] {
+  background: linear-gradient(180deg, rgba(253,246,227,1) 0%,rgba(238,232,213,1) 90%);
+  color: black;
+  box-shadow:0 0 1em rgba(0,0,0,1)
+}
+
+input {
+  background: linear-gradient(180deg, rgba(253,246,227,1) 0%,rgba(238,232,213,1) 90%);
+  color: black;
+  box-shadow:0 0 1em rgba(0,0,0,1)
+}
+
+.cellule_but {
+  background-color: #fdf6e3;
+  color:#002b36;
+}
+
+.cellule_but_on {
+  background-color:#859900;
+  color:#fdf6e3;
+}
+
+.online {
+  background: linear-gradient(0deg, rgba(0,132,0,1) 0%,rgba(0,0,0,0) 100%); 
+}
+.offline {
+  background: linear-gradient(0deg, rgba(204,0,0,1) 0%,rgba(0,0,0,0) 100%);
+}
+
+
+
+
+
