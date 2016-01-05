@@ -2,7 +2,7 @@
  * sago 0.3.0 *
  * ************/
 
-var news="";
+var news="<p>Au moment de l’enregistrement, un nom automatique est désormais proposé.</p>";
 var el_visible="session";
 var high_contrast=false;
 var target;
@@ -30,7 +30,7 @@ var isave = {
 };
 var infoapp= {
   version : '0.3.0',
-  datecode : 20160104.01,
+  datecode : 20160103.02,
   name : "Sago",
   mail : "tazzon@free.fr",
   dev : "AM"
@@ -46,6 +46,9 @@ function init_()
     user_pref("restore");
   visu("session"); // demande de définir les paramètres
   touch2mouse(document.getElementById("target")); // compatibilité avec le mode tactile
+  document.getElementById("but_tab_score").style.display="none";
+  document.getElementById("but_saisie").style.display="none";
+  document.getElementById("but_analyse").style.display="none";
   
   var timer_menu=setTimeout('aff_menu()',1000);
   visu_target(0);
@@ -246,7 +249,11 @@ function valid_session()
   
   document.getElementById("saisie").innerHTML = tableau;
   document.getElementById("but_saisie").style.display = "initial";
-  
+  document.getElementById("but_tab_score").style.display = "initial";
+  document.getElementById("but_analyse").style.display = "initial";
+
+
+
   var tab_ana = '<table class="marque">';
   /*var tab_ana = '<table class="marque"><tr><td></td>';
   for(var c=0;c<nb_volee;c++)
@@ -1965,8 +1972,8 @@ var c={
   mitemps:30,
   encours_t:0,
   encours_pt:0,
-  klax:new Audio('sound/klax.mp3'),
-  bip:new Audio('sound/bip.mp3'),
+  klax:new Audio('klax.mp3'),
+  bip:new Audio('bip.mp3'),
   bellact:true,
   bellon:0,
   bipon:0,
