@@ -14,8 +14,8 @@ font/sago.ttf
 font/sago.woff
 sago_icon_032.png
 sago.js
-klax.mp3
-bip.mp3
+sound/klax.mp3
+sound/bip.mp3
  
 FALLBACK:
 *
