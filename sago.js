@@ -30,7 +30,7 @@ var isave = {
 };
 var infoapp= {
   version : '0.3.0',
-  datecode : 20160103.02,
+  datecode : 20160105.02,
   name : "Sago",
   mail : "tazzon@free.fr",
   dev : "AM"
@@ -1972,8 +1972,8 @@ var c={
   mitemps:30,
   encours_t:0,
   encours_pt:0,
-  klax:new Audio('klax.mp3'),
-  bip:new Audio('bip.mp3'),
+  klax:new Audio('sound/klax.mp3'),
+  bip:new Audio('sound/bip.mp3'),
   bellact:true,
   bellon:0,
   bipon:0,

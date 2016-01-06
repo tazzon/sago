@@ -31,25 +31,24 @@ table {
 
 .calendar{
   /* border-bottom:2px solid; */
-  margin-bottom:0.5em;
+  margin:0.5em auto 0.5em auto;
   width:90%;
-  margin:auto
 }
 .calendar tr{
   height:100%;
 }
 .calendar td{
   text-align:center;
-  height:3em
-;
+  height:3em;
+  width:14.25%;
 }
-td.today {
-  /* text-decoration:underline; */
-  box-shadow: 0 0em 1em 0.4em #dc322f inset;
-}
+
 .save_exist {
-  background-color:#839496;
+  /*background-color:#839496;*/
+  box-shadow: 0 0 1em 0.4em #dc322f inset;
 }
+
+
 /*****************************************/
 .show {
   position:absolute;

@@ -83,7 +83,13 @@ input {
   background: linear-gradient(0deg, rgba(204,0,0,1) 0%,rgba(0,0,0,0) 100%);
 }
 
-
+td.today {
+  /* text-decoration:underline; */
+  /*box-shadow: 0 0 1em 0.7em #073642 inset;*/
+  background-color:#fdf6e3;
+  color:#073642;
+  border-color:#fdf6e3;
+}
 
 
 

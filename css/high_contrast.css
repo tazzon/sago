@@ -90,6 +90,12 @@ input {
 }
 
 
-
+td.today {
+  /* text-decoration:underline; */
+  /*box-shadow: 0 0 1em 0.7em #073642 inset;*/
+  background-color:#073642;
+  color:#fdf6e3;
+  border-color:#073642;
+}
 
 
