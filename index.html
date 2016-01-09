@@ -171,7 +171,42 @@
       <input type="checkbox" onchange="color_marque(this.checked)" id="color_marque"><label for="color_marque">coloriser la feuille de marque</label>
     </p>
 </div>
- 
+
+<div id="log">
+  <table>
+      <tr>
+        <td>Identifiant</td>
+        <td><input type="text" id="user"></td>
+      </tr>
+      <tr>
+        <td>Mot de passe</td>
+        <td><input type="password" id="password"></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><button>S’identifier</button></td>
+      </tr>
+    </table>
+</div>
+<div id="network">
+  <table>
+    <tr>
+      <td>Sauvegardes</td>
+    </tr>
+    <tr>
+      <td>– locales</td>
+      <td id="nb_local_saves">?</td>
+    </tr>
+    <tr>
+      <td>— distantes</td>
+      <td id="nb_net_saves">?</td>
+    </tr>
+  </table>
+  <div class="bar"><div id="progress"></div></div>
+  <div class="center_button">
+    <button><span class="icon icon-upload-cloud"></span></button> <button><span class="icon icon-download-cloud"></span></button>
+  </div>
+ </div>
 <div id="info" onclick="aff_info()">
   <div id="info_in"></div>
 </div>

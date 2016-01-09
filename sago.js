@@ -966,6 +966,51 @@ function gestion_save_name()
     document.getElementById("name_session").innerHTML+="*";
 };
 
+function save_network()
+{
+  
+};
+
+var user={
+  id:"",
+  pwd:"",
+  isId:false
+};
+function get_user_infos()
+{
+  if(localStorage.getItem("user") != null)
+  {
+    user=JSON.parse(localStorage.getItem("user"));
+    document.getElementById("user").value=user.id;
+    document.getElementById("password").value=user.pwd;
+    
+  }
+  
+};
+
+/********************
+* fonctions liées au serveur
+*********************/
+function request(req)
+{
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (xhttp.readyState == 4 && xhttp.status == 200) {
+      console.debug(xhttp.responseText);
+    }
+  };
+  xhttp.open("GET", req, true);
+  xhttp.send();
+};
+
+function new_user()
+{
+  
+};
+
+/******************************/
+
+
 // préférence utilisateur par défaut
 var userp = {
   diam_tube:6,
@@ -1343,7 +1388,7 @@ function help()
 function about()
 {
   ialert('<h3>À propos</h3>'
-        +'<div class="about"><p>'+infoapp.name+' <span style="color:#dc322f" class="icon icon-sago-(copie-1)"></span><br>'
+        +'<div class="about"><p>'+infoapp.name+' <span style="color:#dc322f;font-size:1.5em" class="icon icon-sago"></span><br>'
         +'Version '+infoapp.version+' '+infoapp.datecode+'<br>'
         +'Contact : '+infoapp.mail+'</p>'
         +'<hr>'
@@ -1779,7 +1824,7 @@ function calendrier(a,m)
   }
   calendar+="</table>";
 
-  calendar += '<p><button class="right" onclick="calendrier()"><span class="icon icon-calendar"></span> Aujourd’hui</button></p>';
+  calendar += '<p><button class="right" onclick="visu(\'network\')"><span class="icon icon-cloud"> Sauvegarde</span></button><button class="right" onclick="calendrier()"><span class="icon icon-calendar"></span> Aujourd’hui</button></p>';
 
   document.getElementById("local").innerHTML=calendar;
   //marquage du jour courant si il existe dans le calendrier affiché
@@ -1787,6 +1832,7 @@ function calendrier(a,m)
     document.getElementById(nowId).className+=" today";
   list_local();
 };
+
 
 
 function list_local()

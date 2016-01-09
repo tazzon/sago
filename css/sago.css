@@ -45,10 +45,54 @@ table {
 
 .save_exist {
   /*background-color:#839496;*/
-  box-shadow: 0 0 1em 0.4em #dc322f inset;
+  box-shadow: 0 0 1em 0.4em #cb4b16 inset;
 }
 
+.save_exist_web {
+  /*background-color:#839496;*/
+  box-shadow: 0 0 1em 0.4em #859900 inset;
+}
 
+#network, #log {
+  display:none;
+  width:90%;
+  margin: 1em auto auto auto;
+}
+
+#network p {
+  margin:1em auto auto auto;
+}
+#network input[type=text], #network input[type=password] {
+  width:100%;
+  text-align:left;
+  height:1em;
+  padding:0.2em;
+  position:relative;
+  left:-0.3em;
+}
+#network td {
+  /*border:1px solid;*/
+  width:50%;
+}
+
+#progress {
+  background:repeating-linear-gradient(-45deg,#657b83,#657b83 1em,#586e75 1em, #586e75 2em);
+  color:#fdf6e3;
+  font-size:0.8em;
+  text-align:center;
+  font-weight:bold;
+  height:100%;
+}
+#progress:after {
+  content:"%";
+}
+.bar {
+  width:100%;
+  height:1em;
+  border:0.1em solid;
+  border-radius:0.2em;
+  margin:1.5em auto 0.7em auto;
+}
 /*****************************************/
 .show {
   position:absolute;
@@ -89,7 +133,7 @@ table {
 
 [type="checkbox"]:not(:checked) + label:before {
   /*content: '\e81c';*/
-  content:'\e81f';
+  content:'\e820';
   font-family:sago;
   padding-right:0.5em;
   font-size:1.2em;
@@ -100,7 +144,7 @@ table {
    
 [type="checkbox"]:checked + label:before {  
   /*content:'\e81d';*/
-  content:'\e81e';
+  content:'\e81f';
   font-family:sago;
   color:#859900;
   padding-right:0.5em;
@@ -111,7 +155,7 @@ table {
 }  
 
 [type="radio"]:not(:checked) + label:before {
-  content:'\e821';
+  content:'\e829';
   font-family:sago;
   padding-right:0.5em;
   margin-left:1em;
@@ -122,7 +166,7 @@ table {
 }  
    
 [type="radio"]:checked + label:before {  
-  content:'\e820';
+  content:'\e82a';
   font-family:sago;
   color:#859900;
   padding-right:0.5em;
@@ -146,7 +190,7 @@ table {
 }
 .no_com:before {
     font-family:sago;
-    content:'\e834';
+    content:'\e809';
     /*position:relative;
     bottom:0em;
     left:0.1em;*/
@@ -530,7 +574,7 @@ display:none;
 #button_menu:before{
   font-size:2em;
   font-family:'sago';
-  content:'\e80b';
+  content:'\e80f';
   padding:0em 0.2em 0.1em 0.15em;
   /*text-shadow:0.0em 0.0em 0.3em black;*/
   position:absolute;
@@ -600,15 +644,15 @@ button {
   /*box-shadow:0em 0em 1em rgba(0,0,0,0.5);*/
 }
 
-input[type=text] {
+/*input[type=text], input[type=password] {
   width:4em;
-  height:1.4em;
+  height:1.2em;
   border:1px solid;
-  border-radius:0.3em;
+  border-radius:0.2em;
   font-size:1em;
   font-family:monospace;
-  text-align:center;
-}
+  /*text-align:center;*/
+/*}*/
 
 input {
   width:4em;
@@ -642,35 +686,35 @@ input {
 
 #but_session:before{
   font-family:sago;
-  content:'\e807  ';
+  content:'\e828  ';
 }
 #but_options:before {
   font-family:sago;
-  content:'\e80c  '
+  content:'\e810  '
 }
 #but_tab_score:before {
   font-family:sago;
-  content:'\e81a  '
+  content:'\e800  '
 }
 #but_saisie:before {
   font-family:sago;
-  content:'\e823  '
+  content:'\e824  '
 }
 #but_local:before {
   font-family:sago;
-  content:'\e829  '
+  content:'\e826  '
 }
 #but_analyse:before {
   font-family:sago;
-  content:'\e82f  '
+  content:'\e821  '
 }
 #but_help:before {
   font-family:sago;
-  content:'\e803  '
+  content:'\e802  '
 }
 #but_about:before {
   font-family:sago;
-  content:'\e832  '
+  content:'\e803  '
 }
 #but_viseur:before {
   font-family:sago;
@@ -678,7 +722,7 @@ input {
 }
 #but_chrono:before {
   font-family:sago;
-  content:'\e83d  '
+  content:'\e815  '
 }
 
 .cellule {
@@ -796,6 +840,8 @@ hr {
 sup {
   font-size:0.75em;
 }
+
+
 
 
 @media (orientation:landscape)
