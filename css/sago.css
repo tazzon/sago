@@ -62,7 +62,8 @@ table {
 #network p {
   margin:1em auto auto auto;
 }
-#network input[type=text], #network input[type=password] {
+#network input[type=text], #network input[type=password],
+#log input[type=text], #log input[type=password] {
   width:100%;
   text-align:left;
   height:1em;
@@ -70,9 +71,10 @@ table {
   position:relative;
   left:-0.3em;
 }
-#network td {
+#network td, #log td {
   /*border:1px solid;*/
   width:50%;
+  padding-top:0.5em;
 }
 
 #progress {

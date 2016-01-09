@@ -955,7 +955,7 @@ function save_local(name_auto)
   //console.debug("suppression sauvegarde temporaire");
   localStorage.removeItem("temp");
   //console.debug("création d'une sauvegarde : "+name)
-  localStorage.setItem(name,JSON.stringify(serie));
+  localStorage.setItem(date_format(new Date(),"dayhour"),JSON.stringify(serie));
   //document.getElementById("name_session").innerHTML = isave.actual_name;
   gestion_save_name();
 };
@@ -966,9 +966,40 @@ function gestion_save_name()
     document.getElementById("name_session").innerHTML+="*";
 };
 
-function save_network()
+function isASession(k)
 {
-  
+  var t=new Array("userp","user","infoapp","temp");
+  if(t.indexOf(localStorage.key(k)) != -1)
+    return false;
+  else
+    return true;
+};
+
+function save_network(act)
+{
+  if(act=="upload")
+  {
+    console.debug('save:'+act);
+    
+    var nb_session = 0;
+    for(var i=0;i<localStorage.length;i++)
+      if(isASession(i) == true)
+        i++;
+
+    for(var i=0;i<localStorage.length;i++)
+    {
+      if(isASession(i) == true)
+      {
+        //request()
+
+
+      }
+    }
+  }
+  if(act=="download")
+  {
+    console.debug('save:'+act);
+  }
 };
 
 var user={
@@ -987,6 +1018,7 @@ function get_user_infos()
   }
   
 };
+
 
 /********************
 * fonctions liées au serveur
@@ -1867,7 +1899,7 @@ function list_from_date(d)
   {
     var key = localStorage.key(i);
     // ne liste que les série qui ne sont pas temporaire
-    if (key != "temp" && key != "userp" && key != "infoapp")
+    if (key != "temp" && key != "userp" && key != "infoapp" && key != "user")
     {
       var data = JSON.parse(localStorage[key]);
       date=new Date();
@@ -1875,7 +1907,7 @@ function list_from_date(d)
       var date_id=date.getFullYear()+"_"+date.getMonth()+"_"+date.getDate();
       if(d == date_id)
       {
-        list_sessions[n]=data.id;
+        list_sessions[n]=key;
         n++;
       }
     }
