@@ -25,12 +25,13 @@ var serie = {
 var n_fl=0;
 var n_volee=0;
 var isave = {
+  actual_key : "",
   actual_name : "",
   is_save : false
 };
 var infoapp= {
   version : '0.3.0',
-  datecode : 20160105.02,
+  datecode : 20160121.02,
   name : "Sago",
   mail : "tazzon@free.fr",
   dev : "AM"
@@ -84,6 +85,13 @@ function init_()
   //change_zoom();
   calendrier();
   c.reset();
+  //get_user_infos();
+
+  /*var nb_session = 0;
+  for(var i=0;i<localStorage.length;i++)
+    if(isASession(i) == true)
+      nb_session++;
+  document.getElementById("nb_local_saves").innerHTML=nb_session;*/
 };
 
 
@@ -113,6 +121,7 @@ function valid_session()
 
     localStorage.removeItem("temp");
     isave.actual_name="sans_nom";
+    //isave.actual_key="temp";
     isave.is_save=false;
 
     //console.debug(isave);
@@ -271,8 +280,8 @@ function valid_session()
     tab_ana += '<td class="cellule"><div class="cellule_but" id="f'+f+'" onclick="aff_fl_num('+f+')">'+(f+1)+'</div></td>';
   }
   tab_ana += '</tr></table>';
-  tab_ana +='<p>Zone de réussite : <span id="zone_reussite_val"></span><span class="zone_reussite_legend"></span></p>';
-  tab_ana +='<p>Moyenne : <span id="moy_fleche_val"></span><span class="moy_fleche_legend"></span></p>';
+  tab_ana +='<p class="legend">Zone de réussite : <span id="zone_reussite_val"></span><div class="zone_reussite_legend"></div></p>';
+  tab_ana +='<p class="legend">Moyenne : <span id="moy_fleche_val"></span><div class="moy_fleche_legend"></div></p>';
 
   //tab_ana += '<input type="checkbox" id="trace_zone_fl" onchange="draw_group()"><label for="trace_zone_fl">⊙</label>      <input type="checkbox" id="trace_disp_h" onchange="draw_group()"><label for="trace_disp_h">⇕</label>      <input type="checkbox" id="trace_disp_l" onchange="draw_group()"><label for="trace_disp_l">⇔</label>';
   document.getElementById("analyse").innerHTML = tab_ana;
@@ -900,7 +909,8 @@ function load_local_data(name)
 
   if(name != "temp")
   {
-    isave.actual_name=name;
+    isave.actual_key=name;
+    isave.actual_name=serieTemp.id;
     isave.is_save=true;
     gestion_save_name();
   }
@@ -910,7 +920,6 @@ function load_local_data(name)
 
 function save_local(name_auto)
 {
-  //console.debug(typeof(name_auto));
   if(typeof(name_auto) == "undefined") // demande pour le nom de série
   {
     if(isave.actual_name != "sans_nom")
@@ -923,42 +932,40 @@ function save_local(name_auto)
     else
       var name = isave.actual_name;
 
+    if (name == null) // si on annule la deuxième question
+      return;  // on arrête tout
+    
+    if(name != isave.actual_name) // si le nom demandé est différent
+      isave.actual_key=date_format(new Date(),"dayhour"); // il faut changer la clé pour pas écraser l'ancienne sauvegarde
+
     isave.actual_name = name;
     isave.is_save = true;
-
-
-    if (name == null)
-    {
-      //console.debug("null ; name="+name);
-      return;
-    }
   }
   else
   {
     var name=name_auto;
     if(isave.actual_name == "")
       isave.actual_name="sans_nom";
-    
   }
 
-  //console.debug("name="+name);
-  //var now = new Date();
-  serie.id = name;
-  //console.debug(serie.id);  
-  //serie.date = now.getDate()+"/"+now.getMonth()+"/"+now.getFullYear()+" "+now.getHours()+":"+now.getMinutes();
+  serie.id = isave.actual_name;
   serie.datemod=new Date().getTime(); // date au format timestamp unix de la dernière modification
-  //console.debug(serie.date);
   serie.volees = volee;
-  //console.debug(serie.volees);
 
   // suppression de la sauvegarde temporaire et sauvegarde de la série sous le nom donné (si c'est une temporaire on la recrée')
-  //console.debug("suppression sauvegarde temporaire");
-  localStorage.removeItem("temp");
-  //console.debug("création d'une sauvegarde : "+name)
-  localStorage.setItem(date_format(new Date(),"dayhour"),JSON.stringify(serie));
-  //document.getElementById("name_session").innerHTML = isave.actual_name;
+  if(localStorage.getItem("temp") != null)
+    localStorage.removeItem("temp");
+
+  if(name_auto=="temp")
+    localStorage.setItem("temp",JSON.stringify(serie));
+  else if(isave.actual_key != "")
+    localStorage.setItem(isave.actual_key,JSON.stringify(serie));
+  else
+    localStorage.setItem(date_format(new Date(),"dayhour"),JSON.stringify(serie));
+
   gestion_save_name();
 };
+
 function gestion_save_name()
 {
   document.getElementById("name_session").innerHTML=isave.actual_name;
@@ -968,7 +975,7 @@ function gestion_save_name()
 
 function isASession(k)
 {
-  var t=new Array("userp","user","infoapp","temp");
+  var t=new Array("userp","user","infoapp","temp","sync");
   if(t.indexOf(localStorage.key(k)) != -1)
     return false;
   else
@@ -981,10 +988,16 @@ function save_network(act)
   {
     console.debug('save:'+act);
     
+    if(localStorage.getItem("sync") == null)
+    {
+      sync();
+      return;
+    }
+
     var nb_session = 0;
     for(var i=0;i<localStorage.length;i++)
       if(isASession(i) == true)
-        i++;
+        nb_session++;
 
     for(var i=0;i<localStorage.length;i++)
     {
@@ -1007,28 +1020,99 @@ var user={
   pwd:"",
   isId:false
 };
-function get_user_infos()
+/*function get_user_infos()
 {
   if(localStorage.getItem("user") != null)
   {
     user=JSON.parse(localStorage.getItem("user"));
     document.getElementById("user").value=user.id;
     document.getElementById("password").value=user.pwd;
+    return true;
     
   }
+  else
+    return false;
   
+};*/
+function addUser(callback,response)
+{
+  var newuser=document.getElementById("newuser").value;
+  var newmail=document.getElementById("newmail").value;
+  var newpwd1=document.getElementById("newpwd1").value;
+  var newpwd2=document.getElementById("newpwd2").value;
+  
+
+  if(callback == "callback")
+  {
+    var r=JSON.parse(response);
+    if(r[0] == true)
+    {
+      document.getElementById("info_newuser").innerHTML='Votre compte vient d’être créé !</p><p>Bienvenue '+newuser+'</p>';
+      visu("network");
+      document.getElementById("newpwd1").value="";
+      document.getElementById("newpwd2").value="";
+      user.id=newuser;
+      user.pwd=newpwd1;
+      user.isId=true;
+      localStorage.setItem("user",JSON.stringify(user));
+      get_user_infos();
+      return;
+    }
+    else
+    {
+      ialert('<p>Une erreur s’est produite lors de la création du compte.</p>');
+      return;
+    }
+  }
+
+  if(newuser != "" && newmail != "" && newpwd1 != "" && newpwd2 != "")
+  {
+    // test de l'email
+    var testmail = new RegExp('^[0-9a-z._-]+@{1}[0-9a-z.-]{2,}[.]{1}[a-z]{2,5}$','i');
+    if(testmail.test(newmail) == false)
+    {
+      ialert('<p>Votre E-mail n’est pas valide.</p>');
+      return;
+    }
+    if(newpwd1 != newpwd2)
+    {
+      ialert('<p>Les deux mots de passe que vous avez saisis ne sont pas identiques.</p>');
+      return;
+    }
+    ialert('<p id="info_newuser">Votre compte est en cours de création…</p>');
+    request('data.php?action=newuser&user='+newuser+'&pwd='+newpwd1,'addUser("callback",xhttp.responseText)');
+  }
+  else
+    ialert('<p>Vous devez renseigner tous les champs.</p>');
 };
 
+function change_progress(progress)
+{
+  /*var actual=0;
+  if(document.getElementById("progress").style.width != '')
+    actual = parseInt(document.getElementById("progress").style.width);
+  
+  var progress=actual+add+'%';*/
 
+  
+  document.getElementById("progress").innerHTML=progress+'%';
+  document.getElementById("progress").style.width=progress+'%';
+
+};
 /********************
 * fonctions liées au serveur
 *********************/
-function request(req)
+function request(req,func)
 {
+  console.debug('-->request('+req+','+func+')');
+
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (xhttp.readyState == 4 && xhttp.status == 200) {
+      //console.debug(xhttp.responseText);
+      //func(xhttp.responseText);
       console.debug(xhttp.responseText);
+      eval(func);
     }
   };
   xhttp.open("GET", req, true);
@@ -1040,6 +1124,38 @@ function new_user()
   
 };
 
+function sync(act,response)
+{
+  if(get_user_infos() == false)
+  {
+    ialert("<p>Vous devez vous identifier pour synchroniser vos sauvegardes.</p>");
+    visu("log");     
+    return;
+  }
+
+  if(navigator.onLine == false)
+  {
+    ialert("<p>Il semblerait que votre équipement ne dispose pas d’accès internet. Connectez vous pour pouvoir synchroniser vos sauvegardes sur votre compte.</p>");
+    return;
+  }
+  
+
+  if(act == "callback")
+  {
+    // sauvegarde des fichiers présent sur le serveur dans le localStorage
+    
+    localStorage.setItem("sync",xhttp.responseText);
+    document.getElementById("nb_net_saves").innerHTML=JSON.parse(localStorage.getItem("sync")).length;
+  }
+  else
+  {
+    var req='"data.php?user="+user.id+"&pwd="+user.pwd+"&action=list"';
+    request(req,'sync("callback",xhttp.responseText)');
+  }
+
+  
+
+};
 /******************************/
 
 
@@ -1767,7 +1883,135 @@ function display_fl()
   }
 };
 
+/***** sauvegarde de fichiers *****/
 
+//http://jsfiddle.net/koldev/cw7w5/
+var saveData = (function () {
+    var a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style = "display: none";
+    return function (data, fileName) {
+        var json = JSON.stringify(data),
+            blob = new Blob([json], {type: "octet/stream"}),
+            url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = fileName;
+        a.click();
+        window.URL.revokeObjectURL(url);
+    };
+}());
+function save_as_file()
+{
+  var filename="sago_"+date_format(new Date,"dayhour")+'.json';
+
+  var save_file=[];
+  for(var i=0;i<localStorage.length;i++)
+  {
+    if(isASession(i) == true)
+    {
+      save_file[i]= {
+                    data:JSON.parse(localStorage.getItem(localStorage.key(i))),
+                    key:localStorage.key(i)
+                    };
+    }
+  }
+  //save_file=JSON.stringify(save_file);
+  saveData(save_file,filename);
+};
+
+/***** lecture de fichier *****/
+
+function handleFileSelect(evt) {
+    var files = evt.target.files; // FileList object
+
+    // files is a FileList of File objects. List some properties.
+    var output = [];
+    for (var i = 0, f; f = files[i]; i++) {
+      output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+                  f.size, ' bytes, last modified: ',
+                  f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
+                  '</li>');
+    }
+    document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+  };
+
+
+var readText="";
+function readBlob(opt_startByte, opt_stopByte) {
+
+    var files = document.getElementById('files').files;
+    if (!files.length) {
+      ialert('Vous devez selectionner un fichier !');
+      return;
+    }
+
+    var file = files[0];
+    var start = parseInt(opt_startByte) || 0;
+    var stop = parseInt(opt_stopByte) || file.size - 1;
+
+    var reader = new FileReader();
+
+    // If we use onloadend, we need to check the readyState.
+    reader.onloadend = function(evt) {
+      if (evt.target.readyState == FileReader.DONE) { // DONE == 2
+        //var readJson=JSON.parse(evt.target.result);
+        var readJson=evt.target.result;
+        if (/^[\],:{}\s]*$/.test(readJson.replace(/\\["\\\/bfnrtu]/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, '')))
+        {
+          //the json is ok
+          //console.debug("c'est du JSON");
+          readJson=JSON.parse(readJson);
+          readText=readJson;
+          if(typeof(readJson[0].data) == "undefined" || typeof(readJson[0].key) == "undefined" || typeof(readJson) != "object" )
+            ialert("Le fichier selectionné ne correspond pas à un fichier de sauvegarde.");
+          else
+          {
+            //console.debug(readJson);
+            var n=0;
+            for(var i=0;i<localStorage.length;i++)
+            {
+              if(isASession(i))
+                n++;
+            }
+            var info ="<p>Nous avez "+n+" sauvegarde(s) locale(s).</p>";
+            info+="<p>Votre fichier contient "+readJson.length+" sauvegarde(s).</p>";
+            var plus_recent="";
+            info += "<ul>";
+
+            for(var i=0; i<readJson.length;i++)
+            {
+              if(JSON.parse(localStorage.getItem(readJson[i].key)).datemod > readJson[i].data.datemod)
+                plus_recent="+";
+              else
+                plus_recent="-";
+
+              info+="<li>";
+              info+=readJson[i].data.id+" : "+date_format(readJson[i].data.date,"day")+" ("+plus_recent+")";
+              info+="</li>";
+
+              console.debug(JSON.parse(localStorage.getItem(readJson[i].key)).datemod+'---'+readJson[i].data.datemod);
+            }
+            info+="</ul>";
+            ialert(info);
+          }
+        }
+        else
+        {
+          //the json is not ok
+          ialert("Le type de fichier selectionné n’est pas bon !");
+
+        }
+
+
+
+
+
+      }
+    };
+
+    var blob = file.slice(start, stop + 1);
+    reader.readAsBinaryString(blob);
+};    
 
 function date_format(date,a)
 {
@@ -1856,7 +2100,7 @@ function calendrier(a,m)
   }
   calendar+="</table>";
 
-  calendar += '<p><button class="right" onclick="visu(\'network\')"><span class="icon icon-cloud"> Sauvegarde</span></button><button class="right" onclick="calendrier()"><span class="icon icon-calendar"></span> Aujourd’hui</button></p>';
+  calendar += '<p><button class="right" onclick="visu(\'save_restore_file\')"><span class="icon icon-cloud"> Sauvegarde</span></button><button class="right" onclick="calendrier()"><span class="icon icon-calendar"></span> Aujourd’hui</button></p>';
 
   document.getElementById("local").innerHTML=calendar;
   //marquage du jour courant si il existe dans le calendrier affiché
@@ -1875,7 +2119,8 @@ function list_local()
   {
     var key = localStorage.key(i);
     // ne liste que les série qui ne sont pas temporaire
-    if (key != "temp" && key != "userp" && key != "infoapp")
+    //if (key != "temp" && key != "userp" && key != "infoapp")
+    if(isASession(i) == true)
     {
       var data = JSON.parse(localStorage[key]);
       date=new Date();
@@ -1883,7 +2128,10 @@ function list_local()
       var date_id=date.getFullYear()+"_"+date.getMonth()+"_"+date.getDate();
       if(document.getElementById(date_id))
       {
-        document.getElementById(date_id).className+=" save_exist";
+        //if(isSync.indexOf(data.id) != -1)
+          document.getElementById(date_id).className+=" save_exist";
+        //else
+        //  document.getElementById(date_id).className+=" save_exist_web";
         document.getElementById(date_id).addEventListener("click",function(){list_from_date(this.id)});
       }
     }
@@ -1899,7 +2147,8 @@ function list_from_date(d)
   {
     var key = localStorage.key(i);
     // ne liste que les série qui ne sont pas temporaire
-    if (key != "temp" && key != "userp" && key != "infoapp" && key != "user")
+    //if (key != "temp" && key != "userp" && key != "infoapp" && key != "user")
+    if(isASession(i) == true)
     {
       var data = JSON.parse(localStorage[key]);
       date=new Date();
@@ -1908,6 +2157,7 @@ function list_from_date(d)
       if(d == date_id)
       {
         list_sessions[n]=key;
+        //console.debug("key="+key);
         n++;
       }
     }
@@ -1934,12 +2184,13 @@ function list_from_date(d)
                    + '<div>'
                    + '<b> '+data.id+'</b><span class="right">'+date_format(data.date,'hour')+'</span>'
                    + '<br><div class="deroule">'
-                   + '<button onclick="load_local_data(\''+data.id+'\')"><span class="icon icon-folder-open"></span></button>'
+                   + '<button onclick="load_local_data(\''+list_sessions[i]+'\')"><span class="icon icon-folder-open"></span></button>'
                    //+ '<button onclick="if(confirm(\'Supprimer ?\') != false) {localStorage.removeItem(\''+data.id+'\');list_local();}"><span class="icon icon-trash"></span></button>'    
-                   + '<button onclick="if(confirm(\'Supprimer ?\') != false) {localStorage.removeItem(\''+data.id+'\');list_from_date(\''+d+'\');}"><span class="icon icon-trash"></span></button>'    
-                   + '<button class="right" onclick="local_visu(\''+data.id+'_visu\')"><span class="icon icon-info"></span></button>'
+                   + '<button onclick="if(confirm(\'Supprimer ?\') != false) {localStorage.removeItem(\''+list_sessions[i]+'\');list_from_date(\''+d+'\');}"><span class="icon icon-trash"></span></button>'    
+                   //+ '<button onclick="if(confirm(\'Supprimer ?\') != false) {localStorage.removeItem(\''+data.id+'\');list_from_date(\''+d+'\');}"><span class="icon icon-trash"></span></button>'    
+                   + '<button class="right" onclick="local_visu(\''+list_sessions[i]+'_visu\')"><span class="icon icon-info"></span></button>'
                    + '</div></div>'
-                   + '<div id="'+data.id+'_visu" style="display:none">'
+                   + '<div id="'+list_sessions[i]+'_visu" style="display:none">'
                    + "Tir à "+ data.dist +" m sur blason de " + data.blason + " cm.<br>" 
                    + data.nb_v+" Volées de "+data.nb_f+" flèches (Ø "+data.tube+"mm).<br>"
                    + "Total : " + data.tot + " points.<br>"

@@ -172,7 +172,17 @@
     </p>
 </div>
 
-<div id="log">
+<div id="save_restore_file">
+  <button onclick="save_as_file()">Sauvegarder en fichier !</button>
+  <br><br><hr><br>
+  <input type="file" id="files" name="file" />
+  <button onclick="readBlob()">Charger le fichier</button>
+
+  <!--div id="byte_range"></div-->
+  <div id="byte_content"></div>
+</div>
+
+<!--div id="log">
   <table>
       <tr>
         <td>Identifiant</td>
@@ -183,10 +193,38 @@
         <td><input type="password" id="password"></td>
       </tr>
       <tr>
-        <td colspan="2" class="center_button"><button><span class="icon icon-login"></span>S’identifier</button></td>
+        <td colspan="2" class="center_button"><button><span class="icon icon-login"></span> S’identifier</button></td>
       </tr>
     </table>
+    <div class="center_button">
+      <button onclick="visu('signin')"><span class="icon icon-user-plus"> S’inscrire ?</span></button>
+    </div>
 </div>
+
+<div id="signin">
+  <table>
+    <tr>
+      <td>Identifiant</td>
+      <td><input type="text" id="newuser"></td>
+    </tr>
+    <tr>
+      <td>Email</td>
+      <td><input type="text" id="newmail"></td>
+    </tr>
+    <tr>
+      <td>Mot de passe</td>
+      <td><input type="password" id="newpwd1"></td>
+    </tr>
+    <tr>
+      <td>Confirmation</td>
+      <td><input type="password" id="newpwd2"></td>
+    </tr>
+    <tr>
+      <td colspan="2" class="center_button"><button onclick="addUser()"><span class="icon icon-user-plus"></span> S’inscrire</button></td>
+    </tr>
+  </table>
+</div>
+
 <div id="network">
   <div id="login"></div>
   <hr>
@@ -207,7 +245,7 @@
   <div class="center_button">
     <button onclick="save_network('upload')"><span class="icon icon-upload-cloud"></span></button> <button onclick="save_network('download')"><span class="icon icon-download-cloud"></span></button>
   </div>
- </div>
+ </div-->
 <div id="info" onclick="aff_info()">
   <div id="info_in"></div>
 </div>
