@@ -1936,7 +1936,7 @@ function handleFileSelect(evt) {
   };
 
 
-var readText="";
+var readFile="";
 function readBlob(opt_startByte, opt_stopByte) {
 
     var files = document.getElementById('files').files;
@@ -1961,7 +1961,7 @@ function readBlob(opt_startByte, opt_stopByte) {
           //the json is ok
           //console.debug("c'est du JSON");
           readJson=JSON.parse(readJson);
-          readText=readJson;
+          readFile=readJson;
           if(typeof(readJson[0].data) == "undefined" || typeof(readJson[0].key) == "undefined" || typeof(readJson) != "object" )
             ialert("Le fichier selectionné ne correspond pas à un fichier de sauvegarde.");
           else
@@ -1973,26 +1973,56 @@ function readBlob(opt_startByte, opt_stopByte) {
               if(isASession(i))
                 n++;
             }
-            var info ="<p>Nous avez "+n+" sauvegarde(s) locale(s).</p>";
-            info+="<p>Votre fichier contient "+readJson.length+" sauvegarde(s).</p>";
-            var plus_recent="";
-            info += "<ul>";
+            var info="<p>Votre fichier contient "+readJson.length+" sauvegarde(s).</p>";
+            info +="<p>sauvegarde(s) locale(s) : "+n+"</p>";
 
+            var plus_recent=[];
+            //info += "<ul>";
+            var r=0;
             for(var i=0; i<readJson.length;i++)
             {
-              if(JSON.parse(localStorage.getItem(readJson[i].key)).datemod > readJson[i].data.datemod)
-                plus_recent="+";
-              else
-                plus_recent="-";
+              if(localStorage.getItem(readJson[i].key) != null)
+              {
+                if(JSON.parse(localStorage.getItem(readJson[i].key)).datemod > readJson[i].data.datemod)
+                  plus_recent[r++]=i;
+                /*else
+                  plus_recent="-";*/
 
-              info+="<li>";
-              info+=readJson[i].data.id+" : "+date_format(readJson[i].data.date,"day")+" ("+plus_recent+")";
-              info+="</li>";
+                /*info+="<li>";
+                info+=readJson[i].data.id+" : "+date_format(readJson[i].data.date,"day")+" ("+plus_recent+")";
+                info+="</li>";*/
 
-              console.debug(JSON.parse(localStorage.getItem(readJson[i].key)).datemod+'---'+readJson[i].data.datemod);
+                console.debug(JSON.parse(localStorage.getItem(readJson[i].key)).datemod+'---'+readJson[i].data.datemod);
+              }
+              //else
+                
             }
-            info+="</ul>";
-            ialert(info);
+            //info+="</ul>";
+            info+="<p>"+plus_recent.length+" sauvegarde(s) locale(s) sont plus récentes que celles du fichier.</p>";
+            document.getElementById("info_file").innerHTML=info;
+            console.debug(plus_recent);
+            
+            if(plus_recent.length>1)
+            {
+              if(confirm(plus_recent.length+' sauvegardes sont plus récentes localement que celles sauvegardées.\nVoulez-vous tout de même les importer ?') == true)
+                plus_recent=[];
+            }
+            else
+            {
+            if(plus_recent.length>0)
+              if(confirm(plus_recent.length+' sauvegarde est plus récente localement que celles sauvegardées.\nVoulez-vous tout de même l’ importer ?') == true)
+                plus_recent=[];
+            }
+            
+            for(var i=0;i<readJson.length;i++)
+            {
+              if(plus_recent.indexOf(i) == -1) // on exécute que si c'est une sauvegarde qui n'existe pas ou qui est plus récentes
+              {
+                localStorage.setItem(readJson[i].key,JSON.stringify(readJson[i].data))
+                //console.debug('sauv. sous : '+readJson[i].key +'---'+ JSON.stringify(readJson[i].data));
+              }
+            }
+
           }
         }
         else

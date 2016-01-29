@@ -175,11 +175,11 @@
 <div id="save_restore_file">
   <button onclick="save_as_file()">Sauvegarder en fichier !</button>
   <br><br><hr><br>
-  <input type="file" id="files" name="file" />
-  <button onclick="readBlob()">Charger le fichier</button>
+  <input type="file" id="files" name="file" onchange="readBlob()">
+  <!--button onclick="readBlob()">Charger le fichier</button-->
 
   <!--div id="byte_range"></div-->
-  <div id="byte_content"></div>
+  <div id="info_file"></div>
 </div>
 
 <!--div id="log">
