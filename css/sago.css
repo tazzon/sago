@@ -250,7 +250,7 @@ table {
   margin-bottom:0.5em
 }
 #analyse table tr {
-  margin-top:
+  /*margin-top:*/
 }
 .help {
   display:none;
@@ -777,7 +777,7 @@ input[type=file]{
 
 
 #extrapolation {
-  display:none;cellule
+  display:none;
   margin-left:10px;
 }
 hr {
