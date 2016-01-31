@@ -742,9 +742,11 @@ function calendrier(a,m)
     for(var c=1;c<8;c++)
     {
       var id=a+'_'+m+'_'+dayCount;
-      calendar+='<td ';
+      calendar+='<td';
       if(dayCount > 0 && dayCount<MaxCount)
-        calendar+='id="'+id+'" class="cellule">'+dayCount;
+        calendar+=' id="'+id+'" class="cellule">'+dayCount;
+      else
+        calendar += '>';
       dayCount++;
       calendar+='</td>';
     }
