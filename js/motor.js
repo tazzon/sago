@@ -395,7 +395,7 @@ function coord(event)
   }
 
   zoom_move(x,y);
-}
+};
 
 function start_coord(event)
 {

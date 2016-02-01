@@ -516,7 +516,7 @@ function aff_info()
 function help()
 {
   ialert("<h3>AIDE</h3>"+eval("help_"+el_visible));
-}
+};
 
 function about()
 {
