@@ -490,8 +490,8 @@ function create_zoom_target()
 
   // la mire  
   zoom_target+='<g id="mire">';
-  zoom_target+='<line x1="'+zoomW/2+'" y1="0" x2="'+zoomW/2+'" y2="100%"/>';
-  zoom_target+='<line y1="'+zoomH/2+'" x1="0" y2="'+zoomH/2+'" x2="100%"/>';
+  zoom_target+='<line id="mirev" x1="'+zoomW/2+'" y1="0" x2="'+zoomW/2+'" y2="100%"/>';
+  zoom_target+='<line id="mireh" y1="'+zoomH/2+'" x1="0" y2="'+zoomH/2+'" x2="100%"/>';
   zoom_target+='</g>';
 
   // la flèche en cours
