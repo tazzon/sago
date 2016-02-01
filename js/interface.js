@@ -761,6 +761,7 @@ function calendrier(a,m)
   if(document.getElementById(nowId))
     document.getElementById(nowId).className+=" today";
   list_local();
+  upcal.func="calendrier("+a+","+m+")";
 };
 
 
@@ -849,6 +850,12 @@ function list_from_date(d)
     calendrier(parseInt(d.substr(0,4)),parseInt(d.substr(5,2)))
   else //sinon actualise la liste
     document.getElementById("local").innerHTML = select_local;
+  upcal.func="list_from_date('"+d+"')";
+};
+
+var upcal = {
+  update : function() { eval(this.func); },
+  func : "calendrier()"
 };
 
 function color_marque(c)
