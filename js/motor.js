@@ -370,8 +370,8 @@ function coord(event)
     adaptNbZonePlus=true;
     if(nb_zone<10)
     {
-      for(var i=1;i<6;i++)
-        setTimeout('target_view('+(nb_zone+(i/5))+')',i*100);
+      for(var i=1;i<9;i++)
+        setTimeout('target_view('+(nb_zone+(i/8))+')',i*50);
       setTimeout('/*target_view("+");*/adaptNbZonePlus=false',500);
     }
     else
@@ -387,9 +387,9 @@ function coord(event)
     adaptNbZoneMinus=true;
     if(nb_zone > userp.nb_zone)
     {
-      for(var i=1;i<6;i++)
-        setTimeout('target_view('+(nb_zone-(i/5))+')',i*100);
-      setTimeout('/*target_view("-");*/adaptNbZoneMinus=false',500);
+      for(var i=1;i<9;i++)
+        setTimeout('target_view('+(nb_zone-(i/8))+')',i*50);
+      setTimeout('/*target_view("-");*/adaptNbZoneMinus=false',400);
     }
     else
       adaptNbZoneMinus=false;
@@ -427,10 +427,11 @@ function stop_coord(event)
     
   if(nb_zone != userp.nb_zone)
   {
-    var interval=25; // interval entre chaque mouvement
-    var mvtsparzone=5; // nombre de mouvements par zone à reprendre
+    var interval=15; // interval entre chaque mouvement
+    var mvtsparzone=8; // nombre de mouvements par zone à reprendre
     for(var i=1;i<(nb_zone-userp.nb_zone)*mvtsparzone+1;i++)
       setTimeout('target_view('+(nb_zone-i/mvtsparzone)+')',i*interval);
+    setTimeout('target_view('+userp.nb_zone+')',(i+5)*interval); // pour éviter des zones incomplètes ne cas de manipulation rapide et s'assurer de retrouver le bon nombre de zones
   }
 
   // on place et on montre la flèche dans le zoom  
