@@ -61,6 +61,7 @@ var userp = {
   chrpretemps:10,
   chrmitemps:30,
   color_marque:false,
+  mire:false,
 };
 
 var el_visible;

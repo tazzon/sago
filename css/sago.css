@@ -129,7 +129,7 @@ table {
 
 /*****************************************/
 
-/* Cachons la case ÃƒÂ  cocher */  
+/* Cachons la case ÃƒÆ’Ã‚Â  cocher */  
 [type="checkbox"]:not(:checked),  
 [type="checkbox"]:checked,
 [type="radio"]
@@ -380,6 +380,11 @@ table {
   /*stroke:#859900;*/
   /*fill:#859900;*/
   fill:green;
+}
+#mire {
+  stroke-width:1.2;
+  stroke:grey;
+  display:none;
 }
 
 .arrowz {

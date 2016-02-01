@@ -124,6 +124,7 @@ function valid_session()
   create_zoom_target();
   create_target();
   target_view(userp.nb_zone);
+  aff_mire(userp.mire);
   
   // pour sauvegarder le diamètre du tube
   user_pref("save");
@@ -486,7 +487,13 @@ function create_zoom_target()
       zoom_target+='<circle cx="0" cy="0" r="'+arrowR+'" style="display:none" class="arrowz" id="zoom_fl'+v+'_'+f+'"/>';
   
   zoom_target+='</g>';
-  
+
+  // la mire  
+  zoom_target+='<g id="mire">';
+  zoom_target+='<line x1="'+zoomW/2+'" y1="0" x2="'+zoomW/2+'" y2="100%"/>';
+  zoom_target+='<line y1="'+zoomH/2+'" x1="0" y2="'+zoomH/2+'" x2="100%"/>';
+  zoom_target+='</g>';
+
   // la flèche en cours
   zoom_target+='<circle cx="'+zoomW/2+'" cy="'+zoomH/2+'" r="'+arrowR+'" id="point_arrow" class="point_arrow" />';
   zoom_target+='</g>';

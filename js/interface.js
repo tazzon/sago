@@ -213,6 +213,7 @@ function user_pref(a)
     userp.chrpretemps=c.pretemps;
     userp.chrmitemps=c.mitemps;
     userp.color_marque=document.getElementById("color_marque").checked;
+    userp.mire=document.getElementById("aff_mire").checked;
     localStorage.setItem('userp',JSON.stringify(userp));
   }
   if(a == "restore")
@@ -228,8 +229,10 @@ function user_pref(a)
     c.mitemps=userp.chrmitemps;
     document.getElementById("save_auto").checked = userp.auto_save;
     document.getElementById("color_marque").checked = userp.color_marque;
+    document.getElementById("aff_mire").checked = userp.mire;
     target_view(userp.nb_zone);
     color_marque(userp.color_marque);
+    aff_mire(userp.mire);
     change_style();
     c.reset();
   }
@@ -320,7 +323,10 @@ function aff_menu()
 function visu_target(aff)
 {
   if (aff == 1)
+  {
     document.getElementById("target").style.display="block";
+    target_view(nb_zone);
+  }
   else
     document.getElementById("target").style.display="none";
 };
@@ -856,6 +862,17 @@ function list_from_date(d)
 var upcal = {
   update : function() { eval(this.func); },
   func : "calendrier()"
+};
+
+function aff_mire(c)
+{
+  if(document.getElementById("mire"))
+  {
+    if(c==true)
+      document.getElementById("mire").style.display="block";
+    else
+      document.getElementById("mire").style.display="none";
+  }
 };
 
 function color_marque(c)
