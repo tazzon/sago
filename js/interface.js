@@ -531,8 +531,9 @@ function help()
 function about()
 {
   ialert('<h3>À propos</h3>'
-        +'<div class="about"><p>'+infoapp.name+' <span style="color:#dc322f;font-size:1.5em" class="icon icon-sago"></span><br>'
-        +'Version '+infoapp.version+' '+infoapp.datecode+'<br>'
+        +'<div class="about"><p><b>'+infoapp.name+'</b> <span style="color:#dc322f;font-size:1.2em" class="icon icon-sago"></span><br>'
+        +'Version '+infoapp.version+'<br>'
+        +'Datecode : '+infoapp.datecode+'<br>'
         +'Contact : '+infoapp.mail+'</p>'
         +'<hr>'
         +'<p>Information sur l’appareil<br/>'

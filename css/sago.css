@@ -14,8 +14,19 @@ body {
   font-size:100%;
 }
 
+h1 {
+  text-align:left;
+  font-size:1.2em;
+  margin:1.5em 0 0.5em 0;
+}
+h2 {
+  font-size:1.1em
+  margin:1.3em 0 0.3em  0;
+}
 h3 {
   text-align:center;
+  font-size:1.1em;
+  margin:0.5em 0 0.2em 0;
 }
 
 p {
@@ -707,7 +718,6 @@ input[type=file]{
   text-align:left;
   padding-left:12%;
 }
-
 #but_session:before{
   font-family:sago;
   content:'\e828  ';
