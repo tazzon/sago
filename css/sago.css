@@ -409,6 +409,12 @@ table {
   stroke-width: 15%;
   stroke-opacity:0.6;
 }
+.out_target{
+  fill:none;
+  stroke:#839496;
+  stroke-width:1;
+  stroke-dasharray:5
+}
 
 #disph1,#disph2,#displ1,#displ2 {
   stroke:white;

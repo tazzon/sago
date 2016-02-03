@@ -91,3 +91,4 @@ var help_chrono='<p>Paramétrez le chronomètre en appuyant sur le bouton <span 
 var aff_fl;
 var tab_display=[];
 
+var ignore0=false;

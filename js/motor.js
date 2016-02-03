@@ -464,12 +464,22 @@ function create_zoom_target()
   zoom_target="";
   
   zoom_target+='<svg width="100%" height="100%"><g id="zoom_scale"><g id="center_zoom_target">';
+  
+  // équivalent des zones hors du blason pour estimer les flèches manquées
+  zoom_target+='<g class="out_target"><circle cx="0" cy="0" r="550"/><circle cx="0" cy="0" r="600"/><circle cx="0" cy="0" r="650"/><circle cx="0" cy="0" r="700"/><circle cx="0" cy="0" r="650"/><circle cx="0" cy="0" r="750"/></g>';
+  
   if(serie.nb_zone_spot>=7)  // 4, 3, 2, 1
     zoom_target+='<circle cx="0" cy="0" r="499" fill="white" stroke="black"  stroke-width="2"/><circle cx="0" cy="0" r="450" fill="white" stroke="black"  stroke-width="1"/><circle cx="0" cy="0" r="399" fill="black" stroke="black"  stroke-width="2"/><circle cx="0" cy="0" r="350" fill="black" stroke="white"  stroke-width="1"/>';
+  else
+    zoom_target+='<g class="out_target"><circle cx="0" cy="0" r="500"/><circle cx="0" cy="0" r="450"/><circle cx="0" cy="0" r="400"/><circle cx="0" cy="0" r="350"/></g>';
   if(serie.nb_zone_spot>=6)  // 5
     zoom_target+='<circle cx="0" cy="0" r="301" fill="#009fe0" stroke="black"  stroke-width="2"/>';
+  else
+    zoom_target+='<g class="out_target"><circle cx="0" cy="0" r="300"/></g>';
   if(serie.nb_zone_spot>=5) // 6
     zoom_target+='<circle cx="0" cy="0" r="250" fill="#009fe0" stroke="black"  stroke-width="1"/>';
+  else
+    zoom_target+='<g class="out_target"><circle cx="0" cy="0" r="250"/></g>';
 
   // 7, 8, 9
   zoom_target+='<circle cx="0" cy="0" r="199" fill="#e21019" stroke="black" stroke-width="2"/><circle cx="0" cy="0" r="150" fill="#e21019" stroke="black" stroke-width="1"/><circle cx="0" cy="0" r="99" fill="#feed01" stroke="black" stroke-width="2"/>';
@@ -641,8 +651,8 @@ function target_view(zone)
     nb_zone--;
     zone=nb_zone;
   }
-  if(zone>serie.nb_zone_spot) // au plus les zones pour le spot
-    zone=serie.nb_zone_spot;
+  if(zone>serie.nb_zone_spot+5) // au plus les zones pour le spot
+    zone=serie.nb_zone_spot+5;
   if(zone<2) // toujours au moins 9 et 10
     zone=2;
   
@@ -661,7 +671,8 @@ function target_view(zone)
   var tab_color=new Array("tv_white","tv_white","tv_black","tv_black","tv_blue","tv_blue","tv_red","tv_red","tv_yellow");
   for(var i=9;i>(10-zone);i--)
   {
-    document.getElementById("tv"+i).className=tab_color[i-1];
+    if(document.getElementById("tv"+i))
+      document.getElementById("tv"+i).className=tab_color[i-1];
   }
 
 
@@ -801,28 +812,35 @@ function group_fleche(f)
   var cy=0;
   var r=0;
   if(f!="reset")
-    {
+  {
     var v=0;
     var tab=[];
     //calcul de la position moyenne
     for(v=0;v<serie.volees.length;v++)
     {
-      cx+=serie.volees[v][f].x;
-      cy+=serie.volees[v][f].y;
-      tab[v]={x:serie.volees[v][f].x,
-              y:serie.volees[v][f].y,
-              r:serie.volees[v][f].r,
-             };
+      if(serie.volees[v][f].v()>0 || ignore0!=true)
+      {
+        cx+=serie.volees[v][f].x;
+        cy+=serie.volees[v][f].y;
+        tab[v]={x:serie.volees[v][f].x,
+                y:serie.volees[v][f].y,
+                r:serie.volees[v][f].r,
+               };
+      }
     }
     cx=cx/v;
     cy=cy/v;
+    console.debug(tab);
     //calcul du rayon par rapport à la position moyenne
     for(v=0;v<serie.volees.length;v++)
     {
-      tab[v].x-=cx;
-      tab[v].y-=cy;
-      if(tab[v].r() > r)
-        r=tab[v].r();
+      if(tab[v] || ignore0!=true)
+      {
+        tab[v].x-=cx;
+        tab[v].y-=cy;
+        if(tab[v].r() > r)
+          r=tab[v].r();
+      }
     }
   }
   document.getElementById("zone_fleche").setAttribute("cx",50*cx);
@@ -852,14 +870,17 @@ function draw_disp(a)
     {
       for(f=0;f<serie.volees[v].length;f++)
       {
-        if(serie.volees[v][f].y>dh1)
-          dh1=serie.volees[v][f].y;
-        if(serie.volees[v][f].y<dh2)
-          dh2=serie.volees[v][f].y;
-        if(serie.volees[v][f].x>dl1)
-          dl1=serie.volees[v][f].x;
-        if(serie.volees[v][f].x<dl2)
-          dl2=serie.volees[v][f].x;
+        if(serie.volees[v][f].v()>0 || ignore0!=false)
+        {
+          if(serie.volees[v][f].y>dh1)
+            dh1=serie.volees[v][f].y;
+          if(serie.volees[v][f].y<dh2)
+            dh2=serie.volees[v][f].y;
+          if(serie.volees[v][f].x>dl1)
+            dl1=serie.volees[v][f].x;
+          if(serie.volees[v][f].x<dl2)
+            dl2=serie.volees[v][f].x;
+        }
       }
     }
   }
