@@ -394,7 +394,7 @@ table {
 }
 #mire {
   stroke-width:1.2;
-  stroke:grey;
+  stroke:#586e75;
   display:none;
 }
 
@@ -412,8 +412,9 @@ table {
 .out_target{
   fill:none;
   stroke:#839496;
-  stroke-width:1;
-  stroke-dasharray:5
+  stroke-width:3;
+  stroke-dasharray:0 10;
+  stroke-linecap:round;
 }
 
 #disph1,#disph2,#displ1,#displ2 {

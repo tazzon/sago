@@ -364,15 +364,16 @@ function coord(event)
   if(fl[n_fl].X()==true)
     document.getElementById("valf").innerHTML+="+";
   
-  
-  if(fl[n_fl].v() < (11-nb_zone) && adaptNbZonePlus == false)
+  var nbv=6 // nombre de mouvents intermédiaires
+  var delai=50 // délai par mouvements
+  if((fl[n_fl].v() < (11-nb_zone) || fl[n_fl].v()==0) && adaptNbZonePlus == false)
   {  
     adaptNbZonePlus=true;
-    if(nb_zone<10)
+    if(nb_zone<(serie.nb_zone_spot+5))
     {
-      for(var i=1;i<9;i++)
-        setTimeout('target_view('+(nb_zone+(i/8))+')',i*50);
-      setTimeout('/*target_view("+");*/adaptNbZonePlus=false',500);
+      for(var i=1;i<nbv+1;i++)
+        setTimeout('target_view('+(nb_zone+(i/nbv))+')',i*delai);
+      setTimeout('adaptNbZonePlus=false',(i-1)*delai);
     }
     else
       adaptNbZonePlus=false;
@@ -387,9 +388,9 @@ function coord(event)
     adaptNbZoneMinus=true;
     if(nb_zone > userp.nb_zone)
     {
-      for(var i=1;i<9;i++)
-        setTimeout('target_view('+(nb_zone-(i/8))+')',i*50);
-      setTimeout('/*target_view("-");*/adaptNbZoneMinus=false',400);
+      for(var i=1;i<nbv+1;i++)
+        setTimeout('target_view('+(nb_zone-(i/nbv))+')',i*delai);
+      setTimeout('adaptNbZoneMinus=false',(i-1)*delai);
     }
     else
       adaptNbZoneMinus=false;
@@ -466,7 +467,8 @@ function create_zoom_target()
   zoom_target+='<svg width="100%" height="100%"><g id="zoom_scale"><g id="center_zoom_target">';
   
   // équivalent des zones hors du blason pour estimer les flèches manquées
-  zoom_target+='<g class="out_target"><circle cx="0" cy="0" r="550"/><circle cx="0" cy="0" r="600"/><circle cx="0" cy="0" r="650"/><circle cx="0" cy="0" r="700"/><circle cx="0" cy="0" r="650"/><circle cx="0" cy="0" r="750"/></g>';
+  if(serie.nb_zone_spot>=10)
+    zoom_target+='<g class="out_target"><circle cx="0" cy="0" r="550"/><circle cx="0" cy="0" r="600"/><circle cx="0" cy="0" r="650"/><circle cx="0" cy="0" r="700"/><circle cx="0" cy="0" r="750"/></g>';
   
   if(serie.nb_zone_spot>=7)  // 4, 3, 2, 1
     zoom_target+='<circle cx="0" cy="0" r="499" fill="white" stroke="black"  stroke-width="2"/><circle cx="0" cy="0" r="450" fill="white" stroke="black"  stroke-width="1"/><circle cx="0" cy="0" r="399" fill="black" stroke="black"  stroke-width="2"/><circle cx="0" cy="0" r="350" fill="black" stroke="white"  stroke-width="1"/>';
@@ -501,8 +503,8 @@ function create_zoom_target()
 
   // la mire  
   zoom_target+='<g id="mire">';
-  zoom_target+='<line id="mirev" x1="'+zoomW/2+'" y1="0" x2="'+zoomW/2+'" y2="100%"/>';
-  zoom_target+='<line id="mireh" y1="'+zoomH/2+'" x1="0" y2="'+zoomH/2+'" x2="100%"/>';
+  zoom_target+='<line id="mirev" x1="'+zoomW/2+'" y1="-1000" x2="'+zoomW/2+'" y2="1000"/>';
+  zoom_target+='<line id="mireh" y1="'+zoomH/2+'" x1="-1000" y2="'+zoomH/2+'" x2="1000"/>';
   zoom_target+='</g>';
 
   // la flèche en cours
@@ -680,7 +682,8 @@ function target_view(zone)
   nb_zone=zone;
   zone_size=targetH/(2*nb_zone);
   
-  zoom_scale(10.5-nb_zone/2-(nb_zone-1)*0.28);
+  //zoom_scale(10.5-nb_zone/2-(nb_zone-1)*0.28);
+  zoom_scale(10.5-nb_zone/2-(nb_zone-1)*0.1);
   zoom=10/zone;
   
   
