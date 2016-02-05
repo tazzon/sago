@@ -145,8 +145,9 @@ table {
 [type="checkbox"]:checked,
 [type="radio"]
  {  
-  position: absolute;  
-  left: -9999px;  
+  /*position: absolute;  
+  left: -9999px;  */
+  display:none;
 }  
 
 [type="checkbox"]:not(:checked) + label:before {
@@ -165,7 +166,7 @@ table {
   content:'\e81f';
   font-family:sago;
   color:#859900;
-  padding-right:0.5em;
+  padding-right:0.35em;
   font-size:1.2em;
   line-height:1.2em;
   position:relative;
@@ -413,8 +414,8 @@ table {
   fill:none;
   stroke:#839496;
   stroke-width:3;
-  stroke-dasharray:0 10;
-  stroke-linecap:round;
+  stroke-dasharray:3 10;
+  /*stroke-linecap:round;*/
 }
 
 #disph1,#disph2,#displ1,#displ2 {

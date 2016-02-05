@@ -578,6 +578,7 @@ function zoom_move(x,y)
 };
 function zoom_scale(z)
 {
+   //console.debug("zoom : "+z);
    z=z*zoomW/1000;
    if(document.getElementById("zoom_scale"))
      document.getElementById("zoom_scale").setAttribute("transform","matrix("+z+",0,0,"+z+","+((zoomW/2)*(1-z))+","+((zoomH/2)*(1-z))+")");
@@ -683,9 +684,8 @@ function target_view(zone)
   zone_size=targetH/(2*nb_zone);
   
   //zoom_scale(10.5-nb_zone/2-(nb_zone-1)*0.28);
-  zoom_scale(10.5-nb_zone/2-(nb_zone-1)*0.1);
-  zoom=10/zone;
-  
+  zoom_scale(2+(15-nb_zone)/3.33);// le zoom mini vaut 2 pour 15 zones visibles et le zoom maxi vaut environ 6 pour pour 2 zones visibles
+  zoom=10/zone;  
   
   var scale=zoom/1000*targetW;
   
