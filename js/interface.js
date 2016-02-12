@@ -534,7 +534,7 @@ function about()
         +'<div class="about"><p><b>'+infoapp.name+'</b> <span style="color:#dc322f;font-size:1.2em" class="icon icon-sago"></span><br>'
         +'Version '+infoapp.version+'<br>'
         +'Datecode : '+infoapp.datecode+'<br>'
-        +'Contact : '+infoapp.mail+'</p>'
+        +'<a href="'+infoapp.git+'" style="position:relative;left:-0.4em"><span class="icon icon-github-circled"></span>'+infoapp.name+'</a></p>'
         +'<hr>'
         +'<p>Information sur l’appareil<br/>'
         +navigator.userAgent+'<br>'

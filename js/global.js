@@ -35,6 +35,7 @@ var infoapp= {
   datecode : 20160205.01,
   name : "Sago",
   mail : "tazzon@free.fr",
+  git : 'https://github.com/tazzon/sago',
   dev : "AM"
 };
 var fl_saisie_save=[];

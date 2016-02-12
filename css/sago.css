@@ -28,7 +28,10 @@ h3 {
   font-size:1.1em;
   margin:0.5em 0 0.2em 0;
 }
-
+a, a:hover, a.visited {
+  color:#b58900;
+  text-decoration: none;
+}
 p {
   padding:0;
   margin:0;
@@ -293,7 +296,9 @@ table {
 #session td input{
   margin-left:20%;
 }
-
+#chrono_to_saisie {
+  display:none;
+}
 #chrono {
   /*border:1px solid;*/
   display:none;

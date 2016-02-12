@@ -191,6 +191,7 @@ function valid_session()
   
   document.getElementById("saisie").innerHTML = tableau;
   document.getElementById("but_saisie").style.display = "initial";
+  document.getElementById("chrono_to_saisie").style.display = "block";
   document.getElementById("but_tab_score").style.display = "initial";
   document.getElementById("but_analyse").style.display = "initial";
 
@@ -336,6 +337,7 @@ function volee_suivante(a)
   {
     document.getElementById("saisie").innerHTML="";
     document.getElementById("but_saisie").style.display="none";
+    document.getElementById("chrono_to_saisie").style.display="none";
     document.getElementById("gotosaisie").style.display = "none";
     visu("tab_score");
     visu_target(0);
@@ -578,7 +580,7 @@ function zoom_move(x,y)
 };
 function zoom_scale(z)
 {
-   //console.debug("zoom : "+z);
+   console.debug("zoom : "+z);
    z=z*zoomW/1000;
    if(document.getElementById("zoom_scale"))
      document.getElementById("zoom_scale").setAttribute("transform","matrix("+z+",0,0,"+z+","+((zoomW/2)*(1-z))+","+((zoomH/2)*(1-z))+")");
@@ -684,7 +686,11 @@ function target_view(zone)
   zone_size=targetH/(2*nb_zone);
   
   //zoom_scale(10.5-nb_zone/2-(nb_zone-1)*0.28);
-  zoom_scale(2+(15-nb_zone)/3.33);// le zoom mini vaut 2 pour 15 zones visibles et le zoom maxi vaut environ 6 pour pour 2 zones visibles
+  var max_zoom=5.3;
+  var min_zoom=1;
+  var max_zone=serie.nb_zone_spot+5;
+  var div_zoom=(max_zone-min_zoom)/(max_zoom-min_zoom);
+  zoom_scale(min_zoom+(max_zone-zone)/div_zoom);// le zoom mini vaut 2 pour 15 zones visibles et le zoom maxi vaut environ 6 pour pour 2 zones visibles
   zoom=10/zone;  
   
   var scale=zoom/1000*targetW;
