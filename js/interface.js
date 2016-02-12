@@ -220,21 +220,21 @@ function user_pref(a)
   {
     userp = JSON.parse(localStorage.getItem('userp'));
     document.getElementById("change_style").checked = userp.hc;
+    change_style();
     document.getElementById("diam_tube").value = userp.diam_tube;
     high_contrast = userp.hc;
     ratio = userp.ratio;
     nb_zone = userp.nb_zone;
+    target_view(userp.nb_zone);
     c.temps=userp.chrtemps;
     c.pretemps=userp.chrpretemps;
     c.mitemps=userp.chrmitemps;
+    c.reset();
     document.getElementById("save_auto").checked = userp.auto_save;
     document.getElementById("color_marque").checked = userp.color_marque;
-    document.getElementById("aff_mire").checked = userp.mire;
-    target_view(userp.nb_zone);
     color_marque(userp.color_marque);
+    document.getElementById("aff_mire").checked = userp.mire;
     aff_mire(userp.mire);
-    change_style();
-    c.reset();
   }
 };
 
