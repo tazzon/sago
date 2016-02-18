@@ -744,7 +744,7 @@ function calendrier(a,m)
     next_m = 0;
   }
 
-  var calendar='<table class="calendar">';
+  var calendar='<table id="calendar">';
   calendar+='<tr><td onclick="calendrier('+prev_a+','+prev_m+')"><span class="icon icon-angle-double-left"></span></td><td colspan="5">'+titre+'</td><td onclick="calendrier('+next_a+','+next_m+')"><span class="icon icon-angle-double-right"></span></td></tr>';
   calendar+='<tr><td>Lu</td><td>Ma</td><td>Me</td><td>Je</td><td>Ve</td><td>Sa</td><td>Di</td></tr>';
   for(var l=1;l<7;l++)

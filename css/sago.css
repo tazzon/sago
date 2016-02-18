@@ -43,15 +43,15 @@ table {
   /*text-align: center;*/
 }
 
-.calendar{
+#calendar{
   /* border-bottom:2px solid; */
   margin:0.5em auto 0.5em auto;
   width:90%;
 }
-.calendar tr{
+#calendar tr{
   height:100%;
 }
-.calendar td{
+#calendar td{
   text-align:center;
   height:3em;
   width:14.25%;
