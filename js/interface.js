@@ -204,7 +204,7 @@ function user_pref(a)
 {
   if(a == "save")
   {
-    userp.diam_tube = diam_tube;
+    userp.diam_tube = parseFloat(document.getElementById("diam_tube").value);
     userp.hc = high_contrast;
     userp.ratio = ratio;
     userp.nb_zone = nb_zone;
