@@ -2,8 +2,8 @@
  * sago 0.3.0 *
  * ************/
 
-var news="<p>Ajout de la possibilité de saisir les flèches hors du blason jusqu’à l'équivalent de 5 zones à l’extérieur du blason.</p>";
-//var news="";
+//var news="<p>Ajout de la possibilité de saisir les flèches hors du blason jusqu’à l'équivalent de 5 zones à l’extérieur du blason.</p>";
+var news="";
 var el_visible="session";
 var high_contrast=false;
 var target;
@@ -32,7 +32,7 @@ var isave = {
 };
 var infoapp= {
   version : '0.3.0',
-  datecode : 20160205.01,
+  datecode : 20160218.01,
   name : "Sago",
   mail : "tazzon@free.fr",
   git : 'https://github.com/tazzon/sago',
