@@ -832,7 +832,7 @@ function list_from_date(d)
       var month=new Array("Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre");
       var date=new Date();
       date.setTime(data.date);
-      select_local += '<table class="calendar"><tr>';
+      select_local += '<table id="calendar"><tr>';
       select_local += '<td onclick="calendrier('+date.getFullYear()+','+date.getMonth()+')"><span class="icon icon-angle-double-up"></span><span class="icon icon-calendar"></span></td>';
       select_local += '<td>'+date.getDate()+" "+month[date.getMonth()]+" "+date.getFullYear()+'</td>';
       select_local += '</tr></table>';
