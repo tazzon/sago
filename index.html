@@ -171,8 +171,12 @@
 </div>
 
 <div id="save_restore_file">
+  
+  <button onclick="visu('local');upcal.update()"><span class="icon icon-angle-double-up"></span><span class="icon icon-calendar"></span>Calendrier</button>
+  <br><br><hr><br>
   <button onclick="save_as_file()">Sauvegarder en fichier !</button>
   <br><br><hr><br>
+  <h2>Charger une sauvegarde</h2>
   <input type="file" id="files" name="file" onchange="readBlob()">
   <div id="info_file"></div>
 </div>

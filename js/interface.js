@@ -7,7 +7,7 @@ function save_local_temp()
 
 function aff_etiq(txt,t)
 {
-  document.getElementById("info_save_temp").innerHTML = txt; 
+  document.getElementById("info_save_temp").innerHTML = txt;
   document.getElementById("info_save_temp").className = "show";
   setTimeout('document.getElementById("info_save_temp").className = "mask"',t);
 };
@@ -18,7 +18,7 @@ function load_local_data(name)
   var serieTemp = JSON.parse(localStorage.getItem(name));
   // et d'un nouveau tableau de volées temporaire
   var voleeTemp = serieTemp.volees;
-  
+
   // création d'une nouvelle session avec les paramètres
   document.getElementById("nb_volee").value = serieTemp.nb_v;
   document.getElementById("nb_fl_volee").value = serieTemp.nb_f;
@@ -56,11 +56,11 @@ function load_local_data(name)
   {
     flTemp = new Array;
     for (var f=0 ; f<nb_fl_volee ; f++)
-       flTemp[f] = new arrow(voleeTemp[v][f].x,voleeTemp[v][f].y,voleeTemp[v][f].t,voleeTemp[v][f].b,voleeTemp[v][f].d,voleeTemp[v][f].n); 
-       
+       flTemp[f] = new arrow(voleeTemp[v][f].x,voleeTemp[v][f].y,voleeTemp[v][f].t,voleeTemp[v][f].b,voleeTemp[v][f].d,voleeTemp[v][f].n);
+
     volee[v] = flTemp;
     volee[v].tot =  function() // méthode pour calculer le total de la volée
-                          { 
+                          {
                             var tot=0;
                             for (var i=0 ; i<this.length ; i++)
                               tot+=this[i].v();
@@ -89,8 +89,8 @@ function load_local_data(name)
     document.getElementById("result_"+v).innerHTML = volee[v].tot();
   }
   document.getElementById("result_total").innerHTML = serie.tot;
-  
-  
+
+
   commentaire();
   color_marque(userp.color_marque);
 
@@ -111,7 +111,7 @@ function save_local(name_auto)
       var save_as = confirm("Voulez-vous remplacer la série nommée « "+isave.actual_name+" » ?");
     else
       var save_as = false;
-      
+
     if(save_as == false)
       var name = prompt("Nom de la série",date_format(new Date(),"dayhour")); // demande du nom de la série avec proposition d'un nom avec une date
     else
@@ -119,7 +119,7 @@ function save_local(name_auto)
 
     if (name == null) // si on annule la deuxième question
       return;  // on arrête tout
-    
+
     if(name != isave.actual_name) // si le nom demandé est différent
       isave.actual_key=date_format(new Date(),"dayhour"); // il faut changer la clé pour pas écraser l'ancienne sauvegarde
 
@@ -172,7 +172,7 @@ function isASession(k)
   if(act=="upload")
   {
     console.debug('save:'+act);
-    
+
     if(localStorage.getItem("sync") == null)
     {
       sync();
@@ -294,7 +294,7 @@ function visu_analyse_el(toEl)
     {
       for(var f=0;f<serie.nb_f;f++)
       {
-        document.getElementById("target_fl"+v+"_"+f).style.display="none";       
+        document.getElementById("target_fl"+v+"_"+f).style.display="none";
         if(fl_saisie_save[v][f] == true)
           document.getElementById("target_fl"+v+"_"+f).style.display="block";
       }
@@ -310,10 +310,10 @@ function aff_menu()
     document.getElementById('menu').style.left='-100%';
     setTimeout('document.getElementById("menu").style.display="none"',500);
   }
-  else 
+  else
   {
     document.getElementById('menu').style.display="block";
-    
+
     if(el_visible == "options") // sauvegarde des préférence quand on quitte la page des options
       user_pref("save");
 
@@ -374,7 +374,7 @@ function commentaire(n,consult)
           }
           else
             isave.is_save = false;
-            
+
           gestion_save_name();
         }
       }
@@ -391,7 +391,7 @@ function commentaire(n,consult)
     }
     else
     {
-      document.getElementById("com_"+v).className = "no_com";    
+      document.getElementById("com_"+v).className = "no_com";
     }
   }
 
@@ -401,13 +401,13 @@ function adapt2viewport()
 {
   var el_target = document.getElementById("target");
   var el_zoom = document.getElementById("zoom");
-  
+
   var W = window.innerWidth;
   var H = window.innerHeight;
   // adaptation de la taille du texte
   document.getElementsByTagName("body")[0].style.height = H-1+"px";
   document.getElementById("local").style.height = H-1+"px";
-  
+
   if (W > H) // orientation horizontale
   {
     el_target.width = H;
@@ -493,16 +493,15 @@ function adapt2viewport()
 };
 function local_visu(el)
 {
-   var bouton = 'icon icon-plus-squared-alt';
+   var e=document.getElementsByClassName("formask");
+   for(var i=0 ; i<e.length ; i++)
+     if(el != e[i].id)
+       document.getElementById(e[i].id).style.display="none";
+
    if (document.getElementById(el).style.display == "block")
-   {
      document.getElementById(el).style.display = "none";
-     bouton = 'icon icon-minus-squared-alt';
-   }
    else
      document.getElementById(el).style.display = "block";
-     
-   return bouton;
 };
 function ialert(content)
 {
@@ -520,7 +519,7 @@ function aff_info()
   {
     document.getElementById("info").style.display="block";
     setTimeout('document.getElementById("info").style.left = "0%"',100);
-  } 
+  }
 };
 
 function help()
@@ -632,7 +631,7 @@ function readBlob(opt_startByte, opt_stopByte) {
                 n++;
             }
             var info="<p>Votre fichier contient "+readJson.length+" sauvegarde(s).</p>";
-            info +="<p>sauvegarde(s) locale(s) : "+n+"</p>";
+            info +="<p>Sauvegarde(s) locale(s) : "+n+"</p>";
 
             var plus_recent=[];
             var r=0;
@@ -646,10 +645,15 @@ function readBlob(opt_startByte, opt_stopByte) {
                 console.debug(JSON.parse(localStorage.getItem(readJson[i].key)).datemod+'---'+readJson[i].data.datemod);
               }
             }
-            info+="<p>"+plus_recent.length+" sauvegarde(s) locale(s) sont plus récentes que celles du fichier.</p>";
-            document.getElementById("info_file").innerHTML=info;
-            console.debug(plus_recent);
             
+            if(plus_recent.length > 1)
+              info+="<p>"+plus_recent.length+" sauvegardes locales sont plus récentes que celles du fichier.</p>";
+            else if(plus_recent.length > 0)
+              info+="<p>"+plus_recent.length+" sauvegarde locale est plus récente que celle du fichier.</p>";
+            
+            document.getElementById("info_file").innerHTML=info+'<br>';
+            //console.debug(plus_recent);
+
             if(plus_recent.length>1)
             {
               if(confirm(plus_recent.length+' sauvegardes sont plus récentes localement que celles sauvegardées.\nVoulez-vous tout de même les importer ?') == true)
@@ -667,7 +671,10 @@ function readBlob(opt_startByte, opt_stopByte) {
               if(plus_recent.indexOf(i) == -1) // on exécute que si c'est une sauvegarde qui n'existe pas ou qui est plus récentes
               {
                 localStorage.setItem(readJson[i].key,JSON.stringify(readJson[i].data))
+                document.getElementById("info_file").innerHTML+=readJson[i].data.id+'<div class="import">importé</div><br>';
               }
+              else
+                document.getElementById("info_file").innerHTML+=readJson[i].data.id+'<div class="reject">rejeté </div><br>';
             }
 
           }
@@ -682,13 +689,13 @@ function readBlob(opt_startByte, opt_stopByte) {
 
     var blob = file.slice(start, stop + 1);
     reader.readAsBinaryString(blob);
-};    
+};
 
 function date_format(date,a)
 {
   if(typeof(date) == "indefined")
     return "(non défini)";
-    
+
   date=new Date(date);
   var day = ( "0" + date.getDate()).slice(-2);
   var month = ("0"+ (1+date.getMonth())).slice(-2);
@@ -718,17 +725,17 @@ function calendrier(a,m)
     var a=ladate.getFullYear();
     var m=ladate.getMonth();
   }
-  
+
   first_day=new Date(a,m,1).getDay();
   var dayCount=2-first_day;
   if(first_day == 0)
     dayCount-=7;
-  
+
   var MaxCount=(new Date(a, m+1, 0)).getDate()+1;
 
   var month=new Array("Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre");
   var titre=month[m]+" "+a;
-  
+
   var prev_m = m-1;
   var prev_a = a;
   if(prev_m<0)
@@ -845,13 +852,14 @@ function list_from_date(d)
                    + '<b> '+data.id+'</b><span class="right">'+date_format(data.date,'hour')+'</span>'
                    + '<br><div class="deroule">'
                    + '<button onclick="load_local_data(\''+list_sessions[i]+'\')"><span class="icon icon-folder-open"></span></button>'
-                   + '<button onclick="if(confirm(\'Supprimer ?\') != false) {localStorage.removeItem(\''+list_sessions[i]+'\');list_from_date(\''+d+'\');}"><span class="icon icon-trash"></span></button>'    
-                   + '<button class="right" onclick="local_visu(\''+list_sessions[i]+'_visu\')"><span class="icon icon-info"></span></button>'
+                   + '<button onclick="if(confirm(\'Supprimer ?\') != false) {localStorage.removeItem(\''+list_sessions[i]+'\');list_from_date(\''+d+'\');}"><span class="icon icon-trash"></span></button>'
+                   + '<button class="right" onclick="local_visu(\''+list_sessions[i]+'_visu\')"><a href="#'+list_sessions[i]+'_visu"><span class="icon icon-info"></span></a></button>'
                    + '</div></div>'
-                   + '<div id="'+list_sessions[i]+'_visu" style="display:none">'
-                   + "Tir à "+ data.dist +" m sur blason de " + data.blason + " cm.<br>" 
+                   + '<div class="formask" id="'+list_sessions[i]+'_visu" style="display:none">'
+                   + "Tir à "+ data.dist +" m sur blason de " + data.blason + " cm.<br>"
                    + data.nb_v+" Volées de "+data.nb_f+" flèches (Ø "+data.tube+"mm).<br>"
                    + "Total : " + data.tot + " points.<br>"
+                   + "Série complétée à "+(Math.round(100*data.volees.length/data.nb_v))+"%<br>"
                    + "Dernière modification le "+date_format(data.datemod)
                    + "</div></div>";
 
@@ -990,8 +998,8 @@ var c={
     this.aff();
   },
   start:function(auto){
-   
-     
+
+
    if(auto != true)
    {
      this.act=!this.act;
@@ -1008,7 +1016,7 @@ var c={
        this.colormod=2;
      }
    }
-   
+
    if(this.act==true && this.preact==true)
    {
 
@@ -1027,7 +1035,7 @@ var c={
      {
        this.encours_pt=Math.round(this.encours_pt*10-1)/10;
      }
-   }   
+   }
 
    if(this.act==true && this.preact==false)
    {
@@ -1091,17 +1099,17 @@ var c={
     val=parseInt(prompt("Décompte avant le début du temps ?",this.pretemps));
     if(!isNaN(val))
       this.pretemps=val;
-    
+
     val=parseInt(prompt("Temps de tir ?",this.temps));
     if(!isNaN(val))
       this.temps=val;
-    
+
     val=parseInt(prompt("Valeur du passage au orange ?",this.mitemps));
     if(!isNaN(val))
       this.mitemps=val;
     user_pref("save");
     this.reset();
-    
+
   },
   bell:function(){
     this.bellact=!this.bellact;
@@ -1156,11 +1164,11 @@ var c={
     document.getElementById("user").value=user.id;
     document.getElementById("password").value=user.pwd;
     return true;
-    
+
   }
   else
     return false;
-  
+
 };*/
 /*function addUser(callback,response)
 {
@@ -1168,7 +1176,7 @@ var c={
   var newmail=document.getElementById("newmail").value;
   var newpwd1=document.getElementById("newpwd1").value;
   var newpwd2=document.getElementById("newpwd2").value;
-  
+
 
   if(callback == "callback")
   {
@@ -1222,7 +1230,7 @@ function change_progress(progress)
   //
   //var progress=actual+add+'%';
 
-  
+
   document.getElementById("progress").innerHTML=progress+'%';
   document.getElementById("progress").style.width=progress+'%';
 
@@ -1249,7 +1257,7 @@ function request(req,func)
 
 function new_user()
 {
-  
+
 };
 
 function sync(act,response)
@@ -1257,7 +1265,7 @@ function sync(act,response)
   if(get_user_infos() == false)
   {
     ialert("<p>Vous devez vous identifier pour synchroniser vos sauvegardes.</p>");
-    visu("log");     
+    visu("log");
     return;
   }
 
@@ -1266,12 +1274,12 @@ function sync(act,response)
     ialert("<p>Il semblerait que votre équipement ne dispose pas d’accès internet. Connectez vous pour pouvoir synchroniser vos sauvegardes sur votre compte.</p>");
     return;
   }
-  
+
 
   if(act == "callback")
   {
     // sauvegarde des fichiers présent sur le serveur dans le localStorage
-    
+
     localStorage.setItem("sync",xhttp.responseText);
     document.getElementById("nb_net_saves").innerHTML=JSON.parse(localStorage.getItem("sync")).length;
   }
@@ -1281,7 +1289,7 @@ function sync(act,response)
     request(req,'sync("callback",xhttp.responseText)');
   }
 
-  
+
 
 };*/
 /******************************/
