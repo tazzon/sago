@@ -4,7 +4,7 @@ low contrast
 
 body {
   color: #fdf6e3;
-  background-color:#073642;
+  background-color:#002b36;
 }
 
 h3 {
@@ -35,7 +35,9 @@ h3 {
   background-color:#002b36;
   color:#fdf6e3;
 }
-
+.formask, .foraff{
+  background-color:#073642;
+}
 #chrono {
   color:#fdf6e3;
 }

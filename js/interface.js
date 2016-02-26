@@ -493,15 +493,17 @@ function adapt2viewport()
 };
 function local_visu(el)
 {
-   var e=document.getElementsByClassName("formask");
-   for(var i=0 ; i<e.length ; i++)
-     if(el != e[i].id)
-       document.getElementById(e[i].id).style.display="none";
-
-   if (document.getElementById(el).style.display == "block")
-     document.getElementById(el).style.display = "none";
-   else
-     document.getElementById(el).style.display = "block";
+  if(document.getElementsByClassName("foraff")[0])
+  {
+      if(document.getElementsByClassName("foraff")[0].id==el)
+      {
+        document.getElementById(el).className="formask";
+        return;
+      }
+      else
+        document.getElementsByClassName("foraff")[0].className="formask";
+  }
+  document.getElementById(el).className="foraff";
 };
 function ialert(content)
 {
@@ -537,7 +539,7 @@ function about()
         +'<hr>'
         +'<p>Information sur l’appareil<br/>'
         +navigator.userAgent+'<br>'
-        +'Résolution : '+window.innerWidth+'×'+window.innerHeight+'</p>'
+        +'Résolution : '+window.innerWidth+'×'+window.innerHeight+'/'+getPPI()+'PPI</p>'
         +'<hr>'
         +'<p>'+infoapp.name+' est une application qui fonctionne dans un navigateur et est destiné à la saisie de séries d’entrainement sur cible anglaise.</p><p>Si votre navigateur gère le cache des pages web, '+infoapp.name+' restera disponible même si vous n’avez pas de connexion internet. Les enregistrements que vous pourrez faire sont stockées dans votre cache de navigateur. Si vous le supprimez, les sauvegardes seront supprimées.</p>'
         +'<p>'+infoapp.dev+'</p></div>'
@@ -630,7 +632,7 @@ function readBlob(opt_startByte, opt_stopByte) {
               if(isASession(i))
                 n++;
             }
-            var info="<p>Votre fichier contient "+readJson.length+" sauvegarde(s).</p>";
+            var info="<p>Sauvegarde(s) du fichier : "+readJson.length+"</p>";
             info +="<p>Sauvegarde(s) locale(s) : "+n+"</p>";
 
             var plus_recent=[];
@@ -642,7 +644,7 @@ function readBlob(opt_startByte, opt_stopByte) {
                 if(JSON.parse(localStorage.getItem(readJson[i].key)).datemod > readJson[i].data.datemod)
                   plus_recent[r++]=i;
 
-                console.debug(JSON.parse(localStorage.getItem(readJson[i].key)).datemod+'---'+readJson[i].data.datemod);
+                //console.debug(JSON.parse(localStorage.getItem(readJson[i].key)).datemod+'---'+readJson[i].data.datemod);
               }
             }
             
@@ -855,12 +857,13 @@ function list_from_date(d)
                    + '<button onclick="if(confirm(\'Supprimer ?\') != false) {localStorage.removeItem(\''+list_sessions[i]+'\');list_from_date(\''+d+'\');}"><span class="icon icon-trash"></span></button>'
                    + '<button class="right" onclick="local_visu(\''+list_sessions[i]+'_visu\')"><a href="#'+list_sessions[i]+'_visu"><span class="icon icon-info"></span></a></button>'
                    + '</div></div>'
-                   + '<div class="formask" id="'+list_sessions[i]+'_visu" style="display:none">'
-                   + "Tir à "+ data.dist +" m sur blason de " + data.blason + " cm.<br>"
+                   + '<div class="formask" id="'+list_sessions[i]+'_visu" /*style="display:none"*/>'
+                   + "<p>Tir à "+ data.dist +" m sur blason de " + data.blason + " cm.<br>"
                    + data.nb_v+" Volées de "+data.nb_f+" flèches (Ø "+data.tube+"mm).<br>"
-                   + "Total : " + data.tot + " points.<br>"
-                   + "Série complétée à "+(Math.round(100*data.volees.length/data.nb_v))+"%<br>"
-                   + "Dernière modification le "+date_format(data.datemod)
+                   + "Total : " + data.tot + " points.</p>"
+                   + "<p>Série complétée à "+(Math.round(100*data.volees.length/data.nb_v))+"%</p>"
+                   + "<p>Dernière modification "+date_format(data.datemod)+"</p>"
+                   + "<p>Taille en mémoire : "+Math.round(localStorage.getItem(list_sessions[i]).length/10.24)/100+"kio</p>"
                    + "</div></div>";
 
   }
@@ -1123,7 +1126,23 @@ var c={
 };
 
 
-
+function getPPI()
+{
+  // create an empty element
+  var div = document.createElement("div");
+  // give it an absolute size of one inch
+  div.style.width="1in";
+  // append it to the body
+  var body = document.getElementsByTagName("body")[0];
+  body.appendChild(div);
+  // read the computed width
+  var ppi = document.defaultView.getComputedStyle(div, null).getPropertyValue('width');
+  // remove it again
+  body.removeChild(div);
+  // and return the value
+  return parseFloat(ppi);
+};
+ 
 
 
 

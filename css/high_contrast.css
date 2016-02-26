@@ -3,7 +3,7 @@ high contrast
 */
 
 body {
-  color: #073642;
+  color: #002b36;
   background-color:#fdf6e3;
 }
 
@@ -33,6 +33,10 @@ h3 {
 #info button {
   background-color:#fdf6e3;
   color:#002b36;
+}
+
+.formask, .foraff{
+  background-color:#eee8d5;
 }
 
 #chrono {
