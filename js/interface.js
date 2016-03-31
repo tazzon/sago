@@ -641,7 +641,7 @@ function readBlob(opt_startByte, opt_stopByte) {
             {
               if(localStorage.getItem(readJson[i].key) != null)
               {
-                if(JSON.parse(localStorage.getItem(readJson[i].key)).datemod > readJson[i].data.datemod)
+                if(JSON.parse(localStorage.getItem(readJson[i].key)).datemod >= readJson[i].data.datemod)
                   plus_recent[r++]=i;
 
                 //console.debug(JSON.parse(localStorage.getItem(readJson[i].key)).datemod+'---'+readJson[i].data.datemod);
@@ -658,13 +658,13 @@ function readBlob(opt_startByte, opt_stopByte) {
 
             if(plus_recent.length>1)
             {
-              if(confirm(plus_recent.length+' sauvegardes sont plus récentes localement que celles sauvegardées.\nVoulez-vous tout de même les importer ?') == true)
+              if(confirm(plus_recent.length+' sauvegardes sont plus récentes (ou équivalentes) localement que celles que vous souhaitez importer.\nVoulez-vous tout de même les importer ?') == true)
                 plus_recent=[];
             }
             else
             {
             if(plus_recent.length>0)
-              if(confirm(plus_recent.length+' sauvegarde est plus récente localement que celles sauvegardées.\nVoulez-vous tout de même l’ importer ?') == true)
+              if(confirm(plus_recent.length+' sauvegarde est plus récente (ou équivalente) localement que celles que vous souhaitez importer.\nVoulez-vous tout de même l’importer ?') == true)
                 plus_recent=[];
             }
 
@@ -854,7 +854,8 @@ function list_from_date(d)
                    + '<b> '+data.id+'</b><span class="right">'+date_format(data.date,'hour')+'</span>'
                    + '<br><div class="deroule">'
                    + '<button onclick="load_local_data(\''+list_sessions[i]+'\')"><span class="icon icon-folder-open"></span></button>'
-                   + '<button onclick="if(confirm(\'Supprimer ?\') != false) {localStorage.removeItem(\''+list_sessions[i]+'\');list_from_date(\''+d+'\');}"><span class="icon icon-trash"></span></button>'
+                   + '<button onclick="export_csv(\''+list_sessions[i]+'\')"><span class="icon icon-doc"></span></button>'
+                   + '<button class="trash" onclick="if(confirm(\'Supprimer ?\') != false) {localStorage.removeItem(\''+list_sessions[i]+'\');list_from_date(\''+d+'\');}"><span class="icon icon-trash"></span></button>'
                    + '<button class="right" onclick="local_visu(\''+list_sessions[i]+'_visu\')"><a href="#'+list_sessions[i]+'_visu"><span class="icon icon-info"></span></a></button>'
                    + '</div></div>'
                    + '<div class="formask" id="'+list_sessions[i]+'_visu" /*style="display:none"*/>'
@@ -905,6 +906,54 @@ function color_marque(c)
 
       }
     }
+};
+
+var saveCsv = (function () {
+    var a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style = "display: none";
+    return function (data, fileName) {
+        var json = data,
+            blob = new Blob([json], {type: "octet/stream"}),
+            url = (window.URL || window.webkitURL).createObjectURL(blob);
+        a.href = url;
+        a.download = fileName;
+        a.click();
+        (window.URL || window.webkitURL).revokeObjectURL(url);
+    };
+}());
+
+function export_csv(id)
+{
+  var data=JSON.parse(localStorage.getItem(id));
+  console.debug(data);
+  var csv='"Identifiant";"'+data.id+"\"\r\n";
+  csv+='"Date";"'+date_format(new Date(data.date))+"\"\r\n";
+  csv+='"Diamètre blason (cm)";'+data.blason+"\r\n";
+  csv+='"Nombre de zone";'+data.nb_zone_spot+"\r\n";
+  csv+='"Diamètre tube (mm)";'+data.tube+"\r\n";
+  csv+='"Total série";'+data.tot+"\r\n";
+  csv+="\r\n";
+  csv+='"Num Volée";"Num flèche";"X (mm)";"Y (mm)";"Score";"X"'+"\r\n\r\n";
+  var tmp_arrow;
+  for(var v=0;v<data.volees.length;v++)
+  {
+    for(var f=0;f<data.volees[v].length;f++)
+    {
+      tmp_arrow=new arrow(data.volees[v][f].x,data.volees[v][f].y,data.volees[v][f].t,data.volees[v][f].b,data.volees[v][f].d,data.volees[v][f].n);
+      tmp_arrow.modeX=data.modeX;
+      tmp_arrow.minv=11-data.nb_zone_spot;
+      csv+=(v+1)+';'+(data.volees[v][f].n+1)+';'
+         +Math.round(1000*data.blason*data.volees[v][f].x)/1000+";"
+         +Math.round(-1000*data.blason*data.volees[v][f].y)/1000+";"
+         +tmp_arrow.v()+";"
+         +(tmp_arrow.X()?'"+"':'')+"\r\n";
+    }
+    csv+="\r\n";
+  }
+  csv=csv.replace(/\./g,',');
+  saveCsv(csv,data.id+".csv");
+  //return csv;
 };
 
 var convertTouchEvent = function (ev) {

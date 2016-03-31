@@ -1,9 +1,9 @@
 /**************
- * sago 0.3.0 *
+ * sago 0.3.1 *
  * ************/
 
-//var news="<p>Ajout de la possibilité de saisir les flèches hors du blason jusqu’à l'équivalent de 5 zones à l’extérieur du blason.</p>";
-var news="";
+var news="<p>Il est désormais possible d’exporter vos séries au format csv pour les charger dans un tableur.</p><p>Rendez-vous dans le calendrier des sauvegardes et cliquez sur le bouton <span class=\"icon icon-doc\"></span> pour télécharger une série.</p>";
+//var news="";
 var el_visible="session";
 var high_contrast=false;
 var target;
@@ -31,8 +31,8 @@ var isave = {
   is_save : false
 };
 var infoapp= {
-  version : '0.3.0',
-  datecode : 20160226.01,
+  version : '0.3.1',
+  datecode : 20160401.01,
   name : "Sago",
   mail : "tazzon@free.fr",
   git : 'https://github.com/tazzon/sago',

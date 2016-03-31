@@ -359,15 +359,16 @@ function coord(event)
   
   var x = event.clientX-targetX-targetW/2;
   var y = event.clientY-targetY-targetH/2;
-  fl[n_fl].x = x/zone_size;
-  fl[n_fl].y = y/zone_size;
+  fl[n_fl].x = Math.round(1000*x/zone_size)/1000;
+  fl[n_fl].y = Math.round(1000*y/zone_size)/1000;
+  //console.debug(x/zone_size+"-"+fl[n_fl].x+" ; "+y/zone_size+'-'+fl[n_fl].y);
 
   document.getElementById("valf").innerHTML=fl[n_fl].v();
   if(fl[n_fl].X()==true)
     document.getElementById("valf").innerHTML+="+";
   
   var nbv=6 // nombre de mouvents intermédiaires
-  var delai=50 // délai par mouvements
+  var delai=70 // délai par mouvements
   if((fl[n_fl].v() < (11-nb_zone) || fl[n_fl].v()==0) && adaptNbZonePlus == false)
   {  
     adaptNbZonePlus=true;
@@ -518,6 +519,7 @@ function create_zoom_target()
   
   // texte des points
   zoom_target+='<div id="valf"></div>';
+  zoom_target+='<div id="valz"></div>';
 
   //dessin de la cible zoom
   document.getElementById("zoom").innerHTML=zoom_target;
@@ -580,10 +582,12 @@ function zoom_move(x,y)
 };
 function zoom_scale(z)
 {
-   console.debug("zoom : "+z);
+   if(!document.getElementById("zoom_scale")) return;
+
+   //console.debug("zoom : "+z);
+   document.getElementById("valz").innerHTML='×'+Math.round(z*10)/10;
    z=z*zoomW/1000;
-   if(document.getElementById("zoom_scale"))
-     document.getElementById("zoom_scale").setAttribute("transform","matrix("+z+",0,0,"+z+","+((zoomW/2)*(1-z))+","+((zoomH/2)*(1-z))+")");
+   document.getElementById("zoom_scale").setAttribute("transform","matrix("+z+",0,0,"+z+","+((zoomW/2)*(1-z))+","+((zoomH/2)*(1-z))+")");
 };
 
 function create_target()
@@ -686,15 +690,15 @@ function target_view(zone)
   zone_size=targetH/(2*nb_zone);
   
   //zoom_scale(10.5-nb_zone/2-(nb_zone-1)*0.28);
-  var max_zoom=5.3;
-  var min_zoom=1;
+  var max_zoom=5.5;
+  var min_zoom=1.5;
   var max_zone=serie.nb_zone_spot+5;
   var div_zoom=(max_zone-min_zoom)/(max_zoom-min_zoom);
   zoom_scale(min_zoom+(max_zone-zone)/div_zoom);// le zoom mini vaut 2 pour 15 zones visibles et le zoom maxi vaut environ 6 pour pour 2 zones visibles
   zoom=10/zone;  
   
   var scale=zoom/1000*targetW;
-  
+
   for(var t=11-serie.nb_zone_spot;t<11;t++) // masquage des zones qui ne sont pas complètes
   {
     if(document.getElementById("t"+t))
@@ -839,7 +843,7 @@ function group_fleche(f)
     }
     cx=cx/v;
     cy=cy/v;
-    console.debug(tab);
+    //console.debug(tab);
     //calcul du rayon par rapport à la position moyenne
     for(v=0;v<serie.volees.length;v++)
     {

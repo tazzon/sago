@@ -60,6 +60,13 @@ table {
   width:14.25%;
 }
 
+.icon-trash {
+  color:#dc322f;
+}
+.trash {
+  margin-left:3em
+}
+
 .save_exist {
   /*background-color:#839496;*/
   box-shadow: 0 0 1em 0.4em #b58900 inset;
@@ -422,6 +429,14 @@ table {
  text-shadow:0.07em 0.07em 0.1em black;
  top:0.1em;
  left:0.1em;
+}
+#valz {
+  font-size:1em;
+  font-weight:bold;
+  /*text-shadow:0.15em 0.15em 0.1em black;*/
+  text-align:right;
+  margin:0 0.5em 0 0;
+  /*margin:-1.8em .5em 0 0;*/
 }
 .point_arrow {
   /*stroke:#859900;*/
