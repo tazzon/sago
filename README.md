@@ -6,7 +6,7 @@ Sago est une application fonctionnant sur un navigateur internet pour les archer
 Le cœur de l'application permet de saisir graphiquement les impacts de flèches sur une série, de les enregistrer sur l'équipement mobile utilisé (smartphone, tablette…), de faires des analyses rapides de groupement, de dispersion par volée ou par flèches.
 Cette application ne necessite pas de connexion internet pour être utilisée une fois qu'elle a été chargée. Les mises à jour se font automatiquement lorsqu'elle est demandée et qu'une connexion internet est disponible. La dernière version est alors mise en cache sur le navigateur.
 
-[**Sago** est disponible ici dans sa dernière version](http://tazzon.free.fr/sago/sago_0.3.0/).
+[**Sago** est disponible ici dans sa dernière version](http://tazzon.free.fr/sago/sago_0.3.1/).
 
 ## Utilisation
 
@@ -22,9 +22,13 @@ Quand toutes les volées sont validées, la saisie n'est plus disponible, la feu
 
 ### Enregistrements
 
-À tout moment, la série peut être enregistrée. Si ce n'est pas le cas et qu'un incident se produit (fermeture du navigateur par exemple), au moment du chargement de la page la fois suivante, la reprise de la série non enregistrée sera proposée.
+À tout moment, la série peut être enregistrée sous le nom de votre choix (par défaut, un nom formaté sur la date en cours est suggérée). Si ce n'est pas le cas et qu'un incident se produit (fermeture du navigateur par exemple), au moment du chargement de la page la fois suivante, la reprise de la série non enregistrée sera proposée à condition que l'option « sauvegarde automatique » ait été cochée.
 
-Les sauvegardes sont visibles en passant par un calendrier. Elle peuvent être chargée pour être visualisées de nouveau ou modifiées. Elles peuvent être téléchargée sur l'appareil pour être chargée sur un autre équipement (fonctionnalité pas encore complètement implémentée).
+Les sauvegardes sont visibles en passant par un calendrier. Elle peuvent être chargée pour être visualisées de nouveau ou modifiées. Elles peuvent être téléchargées sur l'appareil pour être chargée sur un autre équipement (fonctionnalité pas encore complètement implémentée).
+
+Il est possible d'exporter une série au format CSV pour effectuer une analyse grâce à un tableur (libreoffice, excel…).
+
+Les deux dernières fonctionnalités ne sont disponible que si votre navigateur dispose des fonctions nécessaires.
 
 ### Options
 
@@ -33,8 +37,9 @@ Plusieurs options permettent d'adapter Sago au besoin de l'utilisateur :
 - sauvegarde automatique ;
 - contrast élevé ou non ;
 - choix du nombre de zones visibles par défaut pour la saisie ;
-- colorisation de feuille marque.
+- colorisation de feuille marque ;
+- affichage d'une mire (croix) pour faciliter la saisie sur le zoom.
 
 ### Aide
 
-En cas de besoin, en faisant Menu -> Aide, on accède au une aide de l'affichage en cours.
+En cas de besoin, en faisant Menu -> Aide, on accède au une aide de la page en cours d'affichage.
