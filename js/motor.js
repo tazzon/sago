@@ -67,10 +67,11 @@ function valid_session()
       return;
     }
 
-    localStorage.removeItem("temp");
-    isave.actual_name="sans_nom";
-    isave.is_save=false;
-
+  localStorage.removeItem("temp");
+  isave.actual_name="sans_nom";
+  isave.is_save=true;
+  isave.actual_key=""; 
+  
   // remise à l'état initial de la série
   serie = { date : "",
             datemod : "",
@@ -174,8 +175,9 @@ function valid_session()
     tableau += '<td></td>';
   }
   tableau +='<td class="cellule" id="result_total"></td></table>';
-  
   document.getElementById("tableau").innerHTML = tableau;
+  
+  gestion_save_name(); // on met le nom de la session en haut du tableau
   
   // création de la marque par volée
   tableau = '<div>Volée nº<span id="num_volee"></span></div>';
@@ -294,28 +296,7 @@ function volee_suivante(a)
       document.getElementById("tab_"+n_volee+"_"+i).innerHTML += "+";
   }                     
   
- 
-  // sauvegarde temporaire de la série
-  // toute volée validée est sauvegardée pour pouvoir reprendre la série en cours
-  if(document.getElementById("save_auto").checked == true)
-  {
-    if(isave.actual_name == "sans_nom" || isave.actual_name == "")
-    {
-      save_local_temp();
-      isave.is_save=false; // n'est pas sauvegardé sous un nom défini par l'utilsateur
-    }
-    else
-    {
-      save_local(isave.actual_name); // si un non est défini on sauvegarde
-      isave.is_save=true;             // et on ne met pas la marque
-    }
-  }
-  else
-  {
-    // on ne gère que la sauvegarde temporaire
-    save_local_temp();
-    isave.is_save=false;
-  }
+  gestion_save();
   gestion_save_name();
 
 

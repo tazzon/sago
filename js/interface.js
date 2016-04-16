@@ -2,7 +2,7 @@
 function save_local_temp()
 {
   save_local("temp");
-  aff_etiq('<span class="icon icon-floppy"></span> Sauvegarde temporaire',2000);
+  //aff_etiq('<span class="icon icon-floppy"></span> Sauvegarde temporaire',2000);
 };
 
 function aff_etiq(txt,t)
@@ -99,6 +99,7 @@ function load_local_data(name)
     isave.actual_key=name;
     isave.actual_name=serieTemp.id;
     isave.is_save=true;
+    gestion_save();
     gestion_save_name();
   }
 };
@@ -142,13 +143,39 @@ function save_local(name_auto)
     localStorage.removeItem("temp");
 
   if(name_auto=="temp")
+  {
     localStorage.setItem("temp",JSON.stringify(serie));
-  else if(isave.actual_key != "")
-    localStorage.setItem(isave.actual_key,JSON.stringify(serie));
+    aff_etiq('<span class="icon icon-floppy"></span> Sauvegarde temporaire',2000);
+  }
   else
-    localStorage.setItem(date_format(new Date(),"dayhour"),JSON.stringify(serie));
-
+  {
+    if(isave.actual_key != "")
+      localStorage.setItem(isave.actual_key,JSON.stringify(serie));
+    else
+      localStorage.setItem(date_format(new Date(),"dayhour"),JSON.stringify(serie));
+    aff_etiq('<span class="icon icon-floppy"></span> Sauvegarde de la série',2000);
+  }
   gestion_save_name();
+};
+
+function gestion_save()
+{
+  
+  if(userp.auto_save == true)
+  {
+    if(isave.actual_name == "sans_nom" || isave.actual_name == "")
+    {
+      isave.is_save = false;
+      save_local_temp();
+    }
+    else
+    {
+      isave.is_save = true;
+      save_local(isave.actual_name);
+    }
+  }
+  else
+    isave.is_save = false;
 };
 
 function gestion_save_name()
@@ -359,22 +386,7 @@ function commentaire(n,consult)
         serie.com[n] = prompt("Modifiez le commentaire",serie.com[n]);
         if(tmp_com != serie.com[n])
         {
-          if(document.getElementById("save_auto").checked == true)
-          {
-            if(isave.actual_name == "sans_nom" || isave.actual_name == "")
-            {
-              isave.is_save = false;
-              save_local_temp();
-            }
-            else
-            {
-              isave.is_save = true;
-              save_local(isave.actual_name);
-            }
-          }
-          else
-            isave.is_save = false;
-
+          gestion_save();
           gestion_save_name();
         }
       }
