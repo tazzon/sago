@@ -99,7 +99,7 @@ function load_local_data(name)
     isave.actual_key=name;
     isave.actual_name=serieTemp.id;
     isave.is_save=true;
-    gestion_save();
+    //gestion_save();
     gestion_save_name();
   }
 };
