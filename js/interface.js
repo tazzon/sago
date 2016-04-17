@@ -867,7 +867,7 @@ function list_from_date(d)
                    + '<br><div class="deroule">'
                    + '<button onclick="load_local_data(\''+list_sessions[i]+'\')"><span class="icon icon-folder-open"></span></button>'
                    + '<button onclick="export_csv(\''+list_sessions[i]+'\')"><span class="icon icon-doc"></span></button>'
-                   + '<button class="trash" onclick="if(confirm(\'Supprimer ?\') != false) {localStorage.removeItem(\''+list_sessions[i]+'\');list_from_date(\''+d+'\');}"><span class="icon icon-trash"></span></button>'
+                   + '<button class="trash" onclick="if(confirm(\'Supprimer ?\') != false) {localStorage.removeItem(\''+list_sessions[i]+'\');list_from_date(\''+d+'\');isave.is_save=false;isave.actual_name=\'sans_nom\';isave.actual_key=\'\';gestion_save_name();}"><span class="icon icon-trash"></span></button>'
                    + '<button class="right" onclick="local_visu(\''+list_sessions[i]+'_visu\')"><a href="#'+list_sessions[i]+'_visu"><span class="icon icon-info"></span></a></button>'
                    + '</div></div>'
                    + '<div class="formask" id="'+list_sessions[i]+'_visu" /*style="display:none"*/>'
