@@ -215,11 +215,30 @@ function valid_session()
   {
     tab_ana += '<td class="cellule"><div class="cellule_but" id="f'+f+'" onclick="aff_fl_num('+f+')">'+(f+1)+'</div></td>';
   }
+  
+  /*tab_ana +='<tr>'
+          + '<td style="height:inherit" colspan="'+(nb_volee>nb_fl_volee?nb_volee:nb_fl_volee)+'">'
+          +   '<p class="legend">Zone de réussite : <span id="zone_reussite_val"></span><div class="zone_reussite_legend"></div></p>'
+          +   '<p class="legend">Moyenne : <span id="moy_fleche_val"></span><div class="moy_fleche_legend"></div></p>'
+          + '</td>'
+          + '<td id="options_analyse">'
+          +   '<div class="cellule_but"><span class="icon icon-cog-alt"></span></div>'
+          + '</td>'
+          + '</tr>';*/
+  
+
   tab_ana += '</tr></table>';
-  tab_ana +='<p class="legend">Zone de réussite : <span id="zone_reussite_val"></span><div class="zone_reussite_legend"></div></p>';
-  tab_ana +='<p class="legend">Moyenne : <span id="moy_fleche_val"></span><div class="moy_fleche_legend"></div></p>';
+  
+  tab_ana+='<p class="legend">Zone de réussite : <span id="zone_reussite_val"></span><div class="zone_reussite_legend"></div></p>'
+          +'<p class="legend">Moyenne : <span id="moy_fleche_val"></span><div class="moy_fleche_legend"></div></p>';
+          
+  tab_ana+='<p><input type="checkbox" id="ign0" onclick="ignore0=this.checked;auto_trace()"><label for="ign0">Ignorer = 0</label><br>';
+  tab_ana+='<input type="checkbox" id="ignInfR" onclick="ignoreInfReussite=this.checked;auto_trace()"/><label for="ignInfR">Ignorer < zone réussite</label></p>';
 
   document.getElementById("analyse").innerHTML = tab_ana;
+  
+  document.getElementById("ign0").checked=ignore0;
+  document.getElementById("ignInfR").checked=ignoreInfReussite;
 
   visu('saisie');
   zoom_move(0,0);
@@ -701,7 +720,7 @@ function target_view(zone)
     document.getElementById("center_target").setAttribute("transform","matrix("+scale+",0,0,"+scale+","+targetW/2+","+targetH/2+")");
 };
 
-function zone_reussite()
+function zone_reussite(act)
 {
   if(serie.volees.length==0) return;
   
@@ -723,8 +742,11 @@ function zone_reussite()
   for(var f=borneb;f<borneh;f++)
     moy+=tab_tri[f];
 
-  document.getElementById("zone_reussite").setAttribute("r",50*(11-moy/(borneh-borneb)));
-  document.getElementById("zone_reussite_val").innerHTML=Math.round(10*moy/(borneh-borneb))/10;
+  if(act=="value")
+    return moy/(borneh-borneb);
+  else
+    document.getElementById("zone_reussite").setAttribute("r",50*(11-moy/(borneh-borneb)));
+    document.getElementById("zone_reussite_val").innerHTML=Math.round(10*moy/(borneh-borneb))/10;
 };
 
 function moyenne_f()
@@ -805,6 +827,7 @@ function group_fleche(f)
   var cx=0;
   var cy=0;
   var r=0;
+  var count=0;
   if(f!="reset")
   {
     var v=0;
@@ -812,23 +835,30 @@ function group_fleche(f)
     //calcul de la position moyenne
     for(v=0;v<serie.volees.length;v++)
     {
-      if(serie.volees[v][f].v()>0 || ignore0!=true)
+      if(serie.volees[v][f].v()>(ignoreInfReussite?zone_reussite("value"):ignore0?0:-1))
       {
         cx+=serie.volees[v][f].x;
         cy+=serie.volees[v][f].y;
+
         tab[v]={x:serie.volees[v][f].x,
                 y:serie.volees[v][f].y,
                 r:serie.volees[v][f].r,
                };
+        count++;
       }
     }
-    cx=cx/v;
-    cy=cy/v;
+    
+    // on affiche pas de groupement si il n'y a pas au moins 2 tubes
+    if(count < 2)
+      return;
+
+    cx=cx/count;
+    cy=cy/count;
     //console.debug(tab);
     //calcul du rayon par rapport à la position moyenne
     for(v=0;v<serie.volees.length;v++)
     {
-      if(tab[v] || ignore0!=true)
+      if(tab[v])
       {
         tab[v].x-=cx;
         tab[v].y-=cy;
@@ -840,7 +870,6 @@ function group_fleche(f)
   document.getElementById("zone_fleche").setAttribute("cx",50*cx);
   document.getElementById("zone_fleche").setAttribute("cy",50*cy);
   document.getElementById("zone_fleche").setAttribute("r",50*r);
-
 };
 
 function draw_disp(a)
@@ -864,7 +893,8 @@ function draw_disp(a)
     {
       for(f=0;f<serie.volees[v].length;f++)
       {
-        if(serie.volees[v][f].v()>0 || ignore0!=false)
+        //if((serie.volees[v][f].v()>0 || ignore0!=true) && (serie.volees[v][f]>zone_reussite("value") || ignoreInfReussite!=true))
+        if(serie.volees[v][f].v()>(ignoreInfReussite?zone_reussite("value"):ignore0?0:-1))
         {
           if(serie.volees[v][f].y>dh1)
             dh1=serie.volees[v][f].y;
@@ -894,6 +924,10 @@ function draw_disp(a)
 function aff_volee_num(v)
 {
   aff_fl.v[v] = !aff_fl.v[v];
+  for(f=0;f<serie.nb_f;f++)
+    aff_fl.f[f]=false;
+  group_fleche("reset");
+  document.getElementById("aff_fl_all").className="cellule_but";
   display_fl();
 };
 function aff_fl_num(f)
@@ -915,6 +949,11 @@ function aff_volee_all(cl)
   var af=false;
   if(cl=="cellule_but")
     af=true;
+
+  for(f=0;f<serie.nb_f;f++)
+    aff_fl.f[f]=false;
+  group_fleche("reset");
+  document.getElementById("aff_fl_all").className="cellule_but";
 
   for(var v=0;v<serie.nb_v;v++)
     aff_fl.v[v] = af;
@@ -944,7 +983,7 @@ function aff_fl_all(cl)
     aff_fl.f[f] = af;
   
   display_fl();
-    group_fleche("reset");
+  group_fleche("reset");
 
   
   if(cl=="cellule_but")  
@@ -1006,4 +1045,31 @@ function display_fl()
     else
       document.getElementById("f"+f).className = "cellule_but";
   }
+};
+
+function auto_trace()
+{
+  var dd=false; //draw_disp
+  var dg=false; //draw group_fleche
+  var ndg=false;//nombre de numéro flèches à afficher
+
+  for(var v=0;v<serie.nb_v;v++)
+    if(aff_fl.v[v]==true)
+      dd=true;
+  
+  for(var f=0;f<serie.nb_f;f++)
+    if(aff_fl.f[f]==true)
+    {
+      dg=true;
+      ndg=f;
+    }
+  
+  group_fleche("reset");
+
+  if(dd=true)
+    draw_disp();
+
+  if(ndg!==false && dg==true)
+    group_fleche(ndg);
+
 };

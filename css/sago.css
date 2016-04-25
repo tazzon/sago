@@ -288,8 +288,8 @@ table {
 /**********************************************************/
 
 #analyse label {
-  font-size:1em;
-  margin-left:1em;
+  font-size: 0.95em;
+  margin-left: .5em;
 }
 #analyse table td div{
   height:2em;
@@ -469,9 +469,8 @@ table {
 }
 
 #disph1,#disph2,#displ1,#displ2 {
-  stroke:white;
-  stroke-width:6;
-
+  stroke:#fa58f4;
+  stroke-width:8;
 }
 #zone_reussite {
   stroke:#7cfc00;
@@ -483,6 +482,7 @@ table {
 
 .legend {
   display:inline;
+  font-size:0.95em;
 }
 .moy_fleche_legend{
   border: 0.15em solid #ffa07a;
@@ -502,8 +502,8 @@ table {
   border-radius: 50%;
 }
 #zone_fleche {
-  stroke:#9932cc;
-  stroke-width:6;
+  stroke:#fa58f4;
+  stroke-width:8;
   fill:none;
 }
 #moy_fleche {
