@@ -180,7 +180,7 @@ table {
 
 /*****************************************/
 
-/* Cachons la case ÃƒÆ’Ã‚Â  cocher */  
+/* Cachons la case ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  cocher */  
 [type="checkbox"]:not(:checked),  
 [type="checkbox"]:checked,
 [type="radio"]
@@ -456,9 +456,9 @@ table {
 }
 .arrowt {002b36
   fill:#002b36;
-  stroke:gray;
+  /*stroke:gray;
   stroke-width: 15%;
-  stroke-opacity:0.6;
+  stroke-opacity:0.6;*/
 }
 .out_target{
   fill:none;
