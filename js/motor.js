@@ -575,7 +575,7 @@ function arrow(x,y,t,b,d,n)
   if(document.getElementById("mode_spot").checked == true)
     this.minv = 11-serie.nb_zone_spot;
   else
-    this.minv = 0;
+    this.minv = 1;
 };
 
 
@@ -644,7 +644,7 @@ function create_target()
   // les flèches qui seront tirées
   for(var v=0;v<serie.nb_v;v++)
     for(var f=0;f<serie.nb_f;f++)
-      target+='<circle cx="1000" cy="1000" r="'+arrowR+'" style="display:none" class="arrowt" id="target_fl'+v+'_'+f+'"/>';
+      target+='<circle cx="1000" cy="1000" r="'+arrowR+'" stroke-width="'+(arrowR*4)+'" style="display:none" class="arrowt" id="target_fl'+v+'_'+f+'"/>';
     
   target+='</g></svg>';
   
@@ -851,24 +851,32 @@ function group_fleche(f)
       }
     }
     
-    // on affiche pas de groupement si il n'y a pas au moins 2 tubes
-    if(count < 2)
-      return;
 
     cx=cx/count;
     cy=cy/count;
-    //console.debug(tab);
-    //calcul du rayon par rapport à la position moyenne
-    for(v=0;v<serie.volees.length;v++)
+      
+    // si une seule flèche on calcule le rayon en fonction du diamètre du tube
+    if(count < 2)
     {
-      if(tab[v])
+      //return;
+      r=4*serie.tube/serie.blason;
+    }
+    else
+    {
+      //console.debug(tab);
+      //calcul du rayon par rapport à la position moyenne
+      for(v=0;v<serie.volees.length;v++)
       {
-        tab[v].x-=cx;
-        tab[v].y-=cy;
-        if(tab[v].r() > r)
-          r=tab[v].r();
+        if(tab[v])
+        {
+          tab[v].x-=cx;
+          tab[v].y-=cy;
+          if(tab[v].r() > r)
+            r=tab[v].r();
+        }
       }
     }
+
   }
   document.getElementById("zone_fleche").setAttribute("cx",50*cx);
   document.getElementById("zone_fleche").setAttribute("cy",50*cy);
@@ -1072,7 +1080,7 @@ function auto_trace()
   if(dd=true)
     draw_disp();
 
-  if(ndg!==false && dg==true)
+  if(/*ndg!==false && */dg==true)
     group_fleche(ndg);
 
 };

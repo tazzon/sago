@@ -454,11 +454,13 @@ table {
   /*stroke:gray;*/
   stroke-width:0;
 }
-.arrowt {002b36
+.arrowt {
   fill:#002b36;
+  stroke:gray;
+  /*stroke-width:;*/
   /*stroke:gray;
-  stroke-width: 15%;
-  stroke-opacity:0.6;*/
+  stroke-width: 15%;*/
+  stroke-opacity:0.5;
 }
 .out_target{
   fill:none;
@@ -616,7 +618,7 @@ display:none;
 }
 #info_in {
   width:80%;
-  max-height:80%;
+  max-height: 85%;
   border:1px solid;
   border-radius:0.5em;
   margin:5%;

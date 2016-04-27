@@ -3,8 +3,8 @@
  * ************/
 
 //var news="<p>Il est désormais possible d’exporter vos séries au format csv pour les charger dans un tableur.</p><p>Rendez-vous dans le calendrier des sauvegardes et cliquez sur le bouton <span class=\"icon icon-doc\"></span> pour télécharger une série.</p>";
-var news="<p>La page d’analyse dispose désormais que quelques fonctions supplémentaires.</p>";
-//var news="";
+//var news="<p>La page d’analyse dispose désormais que quelques fonctions supplémentaires.</p>";
+var news="";
 var el_visible="session";
 var high_contrast=false;
 var target;
@@ -33,7 +33,7 @@ var isave = {
 };
 var infoapp= {
   version : '0.3.1',
-  datecode : 20160427.01,
+  datecode : 20160427.02,
   name : "Sago",
   mail : "tazzon@free.fr",
   git : 'https://github.com/tazzon/sago',

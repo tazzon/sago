@@ -543,18 +543,15 @@ function help()
 
 function about()
 {
+
   ialert('<h3>À propos</h3>'
-        +'<div class="about"><p><b>'+infoapp.name+'</b> <span style="color:#dc322f;font-size:1.2em" class="icon icon-sago"></span><br>'
-        +'Version '+infoapp.version+'<br>'
-        +'Datecode : '+infoapp.datecode+'<br>'
-        +'<a href="'+infoapp.git+'" style="position:relative;left:-0.4em"><span class="icon icon-github-circled"></span>'+infoapp.name+'</a></p>'
+        +'<div class="about"><p><span style="color:#dc322f;font-size:1.8em;margin-right:0.2em;float:left" class="icon icon-sago"></span>'
+        +'<b>'+infoapp.name+'</b><br>'
+        +'Version '+infoapp.version+'</p>'
+        +'<p>Datecode : '+infoapp.datecode+'<br>'
+        +'Git : <a href="'+infoapp.git+'" style="position:relative;left:-0.4em"><span class="icon icon-github-circled"></span>'+infoapp.name+'</a></p>'
         +'<hr>'
-        +'<p>Information sur l’appareil<br/>'
-        +navigator.userAgent+'<br>'
-        +'Résolution : '+window.innerWidth+'×'+window.innerHeight+'/'+getPPI()+'PPI</p>'
-        +'<hr>'
-        +'<p>'+infoapp.name+' est une application qui fonctionne dans un navigateur et est destiné à la saisie de séries d’entrainement sur cible anglaise.</p><p>Si votre navigateur gère le cache des pages web, '+infoapp.name+' restera disponible même si vous n’avez pas de connexion internet. Les enregistrements que vous pourrez faire sont stockées dans votre cache de navigateur. Si vous le supprimez, les sauvegardes seront supprimées.</p>'
-        +'<p>'+infoapp.dev+'</p></div>'
+        +'<p>'+infoapp.name+' est une application qui fonctionne dans un navigateur. Elle est destinée à la saisie de séries d’entrainement sur cible anglaise.</p>'
         );
 };
 
