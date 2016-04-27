@@ -1,5 +1,6 @@
 #TODO
 
-[ ] ajouter la possibilité d'avoir la valeur de la flèche **serie.volees[v][f].v(*nb_de_décimales*)** dans la fonction arrow()
+[X] ajouter la possibilité d'avoir la valeur de la flèche **serie.volees[v][f].v(*nb_de_décimales*)**. Dans la fonction *arrow()*
 dans l'onglet analyse : permet d'avoir les flèches prises en compte si la zone de réussite n'est pas une valeur entière (x.*[1-9]*)
 
+[ ] utiliser la fonction *auto_trace()* lors des affichages des groupement de flèches ou de volées pour alléger la autres fonctions.

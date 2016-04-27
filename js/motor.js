@@ -548,12 +548,15 @@ function arrow(x,y,t,b,d,n)
            {
              return Math.sqrt(Math.pow(this.x,2)+Math.pow(this.y,2));
            };
-  this.v = function()
+  this.v = function(ndec) // nbdec = nombre de décimales
            {
              var v = 11-this.r()+(this.t/this.b);
              if(this.modeX == true && v<10.5 && v>=9)
                v=9;                 
-             v=Math.floor(v);
+             if(typeof(ndec) == "number")
+               v=Math.round(Math.pow(10,ndec)*v)/Math.pow(10,ndec);
+             else
+               v=Math.floor(v);
              if (v >10)
               v=10;
              if (v < this.minv)
@@ -835,7 +838,7 @@ function group_fleche(f)
     //calcul de la position moyenne
     for(v=0;v<serie.volees.length;v++)
     {
-      if(serie.volees[v][f].v()>(ignoreInfReussite?zone_reussite("value"):ignore0?0:-1))
+      if(serie.volees[v][f].v(2)>(ignoreInfReussite?zone_reussite("value"):ignore0?0:-1))
       {
         cx+=serie.volees[v][f].x;
         cy+=serie.volees[v][f].y;
@@ -894,7 +897,7 @@ function draw_disp(a)
       for(f=0;f<serie.volees[v].length;f++)
       {
         //if((serie.volees[v][f].v()>0 || ignore0!=true) && (serie.volees[v][f]>zone_reussite("value") || ignoreInfReussite!=true))
-        if(serie.volees[v][f].v()>(ignoreInfReussite?zone_reussite("value"):ignore0?0:-1))
+        if(serie.volees[v][f].v(2)>(ignoreInfReussite?zone_reussite("value"):ignore0?0:-1))
         {
           if(serie.volees[v][f].y>dh1)
             dh1=serie.volees[v][f].y;
