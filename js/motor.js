@@ -748,8 +748,10 @@ function zone_reussite(act)
   if(act=="value")
     return moy/(borneh-borneb);
   else
+  {
     document.getElementById("zone_reussite").setAttribute("r",50*(11-moy/(borneh-borneb)));
     document.getElementById("zone_reussite_val").innerHTML=Math.round(10*moy/(borneh-borneb))/10;
+  }
 };
 
 function moyenne_f()

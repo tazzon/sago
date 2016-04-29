@@ -32,7 +32,7 @@ Les deux dernières fonctionnalités ne sont disponible que si votre navigateur 
 
 ### Options
 
-Plusieurs options permettent d'adapter Sago au besoin de l'utilisateur :
+Plusieurs options permettent d'adapter Sago aux besoins de l'utilisateur :
 - taille de l'affichage ;
 - sauvegarde automatique ;
 - contrast élevé ou non ;
