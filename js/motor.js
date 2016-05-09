@@ -1098,7 +1098,7 @@ function display_fl()
     }
   } 
   if(min !== false)
-    transition_target_view(10-min); // une zone de plus que la valeur mini
+    transition_target_view(10.5-min); // une zone de plus que la valeur mini
   else
     transition_target_view(Math.floor(moyenne_f("value")>zone_reussite("value")?moyenne_f("value"):zone_reussite("value"))-1);
     //transition_target_view(11-userp.nb_zone);
