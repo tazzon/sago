@@ -68,16 +68,6 @@ input {
   box-shadow:0 0 1em rgba(0,0,0,1)
 }
 
-.cellule_but {
-  background-color: #fdf6e3;
-  color:#002b36;
-}
-
-.cellule_but_on {
-  background-color:#859900;
-  color:#fdf6e3;
-}
-
 .online {
   background: linear-gradient(0deg, rgba(0,132,0,1) 0%,rgba(0,0,0,0) 100%); 
 }

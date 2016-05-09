@@ -32,6 +32,18 @@ function load_local_data(name)
     document.getElementById("nzspot"+serieTemp.nb_zone_spot).checked=true;
     document.getElementById("mode_spot").checked = true;
   }
+  if(serieTemp.objectif !== false && typeof(serieTemp.objectif) != "undefined")
+  {
+    document.getElementById("enable_objectif").checked = true;
+    document.getElementById("objectif").style.display='block';
+    document.getElementById("objectif").value=serieTemp.objectif;
+  }
+  else
+  {
+    document.getElementById("enable_objectif").checked = false;
+    document.getElementById("objectif").style.display='none';
+    document.getElementById("objectif").value='';
+  }
   valid_session();
 
   document.getElementById("num_volee").innerHTML = serieTemp.volees.length+1;
@@ -86,9 +98,25 @@ function load_local_data(name)
       if(tab_tri[f].X() == true)
         document.getElementById("tab_"+v+"_"+f).innerHTML += "+";
     }
-    document.getElementById("result_"+v).innerHTML = volee[v].tot();
+    
+    var diff_obj="";
+    var diff_tot="";
+    if(serie.objectif !== false && typeof(serie.objectif) != "undefined")
+    {
+      var classobj="equ small";
+      if(serie.objectif/serie.nb_v < volee[v].tot()) classobj="sup small";
+      if(serie.objectif/serie.nb_v > volee[v].tot()) classobj="inf small";
+      diff_obj='<span class="'+classobj+'">'+Math.round(10*(volee[v].tot()-serie.objectif/serie.nb_v))/10+'</span>';
+      var classtotobj="equ small";
+      if(serie.objectif*(n_volee+1)/serie.nb_v < serie.tot) classtotobj="sup small";
+      if(serie.objectif*(n_volee+1)/serie.nb_v > serie.tot) classtotobj="inf small";
+      diff_tot='<span class="'+classtotobj+'">'+Math.round(10*(serie.tot-serie.objectif*n_volee/serie.nb_v))/10+'</span>';
+      //console.debug('volée : '+diff_obj);
+      //console.debug('total : '+diff_tot);
+    }
+    document.getElementById("result_"+v).innerHTML = volee[v].tot()+diff_obj;
   }
-  document.getElementById("result_total").innerHTML = serie.tot;
+  document.getElementById("result_total").innerHTML = serie.tot+diff_tot;
 
 
   commentaire();
@@ -305,7 +333,7 @@ function visu_analyse_el(toEl)
           document.getElementById("target_fl"+v+"_"+f).style.display="none";
       }
     }
-    draw_disp();
+    auto_trace();
     zone_reussite();
     moyenne_f();
   }
@@ -326,6 +354,7 @@ function visu_analyse_el(toEl)
           document.getElementById("target_fl"+v+"_"+f).style.display="block";
       }
     }
+    target_view(userp.nb_zone);
 
   }
 };
@@ -676,17 +705,21 @@ function readBlob(opt_startByte, opt_stopByte) {
               if(confirm(plus_recent.length+' sauvegarde est plus récente (ou équivalente) localement que celles que vous souhaitez importer.\nVoulez-vous tout de même l’importer ?') == true)
                 plus_recent=[];
             }
-
+            
+            var infos='';
             for(var i=0;i<readJson.length;i++)
             {
               if(plus_recent.indexOf(i) == -1) // on exécute que si c'est une sauvegarde qui n'existe pas ou qui est plus récentes
               {
                 localStorage.setItem(readJson[i].key,JSON.stringify(readJson[i].data))
-                document.getElementById("info_file").innerHTML+=readJson[i].data.id+'<div class="import">importé</div><br>';
+                //document.getElementById("info_file").innerHTML+=readJson[i].data.id+'<div class="import">importé</div><br>';
+                infos+=readJson[i].data.id+'<div class="import">importé</div><br>';
               }
               else
-                document.getElementById("info_file").innerHTML+=readJson[i].data.id+'<div class="reject">rejeté </div><br>';
+                infos+=readJson[i].data.id+'<div class="reject">rejeté </div><br>';
+                //document.getElementById("info_file").innerHTML+=readJson[i].data.id+'<div class="reject">rejeté </div><br>';
             }
+            ialert('<p>'+infos+'</p>');
 
           }
         }
@@ -699,7 +732,8 @@ function readBlob(opt_startByte, opt_stopByte) {
     };
 
     var blob = file.slice(start, stop + 1);
-    reader.readAsBinaryString(blob);
+    //reader.readAsBinaryString(blob);
+    reader.readAsText(blob); // fonctionne mieux car lit en utf8
 };
 
 function date_format(date,a)
@@ -870,7 +904,8 @@ function list_from_date(d)
                    + '<div class="formask" id="'+list_sessions[i]+'_visu" /*style="display:none"*/>'
                    + "<p>Tir à "+ data.dist +" m sur blason de " + data.blason + " cm.<br>"
                    + data.nb_v+" Volées de "+data.nb_f+" flèches (Ø "+data.tube+"mm).<br>"
-                   + "Total : " + data.tot + " points.</p>"
+                   + "Total : " + data.tot + " points.<br>"
+                   + 'Objectif : '+(!isNaN(data.objectif)?data.objectif:"aucun")+'</p>'
                    + "<p>Série complétée à "+(Math.round(100*data.volees.length/data.nb_v))+"%</p>"
                    + "<p>Dernière modification "+date_format(data.datemod)+"</p>"
                    + "<p>Taille en mémoire : "+Math.round(localStorage.getItem(list_sessions[i]).length/10.24)/100+"kio</p>"

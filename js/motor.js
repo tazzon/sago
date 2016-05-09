@@ -52,12 +52,24 @@ function valid_session()
       isNaN(parseInt(document.getElementById("nb_fl_volee").value)) == true ||
       isNaN(parseInt(document.getElementById("distance").value)) == true ||
       isNaN(parseInt(document.getElementById("diam_blason").value)) == true ||
-      isNaN(parseInt(document.getElementById("diam_tube").value)) == true)
+      isNaN(parseInt(document.getElementById("diam_tube").value)) == true )    
   {
     ialert('<p><span style="color:#dc322f" class="icon icon-attention"></span> Vous devez remplir tous les champs pour pouvoir commencer une session.</p>');
     return;
   }
-
+  if(document.getElementById("enable_objectif").checked ==true)
+  {
+    if(parseInt(document.getElementById("objectif").value) > (10*parseInt(document.getElementById("nb_volee").value)*parseInt(document.getElementById("nb_fl_volee").value)))
+    {
+      ialert('<p><span style="color:#dc322f" class="icon icon-attention"></span>Votre objectif de points est supérieur au score maximum possible de '+(10*parseInt(document.getElementById("nb_volee").value)*parseInt(document.getElementById("nb_fl_volee").value))+'.</p>');
+      return;
+    }
+    if(isNaN(parseInt(document.getElementById("objectif").value)) == true)
+    {
+      ialert('<p><span style="color:#dc322f" class="icon icon-attention"></span>Si vous avez une objectif de points, vous devez le renseigner correctement.</p>');          
+      return;
+    }
+  }
 
   if (serie.tot > 0 || n_fl > 0)  // on prévient qu'on va écraser la série précédente
    if(isave.is_save == false) 
@@ -85,9 +97,13 @@ function valid_session()
             tube : 0,
             tot : 0,
             modeX : false,
-            nb_zone_spot : 10
+            nb_zone_spot : 10,
+            objectif : false
           };
   
+  if(document.getElementById("enable_objectif").checked ==true)
+    serie.objectif=parseInt(document.getElementById("objectif").value);
+
   nb_volee = parseInt(document.getElementById("nb_volee").value);
   nb_fl_volee = parseInt(document.getElementById("nb_fl_volee").value);
   distance = parseInt(document.getElementById("distance").value);
@@ -205,12 +221,12 @@ function valid_session()
   {
     tab_ana += '<td class="no_com" id="comi'+c+'" onclick="commentaire('+c+',true)"></td>';
   }*/
-  tab_ana += '</tr><tr><td class="cellule"><div class="cellule_but" id="aff_volee_all" onclick="this.className=aff_volee_all(this.className)">Volées</div></td>';
+  tab_ana += '</tr><tr><td class="cellule"><div class="cellule_but" id="aff_volee_all" onclick="aff_volee_all()">Volées</div></td>';
   for(var v=0;v<nb_volee;v++)
   {
     tab_ana += '<td class="cellule"><div class="cellule_but" id="v'+v+'" onclick="aff_volee_num('+v+')">'+(v+1)+'</div></td>';
   }
-  tab_ana += '</tr><tr><td class="cellule"><div class="cellule_but" id="aff_fl_all" onclick="this.className=aff_fl_all(this.className)">Flèches</div></td>';
+  tab_ana += '</tr><tr><td class="cellule"><div class="cellule_but" id="aff_fl_all" onclick="aff_fl_all()">Flèches</div></td>';
   for(var f=0;f<nb_fl_volee;f++)
   {
     tab_ana += '<td class="cellule"><div class="cellule_but" id="f'+f+'" onclick="aff_fl_num('+f+')">'+(f+1)+'</div></td>';
@@ -283,9 +299,23 @@ function volee_suivante(a)
   var tot = 0;
   for ( var i=0 ; i<fl.length ; i++) // total de la volée
     tot += fl[i].v();
-  document.getElementById("result_"+n_volee).innerHTML += tot; //qu'on affiche
   serie.tot += tot; // et qu'on ajoute au total de la série
-  document.getElementById("result_total").innerHTML = serie.tot; // on modifie le total dans le tableau
+  
+  var diff_obj="";
+  var diff_tot="";
+  if(serie.objectif !== false)
+  {
+    var classobj="equ small";
+    if(serie.objectif/serie.nb_v < tot) classobj="sup small";
+    if(serie.objectif/serie.nb_v > tot) classobj="inf small";
+    diff_obj='<span class="'+classobj+'">'+Math.round(10*(tot-serie.objectif/serie.nb_v))/10+'</span>';
+    var classtotobj="equ small";
+    if(serie.objectif*(n_volee+1)/serie.nb_v < serie.tot) classtotobj="sup small";
+    if(serie.objectif*(n_volee+1)/serie.nb_v > serie.tot) classtotobj="inf small";
+    diff_tot='<span class="'+classtotobj+'">'+Math.round(10*(serie.tot-serie.objectif*(n_volee+1)/serie.nb_v))/10+'</span>';
+  }
+  document.getElementById("result_"+n_volee).innerHTML += tot+diff_obj; //qu'on affiche
+  document.getElementById("result_total").innerHTML = serie.tot+diff_tot; // on modifie le total dans le tableau
   
   volee[n_volee] = fl; // on cré la nouvelle volée 
   volee[n_volee].tot =  function() // on ajoute la fonction qui fait le total
@@ -343,8 +373,12 @@ function volee_suivante(a)
     visu_target(0);
   }
   else
-    document.getElementById("num_volee").innerHTML=n_volee+1;
-  
+  {
+    var text_objectif="";
+    if(serie.objectif != false)
+      text_objectif='<span class="obj_saisie">Objectif '+diff_tot.replace('small','normal')+'<span>';
+    document.getElementById("num_volee").innerHTML=(n_volee+1)+text_objectif;
+  }
   color_marque(userp.color_marque);
   
 };
@@ -361,7 +395,6 @@ function coord(event)
   var y = event.clientY-targetY-targetH/2;
   fl[n_fl].x = Math.round(1000*x/zone_size)/1000;
   fl[n_fl].y = Math.round(1000*y/zone_size)/1000;
-  //console.debug(x/zone_size+"-"+fl[n_fl].x+" ; "+y/zone_size+'-'+fl[n_fl].y);
 
   document.getElementById("valf").innerHTML=fl[n_fl].v();
   if(fl[n_fl].X()==true)
@@ -587,7 +620,6 @@ function zoom_scale(z)
 {
    if(!document.getElementById("zoom_scale")) return;
 
-   //console.debug("zoom : "+z);
    document.getElementById("valz").innerHTML='×'+Math.round(z*10)/10;
    z=z*zoomW/1000;
    document.getElementById("zoom_scale").setAttribute("transform","matrix("+z+",0,0,"+z+","+((zoomW/2)*(1-z))+","+((zoomH/2)*(1-z))+")");
@@ -637,14 +669,14 @@ function create_target()
   
   //dispersion h
   target+='<g id="dispersion">';
-  target+='<line x1="-500" y1="0" x2="500" y2="0" id="disph1"/><line x1="-500" y1="0" x2="500" y2="0" id="disph2"/>';
+  target+='<line x1="-1000" y1="0" x2="1000" y2="0" id="disph1"/><line x1="-1000" y1="0" x2="1000" y2="0" id="disph2"/>';
   //dispersion l
-  target+='<line x1="0" y1="-500" x2="0" y2="500" id="displ1"/><line x1="0" y1="-500" x2="0" y2="500" id="displ2"/>';
+  target+='<line x1="0" y1="-1000" x2="0" y2="1000" id="displ1"/><line x1="0" y1="-1000" x2="0" y2="1000" id="displ2"/>';
   target+='</g>';
   // les flèches qui seront tirées
   for(var v=0;v<serie.nb_v;v++)
     for(var f=0;f<serie.nb_f;f++)
-      target+='<circle cx="1000" cy="1000" r="'+arrowR+'" stroke-width="'+(arrowR*4)+'" style="display:none" class="arrowt" id="target_fl'+v+'_'+f+'"/>';
+      target+='<circle cx="1000" cy="1000" r="'+arrowR+'" stroke-width="'+(arrowR*5)+'" style="display:none" class="arrowt" id="target_fl'+v+'_'+f+'"/>';
     
   target+='</g></svg>';
   
@@ -670,8 +702,6 @@ function target_view(zone)
   
   //coloration des cases de selection dans les options
   //masquage de toutes les zones inutiles et affichage neutre des autres
-  
-  //console.debug('--------');
   for(var z=1;z<10;z++)
   {
     if(z > 10-serie.nb_zone_spot)
@@ -723,6 +753,10 @@ function target_view(zone)
     document.getElementById("center_target").setAttribute("transform","matrix("+scale+",0,0,"+scale+","+targetW/2+","+targetH/2+")");
 };
 
+
+/*****************************
+* les fonctions pour l'analyse
+******************************/
 function zone_reussite(act)
 {
   if(serie.volees.length==0) return;
@@ -754,7 +788,7 @@ function zone_reussite(act)
   }
 };
 
-function moyenne_f()
+function moyenne_f(act)
 {
   if(serie.volees.length==0) return;
 
@@ -768,11 +802,15 @@ function moyenne_f()
       i++;
     }
   }
-  
-  document.getElementById("moy_fleche").setAttribute("cx",0);
-  document.getElementById("moy_fleche").setAttribute("cy",0);
-  document.getElementById("moy_fleche").setAttribute("r",50*(11-moy/i));
-  document.getElementById("moy_fleche_val").innerHTML=Math.round(100*moy/i)/100;
+  if(act == "value")
+    return moy/i;
+  else
+  {
+    document.getElementById("moy_fleche").setAttribute("cx",0);
+    document.getElementById("moy_fleche").setAttribute("cy",0);
+    document.getElementById("moy_fleche").setAttribute("r",50*(11-moy/i));
+    document.getElementById("moy_fleche_val").innerHTML=Math.round(100*moy/i)/100;
+  }
 };
 
 function ecart_fl(reset)
@@ -833,7 +871,7 @@ function group_fleche(f)
   var cy=0;
   var r=0;
   var count=0;
-  if(f!="reset")
+  if(f != "reset")
   {
     var v=0;
     var tab=[];
@@ -852,34 +890,30 @@ function group_fleche(f)
         count++;
       }
     }
-    
-
     cx=cx/count;
     cy=cy/count;
-      
-    // si une seule flèche on calcule le rayon en fonction du diamètre du tube
-    if(count < 2)
-    {
-      //return;
-      r=4*serie.tube/serie.blason;
-    }
-    else
-    {
-      //console.debug(tab);
-      //calcul du rayon par rapport à la position moyenne
-      for(v=0;v<serie.volees.length;v++)
+
+      // si une seule flèche on calcule le rayon en fonction du diamètre du tube
+      if(count < 2)
       {
-        if(tab[v])
+        r=4*serie.tube/serie.blason;
+      }
+      else
+      {
+        //calcul du rayon par rapport à la position moyenne
+        for(v=0;v<serie.volees.length;v++)
         {
-          tab[v].x-=cx;
-          tab[v].y-=cy;
-          if(tab[v].r() > r)
-            r=tab[v].r();
+          if(tab[v])
+          {
+            tab[v].x-=cx;
+            tab[v].y-=cy;
+            if(tab[v].r() > r)
+              r=tab[v].r();
+          }
         }
       }
-    }
-
   }
+
   document.getElementById("zone_fleche").setAttribute("cx",50*cx);
   document.getElementById("zone_fleche").setAttribute("cy",50*cy);
   document.getElementById("zone_fleche").setAttribute("r",50*r);
@@ -895,10 +929,10 @@ function draw_disp(a)
   else
     document.getElementById("dispersion").style.display="block";
 
-  var dh1=0;
-  var dh2=0;
-  var dl1=0;
-  var dl2=0;
+  var dh1=false;
+  var dh2=false;
+  var dl1=false;
+  var dl2=false;
   var f=0;
   for(var v=0;v<serie.volees.length;v++)
   {
@@ -906,16 +940,15 @@ function draw_disp(a)
     {
       for(f=0;f<serie.volees[v].length;f++)
       {
-        //if((serie.volees[v][f].v()>0 || ignore0!=true) && (serie.volees[v][f]>zone_reussite("value") || ignoreInfReussite!=true))
         if(serie.volees[v][f].v(2)>(ignoreInfReussite?zone_reussite("value"):ignore0?0:-1))
         {
-          if(serie.volees[v][f].y>dh1)
+          if(serie.volees[v][f].y>dh1 || dh1 == false)
             dh1=serie.volees[v][f].y;
-          if(serie.volees[v][f].y<dh2)
+          if(serie.volees[v][f].y<dh2 || dh2 == false)
             dh2=serie.volees[v][f].y;
-          if(serie.volees[v][f].x>dl1)
+          if(serie.volees[v][f].x>dl1 || dl1 == false)
             dl1=serie.volees[v][f].x;
-          if(serie.volees[v][f].x<dl2)
+          if(serie.volees[v][f].x<dl2 || dl2 == false)
             dl2=serie.volees[v][f].x;
         }
       }
@@ -933,77 +966,94 @@ function draw_disp(a)
   document.getElementById("displ1").setAttribute("x2",50*dl1);
   document.getElementById("displ2").setAttribute("x1",50*dl2);
   document.getElementById("displ2").setAttribute("x2",50*dl2);
+
 };
+
+function transition_target_view(v)
+{
+    max=200; // casse la boucle si il y a un problème. Les mouvement se font par 0.1 zones et maximum 15 zone peuvent être saisies donc 150 d'ou un peu plus
+    mvt=11-Math.floor(v)-nb_zone;
+    var it=Math.floor(450/Math.abs(mvt));
+    var sign=1;
+    if(mvt!=0)
+      sign=mvt/Math.abs(mvt);
+    else
+      it=50; // dans le cas ou mvt=0 évite it=infinty
+    for(i=0;i<Math.abs(mvt);i=i+0.1)
+    {
+      setTimeout('target_view('+(nb_zone+i*sign)+')',i*it);
+      if(max--<0)
+      {
+        console.debug("break");
+        break;
+      }
+    }
+    setTimeout('target_view('+Math.round(nb_zone+i*sign)+')',i*it);
+};
+
 function aff_volee_num(v)
 {
   aff_fl.v[v] = !aff_fl.v[v];
   for(f=0;f<serie.nb_f;f++)
     aff_fl.f[f]=false;
-  group_fleche("reset");
-  document.getElementById("aff_fl_all").className="cellule_but";
-  display_fl();
+
+  auto_trace();
 };
 function aff_fl_num(f)
 {
-  if(aff_fl.f[f] == true && document.getElementById("aff_fl_all").className=="cellule_but")
-  {
-    aff_fl_all("reset");
-    return;
-  }
-  document.getElementById("aff_fl_all").className=aff_fl_all("cellule_but_on");
-  
-  aff_fl.f[f] = !aff_fl.f[f];
-  display_fl();
-  group_fleche(f);
+  for(var i=0;i<serie.nb_v;i++)
+    aff_fl.v[i]=false;
 
+  var count=0;
+  for(var i=0;i<serie.nb_f;i++)
+  {
+    if(aff_fl.f[i] == true)
+      count++;
+    if(f!=i) aff_fl.f[i]=false;
+  }
+  if(count!=serie.nb_f)
+    aff_fl.f[f] = !aff_fl.f[f];
+
+  auto_trace();
 };
-function aff_volee_all(cl)
+function aff_volee_all()
 {
-  var af=false;
-  if(cl=="cellule_but")
-    af=true;
+  var af=true;
+  var count=0;
+  for(var v=0;v<serie.nb_v;v++)
+    if(aff_fl.v[v]==true)
+      count++;
+  if(count==serie.nb_v)
+    af=false;
 
   for(f=0;f<serie.nb_f;f++)
     aff_fl.f[f]=false;
-  group_fleche("reset");
-  document.getElementById("aff_fl_all").className="cellule_but";
 
   for(var v=0;v<serie.nb_v;v++)
     aff_fl.v[v] = af;
   
-  display_fl();
-  
-  if(cl=="cellule_but")  
-    return "cellule_but_on";
-  else
-    return "cellule_but";
+  auto_trace();
 };
-function aff_fl_all(cl)
-{
-  if(cl=="reset")
-  {
-    for(var f=0;f<aff_fl.length;f++)
-      aff_fl[f].f=false;
-    document.getElementById("aff_fl_all").className="cellule_but";
-    display_fl();
-  }
-  document.getElementById("aff_volee_all").className=aff_volee_all("cellule_but_on");
-  var af=false;
-  if(cl=="cellule_but")
-    af=true;
 
+function aff_fl_all()
+{
+  var af=true;
+  var count=0;
+  for(var f=0;f<serie.nb_f;f++)
+    if(aff_fl.f[f]==true)
+      count++;
+  if(count==serie.nb_f)
+    af=false;
+  
   for(var f=0;f<serie.nb_f;f++)
     aff_fl.f[f] = af;
-  
-  display_fl();
-  group_fleche("reset");
 
-  
-  if(cl=="cellule_but")  
-    return "cellule_but_on";
-  else
-    return "cellule_but";
+  for(var v=0;v<serie.nb_v;v++)
+    aff_fl.v[v] = false;
+
+  auto_trace();
 };
+
 function display_fl()
 {
 
@@ -1016,11 +1066,14 @@ function display_fl()
   }
   for(var v=0;v<serie.nb_v;v++)
     for(var f=0;f<serie.nb_f;f++)
-      if(aff_fl.v[v]==true) tab_display[v][f]=aff_fl.v[v];
+      if(aff_fl.v[v]==true)
+        tab_display[v][f]=aff_fl.v[v];
   for(var f=0;f<serie.nb_f;f++)
     for(var v=0;v<serie.nb_v;v++)
-      if(aff_fl.f[f]==true) tab_display[v][f]=aff_fl.f[f];
-   
+      if(aff_fl.f[f]==true)
+        tab_display[v][f]=aff_fl.f[f];
+  
+  var min=false;
   for(var v=0;v<serie.volees.length;v++)
   {
     for(var f=0;f<serie.nb_f;f++)
@@ -1033,6 +1086,9 @@ function display_fl()
           fd.setAttribute("cx",50*serie.volees[v][f].x);
           fd.setAttribute("cy",50*serie.volees[v][f].y);          
           fd.style.display="block";
+          if(min === false || min < serie.volees[v][f].r())
+            if(serie.volees[v][f].v(2)>(ignoreInfReussite?zone_reussite("value"):ignore0?0:-1))
+              min=serie.volees[v][f].r();
         }
         else
         {
@@ -1041,29 +1097,51 @@ function display_fl()
       }
     }
   } 
-  draw_disp();   
-  
-  
-  for (var v=0;v<nb_volee;v++)
+  if(min !== false)
+    transition_target_view(10-min); // une zone de plus que la valeur mini
+  else
+    transition_target_view(Math.floor(moyenne_f("value")>zone_reussite("value")?moyenne_f("value"):zone_reussite("value"))-1);
+    //transition_target_view(11-userp.nb_zone);
+
+  var count=0;
+  for (var v=0;v<serie.nb_v;v++)
   {
     if(aff_fl.v[v] == true)
-        document.getElementById("v"+v).className = "cellule_but_on";
+    {
+      document.getElementById("v"+v).className = "cellule_but_on";
+      count++;
+    }
     else
-        document.getElementById("v"+v).className = "cellule_but";
+      document.getElementById("v"+v).className = "cellule_but";
   }
-  for (var f=0;f<nb_fl_volee;f++)
+
+  if(count == serie.nb_v)
+    document.getElementById("aff_volee_all").className = "cellule_but_on";
+  else
+    document.getElementById("aff_volee_all").className = "cellule_but";
+
+  count=0;
+  for (var f=0;f<serie.nb_f;f++)
   {
     if(aff_fl.f[f] == true)
+    {
       document.getElementById("f"+f).className ="cellule_but_on";
+      count++;
+    }
     else
       document.getElementById("f"+f).className = "cellule_but";
   }
+
+  if(count == serie.nb_f)
+    document.getElementById("aff_fl_all").className = "cellule_but_on";
+  else
+    document.getElementById("aff_fl_all").className = "cellule_but";
 };
 
 function auto_trace()
 {
   var dd=false; //draw_disp
-  var dg=false; //draw group_fleche
+  var dg=0; //draw group_fleche
   var ndg=false;//nombre de numéro flèches à afficher
 
   for(var v=0;v<serie.nb_v;v++)
@@ -1073,16 +1151,17 @@ function auto_trace()
   for(var f=0;f<serie.nb_f;f++)
     if(aff_fl.f[f]==true)
     {
-      dg=true;
+      dg++;
       ndg=f;
     }
   
   group_fleche("reset");
 
+  display_fl();
   if(dd=true)
     draw_disp();
 
-  if(/*ndg!==false && */dg==true)
+  if(ndg!==false && dg==1)
     group_fleche(ndg);
 
 };

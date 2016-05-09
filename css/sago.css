@@ -80,7 +80,7 @@ table {
   height:0;
 }
 .foraff{
-  height:9em;
+  height: 10em;
 }
 .foraff, .formask{
   overflow:hidden;
@@ -456,7 +456,8 @@ table {
 }
 .arrowt {
   fill:#002b36;
-  stroke:gray;
+  /* stroke:lime; */
+  stroke: lime;
   /*stroke-width:;*/
   /*stroke:gray;
   stroke-width: 15%;*/
@@ -535,6 +536,9 @@ display:none;
 }
 #pic_fl div:hover{
     border:1px solid red;
+}
+#objectif {
+  display:none;
 }
 #options {
   display:none;
@@ -837,14 +841,20 @@ input[type=file]{
   vertical-align:middle;
   border-radius:0.2em;
 }
+
 .cellule_but {
+  background-color:#eee8d5;
+  color:#002b36;
   margin:0;
   border-radius:0.2em;
   border:1px solid black;
   padding-right: 0.3em;
   padding-left: 0.3em;
+
 }
 .cellule_but_on {
+  background-color:#859900;
+  color:#fdf6e3;
   padding-left:0.3em;
   padding-right:0.3em;
   margin:0;
@@ -889,14 +899,32 @@ hr {
   width:20px;
 }
 .equ {
-  color:inherit;
+  color:#839496;
 }
 .sup {
-  color:green;
+  color:#859900;
+}
+.sup:before {
+  content:"+";
 }
 .inf {
-  color:red;
+  color:#dc322f;
 }
+.small {
+  font-size:0.7em;
+  font-weight:bold;
+  float:right;
+  margin-right:0.2em
+}
+.normal {
+  font-weight:bold;
+}
+.obj_saisie {
+  font-size:1em;
+  float:right;
+  margin-right:2em;
+}
+
 .color_pic div{
   float:left;
   width:1em;
@@ -967,8 +995,17 @@ sup {
   }
   #button_menu:before{
     font-size:3em;
+    right:0;
   }
   #valf{
     font-size:6em;
+  }
+  #valz {
+    font-size:1.5em;
+    margin:-1.5em -2.7em 0 0;
+    text-align:right;
+    /*position:absolute;
+    top:0;
+    right:-15%;*/
   }
 }
