@@ -907,7 +907,7 @@ function list_from_date(d)
                    + "<p>Tir à "+ data.dist +" m sur blason de " + data.blason + " cm.<br>"
                    + data.nb_v+" Volées de "+data.nb_f+" flèches (Ø "+data.tube+"mm).<br>"
                    + "Total : " + data.tot + " points.<br>"
-                   + 'Objectif : '+(!isNaN(data.objectif)?data.objectif:"aucun")+'</p>'
+                   + 'Objectif : '+((!isNaN(data.objectif)&&data.objectif!=false)?data.objectif:"aucun")+'</p>'
                    + "<p>Série complétée à "+(Math.round(100*data.volees.length/data.nb_v))+"%</p>"
                    + "<p>Dernière modification "+date_format(data.datemod)+"</p>"
                    + "<p>Taille en mémoire : "+Math.round(localStorage.getItem(list_sessions[i]).length/10.24)/100+"kio</p>"
