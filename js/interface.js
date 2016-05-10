@@ -25,13 +25,15 @@ function load_local_data(name)
   document.getElementById("distance").value = serieTemp.dist;
   document.getElementById("diam_blason").value = serieTemp.blason;
   document.getElementById("diam_tube").value = serieTemp.tube;
-  if(serieTemp.modeX == true)
-    document.getElementById("mode_x").checked = "checked";
+  document.getElementById("mode_x").checked = serieTemp.modeX;
   if(serieTemp.nb_zone_spot != 10)
   {
     document.getElementById("nzspot"+serieTemp.nb_zone_spot).checked=true;
     document.getElementById("mode_spot").checked = true;
   }
+  else
+    document.getElementById("mode_spot").checked = false;
+    
   if(serieTemp.objectif !== false && typeof(serieTemp.objectif) != "undefined")
   {
     document.getElementById("enable_objectif").checked = true;
