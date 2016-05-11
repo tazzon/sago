@@ -621,7 +621,10 @@ function zoom_scale(z)
    if(!document.getElementById("zoom_scale")) return;
 
    document.getElementById("valz").innerHTML='×'+Math.round(z*10)/10;
-   z=z*zoomW/1000;
+   if(zoomW>zoomH)
+     z=z*zoomW/1000;
+   else
+     z=z*zoomH/1000;
    document.getElementById("zoom_scale").setAttribute("transform","matrix("+z+",0,0,"+z+","+((zoomW/2)*(1-z))+","+((zoomH/2)*(1-z))+")");
 };
 

@@ -450,61 +450,77 @@ function adapt2viewport()
   // adaptation de la taille du texte
   document.getElementsByTagName("body")[0].style.height = H-1+"px";
   document.getElementById("local").style.height = H-1+"px";
-
+  var decal=0;
   if (W > H) // orientation horizontale
   {
-    el_target.width = H;
-    el_target.height = H;
-    el_target.style.width = H+"px";
-    el_target.style.height = H+"px";
-    el_target.style.left = W-H+"px";
-    el_target.style.top = "0px";
-    targetW = H;
-    targetH = H;
-    targetX = W-H;
-    targetY = 0;
+    if(W/H<1.5)
+      var decal=(H/2)-(W-H);
+    if(decal%2==1)
+      decal++;
 
-    var marge=Math.round(H*0.03);
-    el_zoom.width = W-H-marge;
+    el_target.width = H-decal;
+    el_target.height = H-decal;
+    el_target.style.width = (H-decal)+"px";
+    el_target.style.height = (H-decal)+"px";
+    el_target.style.left = (W-H+decal)+"px";
+    el_target.style.top = (decal/2)+"px";
+    targetW = H-decal;
+    targetH = H-decal;
+    targetX = W-H+decal;
+    targetY = 0+decal/2;
+
+    var marge=Math.round(W*0.02);
+    el_zoom.width = W-H+decal-marge;
     el_zoom.height = H;
-    el_zoom.style.width = W-H-marge+"px";
+    el_zoom.style.width = (W-H+decal-marge)+"px";
     el_zoom.style.height = H+"px";
     el_zoom.style.left = "0px";
     el_zoom.style.top = "0px";
     zoomX=0;
     zoomY=0;
     zoomH=H;
-    zoomW=W-H-marge;
+    zoomW=W-H+decal-marge;
+
+    var scale=(10/nb_zone)/1000*targetH;
 
     document.getElementsByTagName("body")[0].style.fontSize = Math.round(H/(1.7*ratio))+"%";
     document.getElementsByTagName("body")[0].style.width="100%";
-    document.getElementById("saisie").style.width=(W-H-marge)+"px";
-    document.getElementById("analyse").style.width=(W-H-marge)+"px";
+    document.getElementById("saisie").style.width=(W-H+decal-marge)+"px";
+    document.getElementById("analyse").style.width=(W-H+decal-marge)+"px";
   }
   else // orientation verticale
   {
-    el_target.width = W;
-    el_target.height = W;
-    el_target.style.width = W+"px";
-    el_target.style.height = W+"px";
-    el_target.style.left = "0px";
-    el_target.style.top = H-W+"px";
-    targetW = W;
-    targetH = W;
-    targetX = 0;
-    targetY = H-W;
+    if(H/W<1.5)
+      var decal=(W/2)-(H-W);
+    if(decal%2==1)
+      decal++;
+    
+    //console.debug(decal);
+    
+    el_target.width = W-decal;
+    el_target.height = W-decal;
+    el_target.style.width = (W-decal)+"px";
+    el_target.style.height = (W-decal)+"px";
+    el_target.style.left = (decal/2)+"px";
+    el_target.style.top = (H-W+decal)+"px";
+    targetW = W-decal;
+    targetH = W-decal;
+    targetX = 0+decal/2;
+    targetY = H-W+decal;
 
-    var marge=Math.round(W*0.03);
+    var marge=Math.round(H*0.02);
     el_zoom.width = W;
-    el_zoom.height = H-W-marge;
+    el_zoom.height = H-W+decal-marge;
     el_zoom.style.width = W+"px";
-    el_zoom.style.height = H-W-marge+"px";
+    el_zoom.style.height = H-W+decal-marge+"px";
     el_zoom.style.paddingLeft = "0";
     el_zoom.style.paddingTop = "0";
     zoomX=0;
     zoomY=0;
-    zoomH=H-W-marge;
+    zoomH=H-W+decal-marge;
     zoomW=W;
+
+    var scale=(10/nb_zone)/1000*targetW;
 
     document.getElementsByTagName("body")[0].style.fontSize = Math.round(H/(2*ratio))+"%";
     document.getElementsByTagName("body")[0].style.width="100%";
@@ -530,7 +546,6 @@ function adapt2viewport()
   {
     document.getElementById("main_target").setAttribute("width",targetW);
     document.getElementById("main_target").setAttribute("height",targetH);
-    var scale=(10/nb_zone)/1000*targetW;
     document.getElementById("center_target").setAttribute("transform","matrix("+scale+",0,0,"+scale+","+targetW/2+","+targetH/2+")");
   }
 };
