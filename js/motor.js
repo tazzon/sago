@@ -249,8 +249,8 @@ function valid_session()
           +'<p class="legend">Moyenne : <span id="moy_fleche_val"></span><div class="moy_fleche_legend"></div></p>';
           
   tab_ana+='<p><input type="checkbox" id="ign0" onclick="ignore0=this.checked;auto_trace()"><label for="ign0">Ignorer = 0</label><br>';
-  tab_ana+='<input type="checkbox" id="ignInfR" onclick="ignoreInfReussite=this.checked;auto_trace()"/><label for="ignInfR">Ignorer < zone réussite</label></p>';
-
+  tab_ana+='<input type="checkbox" id="ignInfR" onclick="ignoreInfReussite=this.checked;auto_trace()"/><label for="ignInfR">Ignorer < zone réussite</label>';
+  tab_ana+='<br><div id="nb_fl_ignore"></div></p>';
   document.getElementById("analyse").innerHTML = tab_ana;
   
   document.getElementById("ign0").checked=ignore0;
@@ -672,9 +672,9 @@ function create_target()
   
   //dispersion h
   target+='<g id="dispersion">';
-  target+='<line x1="-1000" y1="0" x2="1000" y2="0" id="disph1"/><line x1="-1000" y1="0" x2="1000" y2="0" id="disph2"/>';
+  target+='<line x1="-10000" y1="0" x2="10000" y2="0" id="disph1"/><line x1="-10000" y1="0" x2="10000" y2="0" id="disph2"/>';
   //dispersion l
-  target+='<line x1="0" y1="-1000" x2="0" y2="1000" id="displ1"/><line x1="0" y1="-1000" x2="0" y2="1000" id="displ2"/>';
+  target+='<line x1="0" y1="-10000" x2="0" y2="10000" id="displ1"/><line x1="0" y1="-10000" x2="0" y2="10000" id="displ2"/>';
   target+='</g>';
   // les flèches qui seront tirées
   for(var v=0;v<serie.nb_v;v++)
@@ -1077,6 +1077,7 @@ function display_fl()
         tab_display[v][f]=aff_fl.f[f];
   
   var min=false;
+  var nb_fl_ignore=0;
   for(var v=0;v<serie.volees.length;v++)
   {
     for(var f=0;f<serie.nb_f;f++)
@@ -1092,6 +1093,8 @@ function display_fl()
           if(min === false || min < serie.volees[v][f].r())
             if(serie.volees[v][f].v(2)>(ignoreInfReussite?zone_reussite("value"):ignore0?0:-1))
               min=serie.volees[v][f].r();
+            else
+              nb_fl_ignore++;
         }
         else
         {
@@ -1099,13 +1102,20 @@ function display_fl()
         }
       }
     }
-  } 
+  }
+  //console.debug('nb_fl_ignore:'+nb_fl_ignore);
+  if(nb_fl_ignore==1)
+    document.getElementById("nb_fl_ignore").innerHTML='<span class="icon icon-info-circled"></span> '+nb_fl_ignore+" flèche ignorée";
+  else if(nb_fl_ignore > 1)
+    document.getElementById("nb_fl_ignore").innerHTML='<span class="icon icon-info-circled"></span> '+nb_fl_ignore+" flèches ignorées";
+  else
+    document.getElementById("nb_fl_ignore").innerHTML="";
+
   if(min !== false)
     transition_target_view(10.5-min); // une zone de plus que la valeur mini
   else
     transition_target_view(Math.floor(moyenne_f("value")>zone_reussite("value")?moyenne_f("value"):zone_reussite("value"))-1);
     //transition_target_view(11-userp.nb_zone);
-
   var count=0;
   for (var v=0;v<serie.nb_v;v++)
   {

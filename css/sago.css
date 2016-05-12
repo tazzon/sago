@@ -76,6 +76,17 @@ table {
   margin:0.5em;
   font-size:0.9em
 }
+#nb_fl_ignore {
+  text-align:center;
+  margin-top:.5em;
+  /*margin-left:0em;*/
+}
+#nb_fl_ignore .icon {
+  color:#268bd2;
+  font-size:1.2em;
+  vertical-align:middle;
+}
+
 .formask {
   height:0;
 }
@@ -294,15 +305,15 @@ table {
 #analyse table td div{
   height:2em;
   line-height:2em;
-  
 }
 #analyse table {
   width:100%;
   margin-top:1em;
   margin-bottom:0.5em
 }
-#analyse table tr {
-  /*margin-top:*/
+#analyse table td {
+  border:none;
+  padding:0;
 }
 .help {
   display:none;
@@ -444,7 +455,7 @@ table {
   fill:green;
 }
 #mire {
-  stroke-width:1.2;
+  stroke-width:2;
   stroke:#586e75;
   display:none;
 }
@@ -667,7 +678,10 @@ display:none;
   content:'\e80f';
   padding:0em 0.2em 0.1em 0.15em;
   /*text-shadow:0.0em 0.0em 0.3em black;*/
-  position:absolute;
+  /*position:absolute;*/
+}
+#button_menu {
+  position:fixed;
   bottom:0;
   left:0;
   z-index:4;
@@ -723,6 +737,7 @@ display:none;
 
 #target {
   background-color:rgba(0,0,0,0);
+  /* background-color: red; */
   width:400px;
   height:400px;
   position:absolute;
@@ -995,7 +1010,9 @@ sup {
   }
   #button_menu:before{
     font-size:3em;
-    right:0;
+    /*position:fixed;*/
+    /*top:0em;*/
+    /*right:0;*/
   }
   #valf{
     font-size:6em;
