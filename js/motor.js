@@ -400,34 +400,20 @@ function coord(event)
   if(fl[n_fl].X()==true)
     document.getElementById("valf").innerHTML+="+";
   
-  var nbv=6 // nombre de mouvents intermédiaires
-  var delai=70 // délai par mouvements
   if((fl[n_fl].v() < (11-nb_zone) || fl[n_fl].v()==0) && adaptNbZonePlus == false)
   {  
     adaptNbZonePlus=true;
     if(nb_zone<(serie.nb_zone_spot+5))
-    {
-      for(var i=1;i<nbv+1;i++)
-        setTimeout('target_view('+(nb_zone+(i/nbv))+')',i*delai);
-      setTimeout('adaptNbZonePlus=false',(i-1)*delai);
-    }
+      setTimeout('adaptNbZonePlus=false',transition_target_view(10-nb_zone));
     else
       adaptNbZonePlus=false;
 
   }
-  if(fl[n_fl].v() >= 11-nb_zone)
-    adaptNbZonePlus == false;
-  
-  
   if(fl[n_fl].v() > 8 && adaptNbZoneMinus == false)
   {
     adaptNbZoneMinus=true;
     if(nb_zone > userp.nb_zone)
-    {
-      for(var i=1;i<nbv+1;i++)
-        setTimeout('target_view('+(nb_zone-(i/nbv))+')',i*delai);
-      setTimeout('adaptNbZoneMinus=false',(i-1)*delai);
-    }
+      setTimeout('adaptNbZoneMinus=false',transition_target_view(12-nb_zone));
     else
       adaptNbZoneMinus=false;
   }
@@ -461,15 +447,15 @@ function stop_coord(event)
   
   adaptNbZonePlus=false;
   adaptNbZoneMinus=false;
+
+  var cordon=Math.abs(fl[n_fl].r()-Math.round(fl[n_fl].r()))-(fl[n_fl].t/fl[n_fl].b);
+  if(cordon < 0)
+    console.debug("Sur le cordon - "+cordon);
+  else if(cordon < 0.1)
+    console.debug("Près du cordon - "+cordon);
     
   if(nb_zone != userp.nb_zone)
-  {
-    var interval=15; // interval entre chaque mouvement
-    var mvtsparzone=8; // nombre de mouvements par zone à reprendre
-    for(var i=1;i<(nb_zone-userp.nb_zone)*mvtsparzone+1;i++)
-      setTimeout('target_view('+(nb_zone-i/mvtsparzone)+')',i*interval);
-    setTimeout('target_view('+userp.nb_zone+')',(i+5)*interval); // pour éviter des zones incomplètes ne cas de manipulation rapide et s'assurer de retrouver le bon nombre de zones
-  }
+    transition_target_view(11-userp.nb_zone);
 
   // on place et on montre la flèche dans le zoom  
   document.getElementById("zoom_fl"+n_volee+"_"+n_fl).setAttribute("cx",50*fl[n_fl].x);
@@ -996,6 +982,7 @@ function transition_target_view(v)
       }
     }
     setTimeout('target_view('+Math.round(nb_zone+i*sign)+')',i*it);
+    return i*it;
 };
 
 function aff_volee_num(v)
