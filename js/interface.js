@@ -534,10 +534,22 @@ function adapt2viewport()
     //recentrage du point_arrow
     document.getElementById("point_arrow").setAttribute("cx",zoomW/2);
     document.getElementById("point_arrow").setAttribute("cy",zoomH/2);
-    document.getElementById("mirev").setAttribute("x1",zoomW/2);
-    document.getElementById("mirev").setAttribute("x2",zoomW/2);
-    document.getElementById("mireh").setAttribute("y1",zoomH/2);
-    document.getElementById("mireh").setAttribute("y2",zoomH/2);
+    document.getElementById("mirec").setAttribute("cx",zoomW/2);
+    document.getElementById("mirec").setAttribute("cy",zoomH/2);
+    
+    document.getElementById("mirev1").setAttribute("x1",zoomW/2);
+    document.getElementById("mirev1").setAttribute("x2",zoomW/2);
+    document.getElementById("mireh1").setAttribute("y1",zoomH/2);
+    document.getElementById("mireh1").setAttribute("y2",zoomH/2);
+    document.getElementById("mirev2").setAttribute("x1",zoomW/2);
+    document.getElementById("mirev2").setAttribute("x2",zoomW/2);
+    document.getElementById("mireh2").setAttribute("y1",zoomH/2);
+    document.getElementById("mireh2").setAttribute("y2",zoomH/2);
+    var arrowR=50*diam_tube/serie.blason;
+    document.getElementById("mirev1").setAttribute("y2",zoomH/2-arrowR*1.5);
+    document.getElementById("mireh1").setAttribute("x2",zoomW/2-arrowR*1.5);
+    document.getElementById("mirev2").setAttribute("y2",zoomH/2+arrowR*1.5);
+    document.getElementById("mireh2").setAttribute("x2",zoomW/2+arrowR*1.5);
     //recentrage du zoom_target
     document.getElementById("center_zoom_target").setAttribute("transform","matrix(1,0,0,1,"+(zoomW/2)+","+(zoomH/2)+")");
     target_view(nb_zone);
