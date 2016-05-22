@@ -203,9 +203,16 @@ function valid_session()
     tableau += '<td id="saisie_fl'+i+'" style="width:'+(100/nb_fl_volee)+'%" class="cellule"></td>';
   }
   tableau += "</tr></table>";
-  tableau += '<div class="center_button"><button onclick="prev_arrow(\'all\')"><span class="icon icon-reply-all"></span></button><button onclick="prev_arrow()"><span class="icon icon-reply"></span></button><button onclick="commentaire(n_volee)"><span class="icon icon-comment"></span></button><button onclick="volee_suivante()"><span class="icon icon-ok"></span></button></div>';
-  tableau += '<div class="center_button"><button onclick="visu(\'tab_score\');visu_target(0)"><span class="icon icon-table"></span></button><button onclick="visu(\'chrono\');visu_target(0)"><span class="icon icon-clock"></span></button></div>';
-  
+  //tableau += '<div class="center_button"><button onclick="prev_arrow(\'all\')"><span class="icon icon-reply-all"></span></button><button onclick="prev_arrow()"><span class="icon icon-reply"></span></button><button onclick="commentaire(n_volee)"><span class="icon icon-comment"></span></button><button onclick="volee_suivante()"><span class="icon icon-ok"></span></button></div>';
+  //tableau += '<div class="center_button"><button onclick="visu(\'tab_score\');visu_target(0)"><span class="icon icon-table"></span></button><button onclick="visu(\'chrono\');visu_target(0)"><span class="icon icon-clock"></span></button></div>';
+  tableau += '<div class="center_button">'
+          +  '<button onclick="visu(\'tab_score\');visu_target(0)"><span class="icon icon-table"></span></button>'
+          +  '<button onclick="visu(\'chrono\');visu_target(0)"><span class="icon icon-clock"></span></button>'
+          //+  '<button onclick="prev_arrow(\'all\')"><span class="icon icon-reply-all"></span></button>'
+          +  '<button onclick="prev_arrow()"><span class="icon icon-reply"></span></button>'
+          +  '<button onclick="commentaire(n_volee)"><span class="icon icon-comment"></span></button>'
+          +  '<button onclick="volee_suivante()"><span class="icon icon-ok"></span></button>'
+          +  '</div>';
   
   document.getElementById("saisie").innerHTML = tableau;
   document.getElementById("but_saisie").style.display = "initial";
@@ -400,6 +407,19 @@ function coord(event)
   if(fl[n_fl].X()==true)
     document.getElementById("valf").innerHTML+="+";
   
+  /*var cordon=Math.abs(fl[n_fl].r()-Math.round(fl[n_fl].r()))-(fl[n_fl].t/fl[n_fl].b);
+  console.debug(cordon);
+  if(cordon < 0)
+  {
+    //console.debug("Sur le cordon - "+cordon);
+    document.getElementById("valf").innerHTML+=" ·";
+  }
+  else if(cordon < 0.1)
+  {
+    //console.debug("Près du cordon - "+cordon);
+    document.getElementById("valf").innerHTML+=" ··";
+  }*/
+
   if((fl[n_fl].v() < (11-nb_zone) || fl[n_fl].v()==0) && adaptNbZonePlus == false)
   {  
     adaptNbZonePlus=true;
@@ -448,11 +468,11 @@ function stop_coord(event)
   adaptNbZonePlus=false;
   adaptNbZoneMinus=false;
 
-  var cordon=Math.abs(fl[n_fl].r()-Math.round(fl[n_fl].r()))-(fl[n_fl].t/fl[n_fl].b);
+  /*var cordon=Math.abs(fl[n_fl].r()-Math.round(fl[n_fl].r()))-(fl[n_fl].t/fl[n_fl].b);
   if(cordon < 0)
     console.debug("Sur le cordon - "+cordon);
   else if(cordon < 0.1)
-    console.debug("Près du cordon - "+cordon);
+    console.debug("Près du cordon - "+cordon);*/
     
   if(nb_zone != userp.nb_zone)
     transition_target_view(11-userp.nb_zone);
