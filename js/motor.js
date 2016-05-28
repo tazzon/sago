@@ -297,11 +297,9 @@ function prev_arrow(n)
 function volee_suivante(a)
 {
   if(n_fl < nb_fl_volee) //si la volée n'est pas complète
-   if(confirm("Compléter les flèches manquées par des 0 ?") == true)
-     for(n_fl=n_fl;n_fl<nb_fl_volee;n_fl++) // on complète les flèches qui manquent
-       fl[n_fl] = new arrow(9,-9,diam_tube,blason,distance,n_fl); // en les mettant en haut à droite de blason (je sai pas trop comment gérer ce genre de flèche)
-   else
+   if(confirm("Vous n'avez pas noté toutes les flèches, voulez-vous tout de même valider ?") == false)
      return;
+
      
   var tot = 0;
   for ( var i=0 ; i<fl.length ; i++) // total de la volée
@@ -345,7 +343,7 @@ function volee_suivante(a)
                             });
   tab_tri.sort(function(a,b){return a.v()-b.v()}).reverse();                              
   // affichage de la volée triée dans la feuille de marque
-  for (var i=0 ; i<nb_fl_volee ; i++)
+  for (var i=0 ; i<tab_tri.length ; i++)
   {
     document.getElementById("tab_"+n_volee+"_"+i).innerHTML = tab_tri[i].v();
     if(tab_tri[i].X() == true)
@@ -779,7 +777,7 @@ function zone_reussite(act)
   var i=0;
   for(var v=0;v<serie.volees.length;v++)
   {
-    for(var f=0;f<serie.nb_f;f++)
+    for(var f=0;f<serie.volees[v].length;f++)
     {
       tab_tri[i]=serie.volees[v][f].v();
       i++;
@@ -809,7 +807,7 @@ function moyenne_f(act)
   var i=0;
   for(var v=0;v<serie.volees.length;v++)
   {
-    for(var f=0;f<serie.nb_f;f++)
+    for(var f=0;f<serie.volees[v].length;f++)
     {
       moy+=serie.volees[v][f].v();
       i++;
@@ -891,7 +889,7 @@ function group_fleche(f)
     //calcul de la position moyenne
     for(v=0;v<serie.volees.length;v++)
     {
-      if(serie.volees[v][f].v(2)>(ignoreInfReussite?zone_reussite("value"):ignore0?0:-1))
+      if(typeof(serie.volees[v][f]) != "undefined" && serie.volees[v][f].v(2)>(ignoreInfReussite?zone_reussite("value"):ignore0?0:-1))
       {
         cx+=serie.volees[v][f].x;
         cy+=serie.volees[v][f].y;

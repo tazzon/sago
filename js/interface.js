@@ -69,7 +69,7 @@ function load_local_data(name)
   for ( var v=0 ; v<serie.volees.length ; v++)
   {
     flTemp = new Array;
-    for (var f=0 ; f<nb_fl_volee ; f++)
+    for (var f=0 ; f<serie.volees[v].length ; f++)
        flTemp[f] = new arrow(voleeTemp[v][f].x,voleeTemp[v][f].y,voleeTemp[v][f].t,voleeTemp[v][f].b,voleeTemp[v][f].d,voleeTemp[v][f].n);
 
     volee[v] = flTemp;
@@ -736,7 +736,7 @@ function readBlob(opt_startByte, opt_stopByte) {
                 infos+=readJson[i].data.id+'<div class="reject">rejeté </div><br>';
                 //document.getElementById("info_file").innerHTML+=readJson[i].data.id+'<div class="reject">rejeté </div><br>';
             }
-            ialert('<p>'+infos+'</p>');
+            ialert(infos);
 
           }
         }
