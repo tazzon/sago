@@ -364,18 +364,12 @@ function visu_analyse_el(toEl)
 function aff_menu()
 {
   if(document.getElementById('menu').style.left == '0%')
-  {
     document.getElementById('menu').style.left='-100%';
-    setTimeout('document.getElementById("menu").style.display="none"',500);
-  }
   else
   {
-    document.getElementById('menu').style.display="block";
-
     if(el_visible == "options") // sauvegarde des préférence quand on quitte la page des options
       user_pref("save");
-
-    setTimeout('document.getElementById("menu").style.left="0%"',100);
+    document.getElementById("menu").style.left="0%";
   }
 };
 function visu_target(aff)
@@ -583,15 +577,9 @@ function ialert(content)
 function aff_info()
 {
   if(document.getElementById("info").style.left == '0%')
-  {
     document.getElementById("info").style.left = '-100%';
-    setTimeout('document.getElementById("info").style.display="none"',200);
-  }
   else
-  {
-    document.getElementById("info").style.display="block";
-    setTimeout('document.getElementById("info").style.left = "0%"',100);
-  }
+    document.getElementById("info").style.left = "0%";
 };
 
 function help()
