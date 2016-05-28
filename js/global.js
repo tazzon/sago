@@ -4,7 +4,8 @@
 
 //var news="<p>Il est désormais possible d’exporter vos séries au format csv pour les charger dans un tableur.</p><p>Rendez-vous dans le calendrier des sauvegardes et cliquez sur le bouton <span class=\"icon icon-doc\"></span> pour télécharger une série.</p>";
 //var news="<p>La page d’analyse dispose désormais que quelques fonctions supplémentaires.</p>";
-var news="<p>Il est désormais possible de saisir un objectif de points pour une série.</p><p>Quelques améliorations ont été apportées à la page d’analyse.</p>";
+//var news="<p>Il est désormais possible de saisir un objectif de points pour une série.</p><p>Quelques améliorations ont été apportées à la page d’analyse.</p>";
+var news="";
 var el_visible="session";
 var high_contrast=false;
 var target;
