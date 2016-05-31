@@ -1,11 +1,24 @@
 /**************
  * sago 0.3.1 *
  * ************/
+var news=[];
+news[0]={
+  new:"<p>Il est désormais possible d’exporter vos séries au format csv pour les charger dans un tableur.</p><p>Rendez-vous dans le calendrier des sauvegardes et cliquez sur le bouton <span class=\"icon icon-doc\"></span> pour télécharger une série.</p>",
+  datecode:20160510.01
+};
+news[1]={
+  new:"<p>La page d’analyse dispose désormais que quelques fonctions supplémentaires.</p>",
+  datecode:20160531.12
+};
+news[2]={
+  new:"<p>Il est désormais possible de saisir un objectif de points pour une série.</p><p>Quelques améliorations ont été apportées à la page d’analyse.</p>",
+  datecode:20160531.13
+};
+news[3]={
+  new:"",
+  datecode:20160531.14
+};
 
-//var news="<p>Il est désormais possible d’exporter vos séries au format csv pour les charger dans un tableur.</p><p>Rendez-vous dans le calendrier des sauvegardes et cliquez sur le bouton <span class=\"icon icon-doc\"></span> pour télécharger une série.</p>";
-//var news="<p>La page d’analyse dispose désormais que quelques fonctions supplémentaires.</p>";
-//var news="<p>Il est désormais possible de saisir un objectif de points pour une série.</p><p>Quelques améliorations ont été apportées à la page d’analyse.</p>";
-var news="";
 var el_visible="session";
 var high_contrast=false;
 var target;
@@ -35,7 +48,7 @@ var isave = {
 };
 var infoapp= {
   version : '0.3.1',
-  datecode : 20160528.01,
+  datecode : 20160531.15,
   name : "Sago",
   mail : "tazzon@free.fr",
   git : 'https://github.com/tazzon/sago',

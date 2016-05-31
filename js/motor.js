@@ -19,8 +19,16 @@ function init_()
     var oldinfoapp = JSON.parse(localStorage.getItem("infoapp"));
     if(infoapp.datecode > oldinfoapp.datecode) // dans le cas d'une nouvelle version
     {
-      if(news != "") // si il y quelque chose à dire
-        ialert('<h3>Nouveautés</h3>'+news);
+      if(news[news.length-1].news != "") // si il y quelque chose à dire
+      {
+        var cat_news="";
+        for(var n=news.length-1;news[n].datecode>oldinfoapp.datecode;n--)
+        {
+          cat_news+=news[n].new;
+          if(n<0) break;// pour éviter une boucle sans fin, sans doute pas très utile
+        }
+        ialert('<h3>Nouveautés</h3>'+cat_news);
+      }
       localStorage.setItem("infoapp",JSON.stringify(infoapp));
     }
   }
