@@ -272,14 +272,39 @@ table {
   position: absolute;
 }
 
+/* solarized colors */
+.base03{color:#002b36;}
+.base02{color:#073642;}
+.base01{color:#586e75;}
+.base00{color:#657b83;}
+.base0{color:#839496;}
+.base1{color:#93a1a1;}
+.base2{color:#eee8d5;}
+.base3{color:#fdf6e3;}
+.yellow{color:#b58900;}
+.orange{color:#cb4b16;}
+.red{color:#dc322f;}
+.magenta{color:#d33682;}
+.violet{color:#6c71c4;}
+.blue{color:#268bd2;}
+.cyan{color:#2aa198;}
+.green{color:#859900;}
 
-.red {
-  color:#dc322f;
-}
+
 /****************************************************
             Page viseur                            */
 #viseur {
   display:none;
+}
+#viseur p {
+  margin:1.5em;
+  text-align:justify;
+}
+#viseur p .icon {
+  font-size:1.7em;
+  margin:0 0.2em 0 -.2em;
+  float:left;
+
 }
 #viseur table {
   width:100%;
@@ -288,8 +313,7 @@ table {
 }
 #viseur td input {
   width:70%;
-  margin-top:0.3em
-
+  /*margin-top:0.3em*/
 }
 #viseur button {
   width:10em;

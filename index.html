@@ -185,6 +185,19 @@
   <div id="info_file"></div>
 </div>
 
+<div id="viseur">
+<table>
+  <tr><td></td><td>Distances</td><td>Réglages</td></tr>
+  <tr><td>1</td><td><input type="text" id="d1"></td><td><input type="text" id="r1"></td></tr>
+  <tr><td>2</td><td><input type="text" id="d2"></td><td><input type="text" id="r2"></td></tr>
+  <tr><td>X</td><td><input type="text" id="dx"></td><td><input type="text" readonly="readonly" id="rx"></td></tr>
+  <tr><td></td><td colspan="2"><button onclick="calc_rx()"><span class="icon icon-calc"></span> Calculer</button></td></tr>
+</table>
+<p>
+  <span class="icon icon-info-circled blue"></span> Cette fonction est expérimentale et permet une approximation de la valeur de réglage du viseur en fonction de la distance.
+</p>
+</div>
+
 <div id="info" onclick="aff_info()">
   <div id="info_in"></div>
 </div>

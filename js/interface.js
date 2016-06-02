@@ -299,6 +299,8 @@ function user_pref(a)
 
 function visu(el)
 {
+  if(document.getElementById(el)==null)
+    return;
   document.getElementById(el_visible).style.display = "none";
   visu_analyse_el(el);
 
@@ -1252,7 +1254,28 @@ function getPPI()
   // and return the value
   return parseFloat(ppi);
 };
- 
+
+
+// calcul de la valeur du réglage viseur à partir de deux autres réglages
+function calc_rx()
+{
+  var b=1.3;
+  d1=Math.pow(parseFloat(document.getElementById("d1").value),b);
+  d2=Math.pow(parseFloat(document.getElementById("d2").value),b);
+  r1=document.getElementById("r1").value;
+  r2=document.getElementById("r2").value;
+  dx=Math.pow(parseFloat(document.getElementById("dx").value),b);
+  var a=(r1-r2)/(d1-d2);
+  var c=(r2*d1-r1*d2)/(d1-d2);
+  var rx=Math.round((a*dx+c)*100)/100;
+  console.debug("rx="+rx);
+  if(isNaN(rx) == true)
+  {
+    help();
+    return;
+  }
+  document.getElementById("rx").value=rx;
+};
 
 
 
