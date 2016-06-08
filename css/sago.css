@@ -28,6 +28,11 @@ h3 {
   font-size:1.1em;
   margin:0.5em 0 0.2em 0;
 }
+h4 {
+  font-size:.9em;
+  font-weight:bold;
+  margin:1em 0 -0.2em 0;
+}
 a, a:hover, a:visited {
   color:#b58900;
   text-decoration: none;
@@ -62,6 +67,12 @@ table {
 
 .icon-trash {
   color:#dc322f;
+}
+.icon-target {
+  font-size:1.5em;
+  position:relative;
+  top:0.2em;
+  margin:-.3em
 }
 .trash {
   margin-left:3em
@@ -202,8 +213,8 @@ table {
 }  
 
 [type="checkbox"]:not(:checked) + label:before {
-  /*content: '\e81c';*/
-  content:'\e820';
+  /*content: '\e8';*/
+  content:'\e821';
   font-family:sago;
   padding-right:0.5em;
   font-size:1.2em;
@@ -214,7 +225,7 @@ table {
    
 [type="checkbox"]:checked + label:before {  
   /*content:'\e81d';*/
-  content:'\e81f';
+  content:'\e820';
   font-family:sago;
   color:#859900;
   padding-right:0.35em;
@@ -225,7 +236,7 @@ table {
 }  
 
 [type="radio"]:not(:checked) + label:before {
-  content:'\e829';
+  content:'\e825';
   font-family:sago;
   padding-right:0.5em;
   margin-left:1em;
@@ -236,7 +247,7 @@ table {
 }  
    
 [type="radio"]:checked + label:before {  
-  content:'\e82a';
+  content:'\e826';
   font-family:sago;
   color:#859900;
   padding-right:0.5em;
@@ -253,14 +264,14 @@ table {
 
 .com_ok:before {
     font-family:sago;
-    content:'\e808';
+    content:'\e807';
     position:relative;
     /*bottom:0.25em;
     left:0.25em;*/
 }
 .no_com:before {
     font-family:sago;
-    content:'\e809';
+    content:'\e808';
     /*position:relative;
     bottom:0em;
     left:0.1em;*/
@@ -702,7 +713,7 @@ display:none;
 #button_menu:before{
   font-size:2em;
   font-family:'sago';
-  content:'\e80f';
+  content:'\e811';
   padding:0em 0.2em 0.1em 0.15em;
   /*text-shadow:0.0em 0.0em 0.3em black;*/
   /*position:absolute;*/
@@ -810,6 +821,8 @@ input[type=file]{
 }
 .center_button {
   text-align:center;
+  margin:0em 0 -.4em 0em;
+  padding:0;
 }
 #byte_content{
   display:none;
@@ -833,37 +846,37 @@ input[type=file]{
 }
 #but_session:before{
   font-family:sago;
-  content:'\e828  ';
+  content:'\e82b  ';
   color:#dc322f;
 }
 #but_options:before {
   font-family:sago;
-  content:'\e810  '
+  content:'\e812  ';
 }
 #but_tab_score:before {
   font-family:sago;
-  content:'\e800  '
+  content:'\e822  ';
 }
 #but_saisie:before {
   font-family:sago;
-  content:'\e824  '
+  content:'\e81e  ';
 }
 #but_local:before {
   font-family:sago;
-  content:'\e826  '
+  content:'\e810  ';
 }
 #but_analyse:before {
   font-family:sago;
-  content:'\e821  '
+  content:'\e827  ';
 }
 #but_help:before {
   font-family:sago;
-  content:'\e802  ';
+  content:'\e800  ';
   color:#268bd2;
 }
 #but_about:before {
   font-family:sago;
-  content:'\e803  '
+  content:'\e801  '
 }
 #but_viseur:before {
   font-family:sago;
@@ -882,6 +895,10 @@ input[type=file]{
   text-align:center;
   vertical-align:middle;
   border-radius:0.2em;
+}
+.cel_on {
+  border-color:#b58900;
+  box-shadow: 0 0 .6em 0.1em #b58900 inset;
 }
 
 .cellule_but {

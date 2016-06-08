@@ -80,8 +80,15 @@ function load_local_data(name)
                               tot+=this[i].v();
                             return tot;
                           };
+    // création du tableau sn pour l'analyse qui comble les trous des flèches manquantes
+    sn[v]=[];
+    for(var f=0;f<serie.nb_f;f++)
+      sn[v][f]=false;
+    for(var f=0;f<flTemp.length;f++)
+      sn[v][flTemp[f].n]=flTemp[f];
   }
   serie.volees = volee;
+
   for (var v=0 ; v<serie.volees.length ; v++)
   {
     var tab_tri=serie.volees[v].slice();

@@ -3,20 +3,24 @@
  * ************/
 var news=[];
 news[0]={
-  new:"<p>Il est désormais possible d’exporter vos séries au format csv pour les charger dans un tableur.</p><p>Rendez-vous dans le calendrier des sauvegardes et cliquez sur le bouton <span class=\"icon icon-doc\"></span> pour télécharger une série.</p>",
-  datecode:20160510.01
+  new:"<p>Ajout de la possibilité de saisir les flèches hors du blason jusqu’à l'équivalent de 5 zones à l’extérieur du blason.</p>",
+  datecode:20160218.01
 };
 news[1]={
-  new:"<p>La page d’analyse dispose désormais que quelques fonctions supplémentaires.</p>",
-  datecode:20160531.12
+  new:"<p>Il est désormais possible d’exporter vos séries au format csv pour les charger dans un tableur.</p><p>Rendez-vous dans le calendrier des sauvegardes et cliquez sur le bouton <span class=\"icon icon-doc\"></span> pour télécharger une série.</p>",
+  datecode:20160416.01
 };
 news[2]={
-  new:"<p>Il est désormais possible de saisir un objectif de points pour une série.</p><p>Quelques améliorations ont été apportées à la page d’analyse.</p>",
-  datecode:20160531.13
+  new:"<p>La page d’analyse dispose désormais que quelques fonctions supplémentaires.</p>",
+  datecode:20160425.02
 };
 news[3]={
-  new:"",
-  datecode:20160531.14
+  new:"<p>Il est désormais possible de saisir un objectif de points pour une série.</p><p>Quelques améliorations ont été apportées à la page d’analyse.</p>",
+  datecode:20160528.01
+};
+news[4]={
+  new:"<p>L’application passe en version 0.4.0.</p><p>L’agencement de la page de saisie a été retouché. Vous pouvez ignorer la saisie de certaines flèches en avançant dans le tableau avec le bouton <span class=\"icon icon-forward\"></span>. Ceci permet de maintenir l’ordre des flèches lors de la saisie pour une meilleure restitution lors de l’analyse.</p>",
+  datecode:20160608.01
 };
 
 var el_visible="session";
@@ -40,6 +44,7 @@ var serie = {
     tot : 0,
     objectif : false };
 var n_fl=0;
+var num_fl=0;
 var n_volee=0;
 var isave = {
   actual_key : "",
@@ -47,15 +52,15 @@ var isave = {
   is_save : false
 };
 var infoapp= {
-  version : '0.3.1',
-  datecode : 20160531.15,
+  version : '0.4.0',
+  datecode : 20160608.01,
   name : "Sago",
   mail : "tazzon@free.fr",
   git : 'https://github.com/tazzon/sago',
   dev : "AM"
 };
 var fl_saisie_save=[];
-
+var sn=[]; // la tableau de flèche utilisé pour la page d'analyse
 var zoom_actif=false;
 var fl=[];
 

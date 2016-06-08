@@ -22,10 +22,13 @@ function init_()
       if(news[news.length-1].news != "") // si il y quelque chose à dire
       {
         var cat_news="";
-        for(var n=news.length-1;news[n].datecode>oldinfoapp.datecode;n--)
+        for(var n=news.length-1;n>=0;n--)
         {
+          if(news[n].datecode<oldinfoapp.datecode) break;
+          var d=(""+oldinfoapp.datecode).substr(0,8);
+          var date = new Date(d.substr(0,4)+"-"+d.substr(4,2)+"-"+d.substr(6,2));
+          cat_news+='<h4>'+date_format(date,"day")+'</h4>';
           cat_news+=news[n].new;
-          if(n<0) break;// pour éviter une boucle sans fin, sans doute pas très utile
         }
         ialert('<h3>Nouveautés</h3>'+cat_news);
       }
@@ -214,12 +217,22 @@ function valid_session()
   //tableau += '<div class="center_button"><button onclick="prev_arrow(\'all\')"><span class="icon icon-reply-all"></span></button><button onclick="prev_arrow()"><span class="icon icon-reply"></span></button><button onclick="commentaire(n_volee)"><span class="icon icon-comment"></span></button><button onclick="volee_suivante()"><span class="icon icon-ok"></span></button></div>';
   //tableau += '<div class="center_button"><button onclick="visu(\'tab_score\');visu_target(0)"><span class="icon icon-table"></span></button><button onclick="visu(\'chrono\');visu_target(0)"><span class="icon icon-clock"></span></button></div>';
   tableau += '<div class="center_button">'
+          //+  '<button onclick="visu(\'tab_score\');visu_target(0)"><span class="icon icon-table"></span></button>'
+          //+  '<button onclick="visu(\'chrono\');visu_target(0)"><span class="icon icon-clock"></span></button>'
+          //+  '<button onclick="prev_arrow(\'all\')"><span class="icon icon-reply-all"></span></button>'
+          //+  '<button onclick="commentaire(n_volee)"><span class="icon icon-comment"></span></button>'
+          +  '<button onclick="select_arrow(\'prev\')"><span class="icon icon-reply"></span></button>'
+          +  '<button onclick="select_arrow()"><span class="icon icon-forward"></span></button>'
+          +  '<button onclick="volee_suivante()"><span class="icon icon-ok"></span></button>'
+          +  '</div>';
+  tableau += '<div class="center_button">'
           +  '<button onclick="visu(\'tab_score\');visu_target(0)"><span class="icon icon-table"></span></button>'
+          +  '<button onclick="commentaire(n_volee)"><span class="icon icon-comment"></span></button>'
           +  '<button onclick="visu(\'chrono\');visu_target(0)"><span class="icon icon-clock"></span></button>'
           //+  '<button onclick="prev_arrow(\'all\')"><span class="icon icon-reply-all"></span></button>'
-          +  '<button onclick="prev_arrow()"><span class="icon icon-reply"></span></button>'
-          +  '<button onclick="commentaire(n_volee)"><span class="icon icon-comment"></span></button>'
-          +  '<button onclick="volee_suivante()"><span class="icon icon-ok"></span></button>'
+          //+  '<button onclick="select_arrow(\'prev\')"><span class="icon icon-reply"></span></button>'
+          //+  '<button onclick="select_arrow()"><span class="icon icon-forward"></span></button>'
+          //+  '<button onclick="volee_suivante()"><span class="icon icon-ok"></span></button>'
           +  '</div>';
   
   document.getElementById("saisie").innerHTML = tableau;
@@ -270,7 +283,10 @@ function valid_session()
   
   document.getElementById("ign0").checked=ignore0;
   document.getElementById("ignInfR").checked=ignoreInfReussite;
-
+  
+  select_arrow("init");
+  fl=[];
+  sn=[];
   visu('saisie');
   zoom_move(0,0);
   document.getElementById("num_volee").innerHTML=n_volee+1;
@@ -295,16 +311,57 @@ function prev_arrow(n)
   for(var i=n ; i>0 ; i--)
   {
     n_fl--;
+    select_arrow("prev");
     document.getElementById("saisie_fl"+n_fl).innerHTML="";
     document.getElementById("zoom_fl"+n_volee+"_"+n_fl).style.display="none";
     document.getElementById("target_fl"+n_volee+"_"+n_fl).style.display="none";
   }
 };
 
+function select_arrow(action)
+{
+  // effacement de tout
+  for(var f=0;f<serie.nb_f;f++)
+    document.getElementById("saisie_fl"+f).className="cellule";
+
+  if(action == "init")
+    num_fl=0;
+  else if(action == "prev")
+  {
+    num_fl--; // on revient à la flèche précédente
+    if(num_fl < 0) num_fl=0;
+    /*if(num_fl<n_fl)*/n_fl--;
+    if(n_fl<0) n_fl=0;
+    if(fl[n_fl] && fl[n_fl].n == num_fl)
+    {
+      fl.splice(n_fl,1); // on supprime l'enregistrement si il existe
+      //console.debug("sup fl n°"+n_fl);
+    }
+    n_fl=fl.length;
+
+    document.getElementById("target_fl"+n_volee+"_"+num_fl).style.display='none';
+    document.getElementById("zoom_fl"+n_volee+"_"+num_fl).style.display='none';
+    document.getElementById("saisie_fl"+num_fl).innerHTML="";
+  }
+  else
+    if(num_fl<serie.nb_f) num_fl++;
+  
+  if(num_fl < serie.nb_f)
+    document.getElementById("saisie_fl"+num_fl).className+=" cel_on";
+
+  /*console.debug("n_fl:"+n_fl+" num_fl:"+num_fl);
+  var nf=[];
+  for(var f=0;f<fl.length;f++)
+  {
+    nf[f]=fl[f].n;
+  }
+  console.debug(nf);*/
+};
+
 // passe à la volée suivante (ou recommence la volée en cours)
 function volee_suivante(a)
 {
-  if(n_fl < nb_fl_volee) //si la volée n'est pas complète
+  if(num_fl < nb_fl_volee) //si la volée n'est pas complète
    if(confirm("Vous n'avez pas noté toutes les flèches, voulez-vous tout de même valider ?") == false)
      return;
 
@@ -338,7 +395,12 @@ function volee_suivante(a)
                             tot+=this[i].v();
                           return tot;
                         };
-
+  // création du tableau sn pour l'analyse qui comble les trous des flèches manquantes
+  sn[n_volee]=[];
+  for(var f=0;f<serie.nb_f;f++)
+    sn[n_volee][f]=false;
+  for(var f=0;f<fl.length;f++)
+    sn[n_volee][fl[f].n]=fl[f];
   // tri de la volée
   var tab_tri = new Array;
   tab_tri=volee[n_volee].slice();// copie du tableau avant le tri des flèches
@@ -373,6 +435,7 @@ function volee_suivante(a)
 
   n_volee++;
   n_fl=0;
+  select_arrow("init");
   fl=[];
 
   // affichage du numéro de la volée
@@ -449,7 +512,7 @@ function coord(event)
 
 function start_coord(event)
 {
-  if (n_fl >= serie.nb_f || n_volee >= serie.nb_v || el_visible =="analyse") // si on est à la fin de la volée ou qu'il n'y a plus de volée à faire
+  if (num_fl >= serie.nb_f || n_volee >= serie.nb_v || el_visible =="analyse") // si on est à la fin de la volée ou qu'il n'y a plus de volée à faire
     return;                                       // on ne fait rien
 
   if( window.event)
@@ -458,7 +521,7 @@ function start_coord(event)
   var x = event.clientX-targetX-targetW/2;
   var y = event.clientY-targetY-targetH/2;
   
-  fl[n_fl] = new arrow(x/zone_size,y/zone_size,diam_tube,blason,distance,n_fl);
+  fl[n_fl] = new arrow(x/zone_size,y/zone_size,diam_tube,blason,distance,num_fl);
   zoom_actif=true;
   visu("zoom");
   coord(event);
@@ -468,7 +531,7 @@ var adaptNbZoneMinus=false;
 var adaptNbZonePlus=false;
 function stop_coord(event)
 {
-  if (n_fl >= nb_fl_volee || n_volee >= nb_volee || el_visible =="analyse") // si on est à la fin de la volée ou qu'il n'y a plus de volée à faire
+  if (num_fl >= nb_fl_volee || n_volee >= nb_volee || el_visible =="analyse") // si on est à la fin de la volée ou qu'il n'y a plus de volée à faire
     return;
   
   adaptNbZonePlus=false;
@@ -484,22 +547,23 @@ function stop_coord(event)
     transition_target_view(11-userp.nb_zone);
 
   // on place et on montre la flèche dans le zoom  
-  document.getElementById("zoom_fl"+n_volee+"_"+n_fl).setAttribute("cx",50*fl[n_fl].x);
-  document.getElementById("zoom_fl"+n_volee+"_"+n_fl).setAttribute("cy",50*fl[n_fl].y);
-  document.getElementById("zoom_fl"+n_volee+"_"+n_fl).style.display="block";
+  document.getElementById("zoom_fl"+n_volee+"_"+num_fl).setAttribute("cx",50*fl[n_fl].x);
+  document.getElementById("zoom_fl"+n_volee+"_"+num_fl).setAttribute("cy",50*fl[n_fl].y);
+  document.getElementById("zoom_fl"+n_volee+"_"+num_fl).style.display="block";
 
   // on place et on motre la flèche dans la cible
-  document.getElementById("target_fl"+n_volee+"_"+n_fl).setAttribute("cx",50*fl[n_fl].x);
-  document.getElementById("target_fl"+n_volee+"_"+n_fl).setAttribute("cy",50*fl[n_fl].y);
-  document.getElementById("target_fl"+n_volee+"_"+n_fl).style.display="block";
+  document.getElementById("target_fl"+n_volee+"_"+num_fl).setAttribute("cx",50*fl[n_fl].x);
+  document.getElementById("target_fl"+n_volee+"_"+num_fl).setAttribute("cy",50*fl[n_fl].y);
+  document.getElementById("target_fl"+n_volee+"_"+num_fl).style.display="block";
   
   zoom_actif=false;
   visu("saisie");
-  document.getElementById('saisie_fl'+n_fl).innerHTML=fl[n_fl].v();
+  document.getElementById('saisie_fl'+num_fl).innerHTML=fl[n_fl].v();
   if(fl[n_fl].X() == true)
-    document.getElementById('saisie_fl'+n_fl).innerHTML+="+";
+    document.getElementById('saisie_fl'+num_fl).innerHTML+="+";
     
   n_fl++;
+  select_arrow();
   
 };
 
@@ -630,10 +694,12 @@ function arrow(x,y,t,b,d,n)
 
 function zoom_move(x,y)
 {
+  //if(isNaN(x) || isNaN(y)) return;
   document.getElementById("center_zoom_target").setAttribute("transform","matrix(1,0,0,1,"+((-1000/targetW*x)/zoom+zoomW/2)+","+((-1000/targetH*y)/zoom+zoomH/2)+")");
 };
 function zoom_scale(z)
 {
+   //if(isNaN(z)) return;
    if(!document.getElementById("zoom_scale")) return;
 
    document.getElementById("valz").innerHTML='×'+Math.round(z*10)/10;
@@ -704,6 +770,8 @@ function create_target()
 };
 function target_view(zone)
 {
+  if(isNaN(zone))
+    zone=userp.nb_zone;
   if(zone=="+")
   {
     nb_zone++;
@@ -783,12 +851,15 @@ function zone_reussite(act)
   var moy=0;
   var tab_tri=[];
   var i=0;
-  for(var v=0;v<serie.volees.length;v++)
+  for(var v=0;v<sn.length;v++)
   {
-    for(var f=0;f<serie.volees[v].length;f++)
+    for(var f=0;f<sn[v].length;f++)
     {
-      tab_tri[i]=serie.volees[v][f].v();
-      i++;
+      if(sn[v][f])
+      {
+        tab_tri[i]=sn[v][f].v();
+        i++;
+      }
     }
   }
   var borneh=Math.round(i*0.8);
@@ -817,8 +888,12 @@ function moyenne_f(act)
   {
     for(var f=0;f<serie.volees[v].length;f++)
     {
-      moy+=serie.volees[v][f].v();
-      i++;
+      //moy+=serie.volees[v][f].v();
+      if(sn[v][f])
+      {
+        moy+=sn[v][f].v();
+        i++;
+      }
     }
   }
   if(act == "value")
@@ -897,14 +972,16 @@ function group_fleche(f)
     //calcul de la position moyenne
     for(v=0;v<serie.volees.length;v++)
     {
-      if(typeof(serie.volees[v][f]) != "undefined" && serie.volees[v][f].v(2)>(ignoreInfReussite?zone_reussite("value"):ignore0?0:-1))
+      //if(typeof(serie.volees[v][f]) != "undefined" && serie.volees[v][f].v(2)>(ignoreInfReussite?zone_reussite("value"):ignore0?0:-1))
+      //console.debug("v:"+v+" f:"+f);
+      if((typeof(sn[v][f]) != "undefined" && sn[v][f] != false) && sn[v][f].v(2)>(ignoreInfReussite?zone_reussite("value"):ignore0?0:-1))
       {
-        cx+=serie.volees[v][f].x;
-        cy+=serie.volees[v][f].y;
+        cx+=sn[v][f].x;
+        cy+=sn[v][f].y;
 
-        tab[v]={x:serie.volees[v][f].x,
-                y:serie.volees[v][f].y,
-                r:serie.volees[v][f].r,
+        tab[v]={x:sn[v][f].x,
+                y:sn[v][f].y,
+                r:sn[v][f].r,
                };
         count++;
       }
@@ -912,8 +989,13 @@ function group_fleche(f)
     cx=cx/count;
     cy=cy/count;
 
+      if(count == 0)
+      {
+        document.getElementById("zone_fleche").style.display="none";
+        return;
+      }
       // si une seule flèche on calcule le rayon en fonction du diamètre du tube
-      if(count < 2)
+      else if(count < 2)
       {
         r=4*serie.tube/serie.blason;
       }
@@ -932,7 +1014,8 @@ function group_fleche(f)
         }
       }
   }
-
+  
+  document.getElementById("zone_fleche").style.display="block";
   document.getElementById("zone_fleche").setAttribute("cx",50*cx);
   document.getElementById("zone_fleche").setAttribute("cy",50*cy);
   document.getElementById("zone_fleche").setAttribute("r",50*r);
@@ -957,18 +1040,18 @@ function draw_disp(a)
   {
     if(aff_fl.v[v] == true)
     {
-      for(f=0;f<serie.volees[v].length;f++)
+      for(f=0;f<sn[v].length;f++)
       {
-        if(serie.volees[v][f].v(2)>(ignoreInfReussite?zone_reussite("value"):ignore0?0:-1))
+        if(sn[v][f] && sn[v][f].v(2)>(ignoreInfReussite?zone_reussite("value"):ignore0?0:-1))
         {
-          if(serie.volees[v][f].y>dh1 || dh1 == false)
-            dh1=serie.volees[v][f].y;
-          if(serie.volees[v][f].y<dh2 || dh2 == false)
-            dh2=serie.volees[v][f].y;
-          if(serie.volees[v][f].x>dl1 || dl1 == false)
-            dl1=serie.volees[v][f].x;
-          if(serie.volees[v][f].x<dl2 || dl2 == false)
-            dl2=serie.volees[v][f].x;
+          if(sn[v][f].y>dh1 || dh1 == false)
+            dh1=sn[v][f].y;
+          if(sn[v][f].y<dh2 || dh2 == false)
+            dh2=sn[v][f].y;
+          if(sn[v][f].x>dl1 || dl1 == false)
+            dl1=sn[v][f].x;
+          if(sn[v][f].x<dl2 || dl2 == false)
+            dl2=sn[v][f].x;
         }
       }
     }
@@ -1021,20 +1104,20 @@ function aff_volee_num(v)
 };
 function aff_fl_num(f)
 {
-  for(var i=0;i<serie.nb_v;i++)
+  for(var i=0;i<serie.nb_v;i++) // désactive l'affichage par volées
     aff_fl.v[i]=false;
 
-  var count=0;
-  for(var i=0;i<serie.nb_f;i++)
+  var count=0;                  // init de comptage
+  for(var i=0;i<serie.nb_f;i++) // boucle le nombre de flèches max par volée
   {
-    if(aff_fl.f[i] == true)
-      count++;
-    if(f!=i) aff_fl.f[i]=false;
+    if(aff_fl.f[i] == true)     // si la flèche est déjà affichée
+      count++;                  // on incrémente
+    if(f!=i) aff_fl.f[i]=false; // si le num de flèche demandé est différent la flèche traité on désactive son affichage
   }
-  if(count!=serie.nb_f)
-    aff_fl.f[f] = !aff_fl.f[f];
+  if(count!=serie.nb_f)         // si on a pas le max de flèches
+    aff_fl.f[f] = !aff_fl.f[f]; // on inverse l'activation
 
-  auto_trace();
+  auto_trace();                 // on affiche
 };
 function aff_volee_all()
 {
@@ -1099,17 +1182,23 @@ function display_fl()
   {
     for(var f=0;f<serie.nb_f;f++)
     {
-      if(serie.volees[v][f])
+      //if(serie.volees[v][f])
+      if(sn[v][f])
       {
         var fd=document.getElementById("target_fl"+v+"_"+f);
         if(tab_display[v][f] == true)
         {
-          fd.setAttribute("cx",50*serie.volees[v][f].x);
-          fd.setAttribute("cy",50*serie.volees[v][f].y);          
+          //fd.setAttribute("cx",50*serie.volees[v][f].x);
+          //fd.setAttribute("cy",50*serie.volees[v][f].y);          
+          fd.setAttribute("cx",50*sn[v][f].x);
+          fd.setAttribute("cy",50*sn[v][f].y);          
           fd.style.display="block";
-          if(min === false || min < serie.volees[v][f].r())
-            if(serie.volees[v][f].v(2)>(ignoreInfReussite?zone_reussite("value"):ignore0?0:-1))
-              min=serie.volees[v][f].r();
+          //if(min === false || min < serie.volees[v][f].r())
+          if(min === false || min < sn[v][f].r())
+            //if(serie.volees[v][f].v(2)>(ignoreInfReussite?zone_reussite("value"):ignore0?0:-1))
+            if(sn[v][f].v(2)>(ignoreInfReussite?zone_reussite("value"):ignore0?0:-1))
+              //min=serie.volees[v][f].r();
+              min=sn[v][f].r();
             else
               nb_fl_ignore++;
         }
