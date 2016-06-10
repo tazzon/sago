@@ -823,7 +823,7 @@ function calendrier(a,m)
   }
 
   var calendar='<table id="calendar">';
-  calendar+='<tr><td onclick="calendrier('+prev_a+','+prev_m+')"><span class="icon icon-angle-double-left"></span></td><td colspan="5">'+titre+'</td><td onclick="calendrier('+next_a+','+next_m+')"><span class="icon icon-angle-double-right"></span></td></tr>';
+  calendar+='<tr><td onclick="calendrier('+prev_a+','+prev_m+')"><span class="icon icon-left-big"></span></td><td colspan="5">'+titre+'</td><td onclick="calendrier('+next_a+','+next_m+')"><span class="icon icon-right-big"></span></td></tr>';
   calendar+='<tr><td>Lu</td><td>Ma</td><td>Me</td><td>Je</td><td>Ve</td><td>Sa</td><td>Di</td></tr>';
   for(var l=1;l<7;l++)
   {
@@ -911,7 +911,7 @@ function list_from_date(d)
       var date=new Date();
       date.setTime(data.date);
       select_local += '<table id="calendar"><tr>';
-      select_local += '<td onclick="calendrier('+date.getFullYear()+','+date.getMonth()+')"><span class="icon icon-angle-double-up"></span><span class="icon icon-calendar"></span></td>';
+      select_local += '<td onclick="calendrier('+date.getFullYear()+','+date.getMonth()+')"><span class="icon icon-up-big"></span><span class="icon icon-calendar"></span></td>';
       select_local += '<td>'+date.getDate()+" "+month[date.getMonth()]+" "+date.getFullYear()+'</td>';
       select_local += '</tr></table>';
       select_local += "<div class=ovf>";

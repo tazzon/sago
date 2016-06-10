@@ -25,7 +25,7 @@ function init_()
         for(var n=news.length-1;n>=0;n--)
         {
           if(news[n].datecode<oldinfoapp.datecode) break;
-          var d=(""+oldinfoapp.datecode).substr(0,8);
+          var d=(""+news[n].datecode).substr(0,8);
           var date = new Date(d.substr(0,4)+"-"+d.substr(4,2)+"-"+d.substr(6,2));
           cat_news+='<h4>'+date_format(date,"day")+'</h4>';
           cat_news+=news[n].new;
@@ -207,7 +207,7 @@ function valid_session()
   gestion_save_name(); // on met le nom de la session en haut du tableau
   
   // création de la marque par volée
-  tableau = '<div>Volée nº<span id="num_volee"></span></div>';
+  tableau = '<div>Volée nº<span id="num_volee"></span><span id="aff_num_fleche"> ; flèche nº<span id="num_fleche"></span></span></div>';
   tableau += "<table><tr>";
   for (var i=0;i<nb_fl_volee;i++)
   {
@@ -347,7 +347,13 @@ function select_arrow(action)
     if(num_fl<serie.nb_f) num_fl++;
   
   if(num_fl < serie.nb_f)
+  {
     document.getElementById("saisie_fl"+num_fl).className+=" cel_on";
+    document.getElementById("num_fleche").innerHTML=num_fl+1;
+    document.getElementById("aff_num_fleche").style.display="initial";
+  }
+  else
+    document.getElementById("aff_num_fleche").style.display="none";
 
   /*console.debug("n_fl:"+n_fl+" num_fl:"+num_fl);
   var nf=[];
