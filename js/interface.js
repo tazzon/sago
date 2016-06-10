@@ -117,8 +117,8 @@ function load_local_data(name)
       if(serie.objectif/serie.nb_v > volee[v].tot()) classobj="inf small";
       diff_obj='<span class="'+classobj+'">'+Math.round(10*(volee[v].tot()-serie.objectif/serie.nb_v))/10+'</span>';
       var classtotobj="equ small";
-      if(serie.objectif*(n_volee+1)/serie.nb_v > serie.tot) classtotobj="sup small";
-      if(serie.objectif*(n_volee+1)/serie.nb_v < serie.tot) classtotobj="inf small";
+      if(serie.objectif*(n_volee+1)/serie.nb_v > serie.tot) classtotobj="inf small";
+      if(serie.objectif*(n_volee+1)/serie.nb_v < serie.tot) classtotobj="sup small";
       diff_tot='<span class="'+classtotobj+'">'+Math.round(10*(serie.tot-serie.objectif*n_volee/serie.nb_v))/10+'</span>';
       //console.debug('volée : '+diff_obj);
       //console.debug('total : '+diff_tot);
