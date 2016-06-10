@@ -17,21 +17,20 @@ function init_()
   if(localStorage.getItem("infoapp") != null)
   {
     var oldinfoapp = JSON.parse(localStorage.getItem("infoapp"));
-    if(infoapp.datecode > oldinfoapp.datecode) // dans le cas d'une nouvelle version
+    if(infoapp.datecode >= oldinfoapp.datecode) // dans le cas d'une nouvelle version
     {
-      if(news[news.length-1].news != "") // si il y quelque chose à dire
+      var cat_news="";
+      for(var n=news.length-1;n>=0;n--)
       {
-        var cat_news="";
-        for(var n=news.length-1;n>=0;n--)
-        {
-          if(news[n].datecode<oldinfoapp.datecode) break;
-          var d=(""+news[n].datecode).substr(0,8);
-          var date = new Date(d.substr(0,4)+"-"+d.substr(4,2)+"-"+d.substr(6,2));
-          cat_news+='<h4>'+date_format(date,"day")+'</h4>';
-          cat_news+=news[n].new;
-        }
-        ialert('<h3>Nouveautés</h3>'+cat_news);
+        if(news[n].datecode<oldinfoapp.datecode) break;
+        var d=(""+news[n].datecode).substr(0,8);
+        var date = new Date(d.substr(0,4)+"-"+d.substr(4,2)+"-"+d.substr(6,2));
+        cat_news+='<h4>'+date_format(date,"day")+'</h4>';
+        cat_news+=news[n].new;
       }
+      if(news.length-n > 1)
+        ialert('<h3>Nouveautés</h3>'+cat_news);
+
       localStorage.setItem("infoapp",JSON.stringify(infoapp));
     }
   }
