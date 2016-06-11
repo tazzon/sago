@@ -6,7 +6,7 @@ Sago est une application fonctionnant sur un navigateur internet pour les archer
 Le cœur de l'application permet de saisir graphiquement les impacts de flèches sur une série, de les enregistrer sur l'équipement mobile utilisé (smartphone, tablette…), de faires des analyses rapides de groupement, de dispersion par volée ou par flèches.
 Cette application ne necessite pas de connexion internet pour être utilisée une fois qu'elle a été chargée. Les mises à jour se font automatiquement lorsqu'elle est demandée et qu'une connexion internet est disponible. La dernière version est alors mise en cache sur le navigateur.
 
-[**Sago** est disponible ici dans sa dernière version](http://tazzon.free.fr/sago/sago_0.3.1/).
+[**Sago** est disponible ici dans sa dernière version](http://tazzon.free.fr/sago/).
 
 ## Utilisation
 
