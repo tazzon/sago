@@ -1,9 +1,20 @@
 
 function init_() 
 {
+  //chargement de la page en 2 fois pour mise à jour du cache sans prise de tête
+  if(localStorage.getItem("reload") == null)
+  {
+    localStorage.setItem("reload",true);
+    location.reload();
+    return;
+  }
+  else
+    localStorage.removeItem("reload");
+
   document.getElementById("page_title").innerHTML = infoapp.name+" "+infoapp.version;
   if (localStorage.getItem("userp") != null)
     user_pref("restore");
+
   visu("session"); // demande de définir les paramètres
   touch2mouse(document.getElementById("target")); // compatibilité avec le mode tactile
   document.getElementById("but_tab_score").style.display="none";

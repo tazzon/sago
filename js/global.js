@@ -53,7 +53,7 @@ var isave = {
 };
 var infoapp= {
   version : '0.4.0',
-  datecode : 20160610.02,
+  datecode : 20160611.01,
   name : "Sago",
   mail : "tazzon@free.fr",
   git : 'https://github.com/tazzon/sago',
