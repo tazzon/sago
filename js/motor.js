@@ -28,7 +28,7 @@ function init_()
   if(localStorage.getItem("infoapp") != null)
   {
     var oldinfoapp = JSON.parse(localStorage.getItem("infoapp"));
-    if(infoapp.datecode >= oldinfoapp.datecode) // dans le cas d'une nouvelle version
+    if(infoapp.datecode > oldinfoapp.datecode) // dans le cas d'une nouvelle version
     {
       var cat_news="";
       for(var n=news.length-1;n>=0;n--)
@@ -58,7 +58,7 @@ function init_()
     {
       clearTimeout(timer_menu);
       load_local_data("temp"); // chargement de la série temporaire.
-      alert("Attention ! si vous ne modifiez ni n'enregistrez cette série, elle sera définitivement supprimée.");
+      ialert("Attention ! si vous ne modifiez ni n'enregistrez cette série, elle sera définitivement supprimée.");
     }
  
   calendrier();
@@ -196,7 +196,7 @@ function valid_session()
   tableau +='<button id="gotosaisie" onclick="visu(\'saisie\');visu_target(1)"><span class="icon icon-bullseye"></span></button>';
   tableau += '<button onclick="save_local()"><span class="icon icon-floppy"></span></button>';
   tableau += '<table class="marque">';
-  var marque_width=95/(nb_fl_volee+3)+"%";
+  var marque_width=95/(nb_fl_volee+4)+"%";
   for (var c = 0 ; c<nb_volee ; c++)
   {
     tableau += '<tr><td style="width:5%">'+(c+1)+'&nbsp;</td>';
@@ -204,14 +204,22 @@ function valid_session()
     {
       tableau += '<td class="cellule" style="width:'+marque_width+'" id="tab_'+c+'_'+l+'"></td>';
     }
-    tableau += '<td class="cellule" style="width:'+marque_width+'" id="result_'+c+'"></td><td class="no_com" style="width:'+marque_width+'" id="com_'+c+'" onclick="commentaire('+c+')"></td>';
+    tableau += '<td class="cellule" style="width:'+marque_width+'" id="result_'+c+'"></td>';
+    if(c!=0)
+      tableau += '<td class="cellule" style="width:'+marque_width+'" id="cumul_'+c+'"></td>';
+    else
+      tableau += '<td class="cellule_masq" style="width:'+marque_width+'" id="cumul_'+c+'"></td>';
+    tableau += '<td class="no_com" style="width:'+marque_width+'" id="com_'+c+'" onclick="commentaire('+c+')"></td>';
   }
-  tableau += '<tr>';
-  for (var l = 0 ; l<nb_fl_volee+1 ; l++)
+  //tableau += '<tr>';
+  /*for (var l = 0 ; l<nb_fl_volee+2 ; l++)
   {
     tableau += '<td></td>';
   }
-  tableau +='<td class="cellule" id="result_total"></td></table>';
+  tableau +='<td class="cellule" id="result_total"></td></table>';*/
+  tableau += '</table>';
+  //tableau += '<p>Blason : '+serie.blason+'cm<br>Distance : '+serie.dist+'m</p>';
+
   document.getElementById("tableau").innerHTML = tableau;
   
   gestion_save_name(); // on met le nom de la session en haut du tableau
@@ -377,7 +385,7 @@ function select_arrow(action)
 // passe à la volée suivante (ou recommence la volée en cours)
 function volee_suivante(a)
 {
-  if(num_fl < nb_fl_volee) //si la volée n'est pas complète
+  if(num_fl < nb_fl_volee && a!="noConfirm") //si la volée n'est pas complète
    if(confirm("Vous n'avez pas noté toutes les flèches, voulez-vous tout de même valider ?") == false)
      return;
 
@@ -401,8 +409,9 @@ function volee_suivante(a)
     diff_tot='<span class="'+classtotobj+'">'+Math.round(10*(serie.tot-serie.objectif*(n_volee+1)/serie.nb_v))/10+'</span>';
   }
   document.getElementById("result_"+n_volee).innerHTML += tot+diff_obj; //qu'on affiche
-  document.getElementById("result_total").innerHTML = serie.tot+diff_tot; // on modifie le total dans le tableau
-  
+  //document.getElementById("result_total").innerHTML = serie.tot+diff_tot; // on modifie le total dans le tableau
+  document.getElementById("cumul_"+n_volee).innerHTML=serie.tot+diff_tot; // la case de cumul
+
   volee[n_volee] = fl; // on cré la nouvelle volée 
   volee[n_volee].tot =  function() // on ajoute la fonction qui fait le total
                         { 
@@ -443,7 +452,8 @@ function volee_suivante(a)
   // effacement des scores dans le tableau de la saisie et masquage des flèches
   for (var i=0;i<nb_fl_volee;i++)
   {
-    document.getElementById('saisie_fl'+i).innerHTML="";
+    if(document.getElementById("saisie_fl"+i))
+      document.getElementById('saisie_fl'+i).innerHTML="";
     document.getElementById("zoom_fl"+n_volee+"_"+i).style.display="none";
     document.getElementById("target_fl"+n_volee+"_"+i).style.display="none";
   }

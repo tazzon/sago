@@ -22,6 +22,10 @@ news[4]={
   new:"<p>L’application passe en version 0.4.0.</p><p>L’agencement de la page de saisie a été retouché. Vous pouvez ignorer la saisie de certaines flèches en avançant dans le tableau avec le bouton <span class=\"icon icon-forward\"></span>. Ceci permet de maintenir l’ordre des flèches lors de la saisie pour une meilleure restitution lors de l’analyse.</p>",
   datecode:20160608.01
 };
+news[5]={
+  new:'<p>La feuille de marque évolue. Elle bénéficie maintenant du cumul volées après volées.</p>',
+  datecode:20160614.011
+};
 
 var el_visible="session";
 var high_contrast=false;
@@ -53,7 +57,7 @@ var isave = {
 };
 var infoapp= {
   version : '0.4.0',
-  datecode : 20160611.02,
+  datecode : 20160614.01,
   name : "Sago",
   mail : "tazzon@free.fr",
   git : 'https://github.com/tazzon/sago',

@@ -16,8 +16,6 @@ function load_local_data(name)
 {
   // création d'un nouvelle série temporaire
   var serieTemp = JSON.parse(localStorage.getItem(name));
-  // et d'un nouveau tableau de volées temporaire
-  var voleeTemp = serieTemp.volees;
 
   // création d'une nouvelle session avec les paramètres
   document.getElementById("nb_volee").value = serieTemp.nb_v;
@@ -48,86 +46,23 @@ function load_local_data(name)
   }
   valid_session();
 
-  document.getElementById("num_volee").innerHTML = serieTemp.volees.length+1;
-
-  if(serieTemp.volees.length == nb_volee)
+  // restauration de la série
+  for(var v=0 ; v<serieTemp.volees.length ; v++)
   {
-    //console.debug("La série est complète");
-    document.getElementById("saisie").innerHTML = "";
-    document.getElementById("gotosaisie").style.display = "none";
-    visu("tab_score");
-    visu_target(0);
-    document.getElementById("but_saisie").style.display = "none";
-  }
-  serie = serieTemp;
-
-  n_volee = serie.volees.length;
-  n_fl = 0;
-  volee = new Array;
-
-  // il faut recréer les volées au complet pour avoir accès aux méthodes
-  for ( var v=0 ; v<serie.volees.length ; v++)
-  {
-    flTemp = new Array;
-    for (var f=0 ; f<serie.volees[v].length ; f++)
-       flTemp[f] = new arrow(voleeTemp[v][f].x,voleeTemp[v][f].y,voleeTemp[v][f].t,voleeTemp[v][f].b,voleeTemp[v][f].d,voleeTemp[v][f].n);
-
-    volee[v] = flTemp;
-    volee[v].tot =  function() // méthode pour calculer le total de la volée
-                          {
-                            var tot=0;
-                            for (var i=0 ; i<this.length ; i++)
-                              tot+=this[i].v();
-                            return tot;
-                          };
-    // création du tableau sn pour l'analyse qui comble les trous des flèches manquantes
-    sn[v]=[];
-    for(var f=0;f<serie.nb_f;f++)
-      sn[v][f]=false;
-    for(var f=0;f<flTemp.length;f++)
-      sn[v][flTemp[f].n]=flTemp[f];
-  }
-  serie.volees = volee;
-
-  for (var v=0 ; v<serie.volees.length ; v++)
-  {
-    var tab_tri=serie.volees[v].slice();
-    tab_tri.sort(function(a,b){
-                                if(a.X()==false && b.X()==true)
-                                  return -1;
-                                if(a.X()==true  && b.X()==false)
-                                  return 1;
-                                return 0;
-                              });
-    tab_tri.sort(function(a,b){return a.v()-b.v()}).reverse();
-
-    for (var f=0 ; f<serie.volees[v].length ; f++)
+    for(var f=0 ; f<serieTemp.volees[v].length ; f++)
     {
-      document.getElementById("tab_"+v+"_"+f).innerHTML = tab_tri[f].v();
-      if(tab_tri[f].X() == true)
-        document.getElementById("tab_"+v+"_"+f).innerHTML += "+";
+      fl[f]=new arrow(serieTemp.volees[v][f].x,
+                         serieTemp.volees[v][f].y,
+                         serieTemp.volees[v][f].t,
+                         serieTemp.volees[v][f].b,
+                         serieTemp.volees[v][f].d,
+                         serieTemp.volees[v][f].n);
+      
     }
-    
-    var diff_obj="";
-    var diff_tot="";
-    if(serie.objectif !== false && typeof(serie.objectif) != "undefined")
-    {
-      var classobj="equ small";
-      if(serie.objectif/serie.nb_v < volee[v].tot()) classobj="sup small";
-      if(serie.objectif/serie.nb_v > volee[v].tot()) classobj="inf small";
-      diff_obj='<span class="'+classobj+'">'+Math.round(10*(volee[v].tot()-serie.objectif/serie.nb_v))/10+'</span>';
-      var classtotobj="equ small";
-      if(serie.objectif*(n_volee+1)/serie.nb_v > serie.tot) classtotobj="inf small";
-      if(serie.objectif*(n_volee+1)/serie.nb_v < serie.tot) classtotobj="sup small";
-      diff_tot='<span class="'+classtotobj+'">'+Math.round(10*(serie.tot-serie.objectif*n_volee/serie.nb_v))/10+'</span>';
-      //console.debug('volée : '+diff_obj);
-      //console.debug('total : '+diff_tot);
-    }
-    document.getElementById("result_"+v).innerHTML = volee[v].tot()+diff_obj;
+    volee_suivante("noConfirm");
   }
-  document.getElementById("result_total").innerHTML = serie.tot+diff_tot;
 
-
+  serie.com=serieTemp.com;
   commentaire();
   color_marque(userp.color_marque);
 
@@ -136,7 +71,6 @@ function load_local_data(name)
     isave.actual_key=name;
     isave.actual_name=serieTemp.id;
     isave.is_save=true;
-    //gestion_save();
     gestion_save_name();
   }
 };
@@ -426,7 +360,7 @@ function commentaire(n,consult)
       }
     }
     else
-      alert('Commentaire '+(n+1)+' : '+serie.com[n]);
+      ialert('Commentaire '+(n+1)+' : '+serie.com[n]);
   }
   // indication si il y a un commentaire sur la volée
   for (var v=0 ; v<nb_volee ; v++)

@@ -764,6 +764,9 @@ display:none;
 #tab_score button {
   margin:0em 1em 0 1em;
 }
+#tab_score p {
+  margin:1em 0 0 2em;
+}
 #local {
   display:none;
   /* width:90%; */
@@ -897,6 +900,9 @@ input[type=file]{
   text-align:center;
   vertical-align:middle;
   border-radius:0.2em;
+}
+.cellule_masq {
+  visibility:hidden;
 }
 .cel_on {
   border-color:#b58900;
