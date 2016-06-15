@@ -1,6 +1,13 @@
-/**************
- * sago 0.3.1 *
- * ************/
+
+var infoapp= {
+  version : '0.4.0',
+  datecode : 20160615.01,
+  name : "Sago",
+  mail : "tazzon@free.fr",
+  git : 'https://github.com/tazzon/sago',
+  dev : "AM"
+};
+
 var news=[];
 news[0]={
   new:"<p>Ajout de la possibilité de saisir les flèches hors du blason jusqu’à l'équivalent de 5 zones à l’extérieur du blason.</p>",
@@ -24,7 +31,7 @@ news[4]={
 };
 news[5]={
   new:'<p>La feuille de marque évolue. Elle bénéficie maintenant du cumul volées après volées.</p>',
-  datecode:20160614.011
+  datecode:20160614.01
 };
 
 var el_visible="session";
@@ -55,14 +62,7 @@ var isave = {
   actual_name : "",
   is_save : false
 };
-var infoapp= {
-  version : '0.4.0',
-  datecode : 20160614.01,
-  name : "Sago",
-  mail : "tazzon@free.fr",
-  git : 'https://github.com/tazzon/sago',
-  dev : "AM"
-};
+
 var fl_saisie_save=[];
 var sn=[]; // la tableau de flèche utilisé pour la page d'analyse
 var zoom_actif=false;
