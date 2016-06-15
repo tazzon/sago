@@ -445,9 +445,11 @@ function volee_suivante(a)
       document.getElementById("tab_"+n_volee+"_"+i).innerHTML += "+";
   }                     
   
-  gestion_save();
-  gestion_save_name();
-
+  if(a != "noConfirm")
+  {
+    gestion_save();
+    gestion_save_name();
+  }
 
   // effacement des scores dans le tableau de la saisie et masquage des flèches
   for (var i=0;i<nb_fl_volee;i++)
