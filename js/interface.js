@@ -62,9 +62,13 @@ function load_local_data(name)
     volee_suivante("noConfirm");
   }
 
+  serie.volees=volee;
   serie.com=serieTemp.com;
+  serie.date=serieTemp.date;
+  serie.datemod=serieTemp.datemod;
+  serie.id=serieTemp.id;
+
   commentaire();
-  color_marque(userp.color_marque);
 
   if(name != "temp")
   {
