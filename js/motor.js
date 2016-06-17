@@ -409,7 +409,6 @@ function volee_suivante(a)
     diff_tot='<span class="'+classtotobj+'">'+Math.round(10*(serie.tot-serie.objectif*(n_volee+1)/serie.nb_v))/10+'</span>';
   }
   document.getElementById("result_"+n_volee).innerHTML += tot+diff_obj; //qu'on affiche
-  //document.getElementById("result_total").innerHTML = serie.tot+diff_tot; // on modifie le total dans le tableau
   document.getElementById("cumul_"+n_volee).innerHTML=serie.tot+diff_tot; // la case de cumul
 
   volee[n_volee] = fl; // on cré la nouvelle volée 
@@ -426,30 +425,14 @@ function volee_suivante(a)
     sn[n_volee][f]=false;
   for(var f=0;f<fl.length;f++)
     sn[n_volee][fl[f].n]=fl[f];
-  // tri de la volée
-  var tab_tri = new Array;
-  tab_tri=volee[n_volee].slice();// copie du tableau avant le tri des flèches
-  tab_tri.sort(function(a,b){
-                              if(a.X()==false && b.X()==true)
-                                return -1;
-                              if(a.X()==true  && b.X()==false)
-                                return 1;
-                              return 0;
-                            });
-  tab_tri.sort(function(a,b){return a.v()-b.v()}).reverse();                              
-  // affichage de la volée triée dans la feuille de marque
-  for (var i=0 ; i<tab_tri.length ; i++)
-  {
-    document.getElementById("tab_"+n_volee+"_"+i).innerHTML = tab_tri[i].v();
-    if(tab_tri[i].X() == true)
-      document.getElementById("tab_"+n_volee+"_"+i).innerHTML += "+";
-  }                     
-  
+
   if(a != "noConfirm")
   {
     gestion_save();
     gestion_save_name();
   }
+
+  tri();
 
   // effacement des scores dans le tableau de la saisie et masquage des flèches
   for (var i=0;i<nb_fl_volee;i++)
@@ -483,8 +466,37 @@ function volee_suivante(a)
       text_objectif='<span class="obj_saisie">Objectif '+diff_tot.replace('small','normal')+'<span>';
     document.getElementById("num_volee").innerHTML=(n_volee+1)+text_objectif;
   }
+ 
+};
+
+function tri()
+{
+  for(var v=0;v<serie.volees.length;v++)
+  {
+    for(var f=0;f<serie.nb_f;f++)
+    {
+      document.getElementById("tab_"+v+"_"+f).innerHTML="";
+    }
+    for(var f=0;f<serie.volees[v].length;f++)
+    {
+      if(userp.tab_tri==true)
+      {
+        serie.volees[v].sort( function(a,b){return(Math.sqrt(a.x*a.x+a.y*a.y)-Math.sqrt(b.x*b.x+b.y*b.y));});
+        document.getElementById("tab_"+v+"_"+f).innerHTML=serie.volees[v][f].v();
+        if(serie.volees[v][f].X() == true)
+          document.getElementById("tab_"+v+"_"+f).innerHTML += "+";
+      }
+      else
+      {
+        serie.volees[v].sort(function(a,b){return a.n-b.n;});
+        document.getElementById("tab_"+v+"_"+serie.volees[v][f].n).innerHTML=serie.volees[v][f].v();
+        if(serie.volees[v][f].X() == true)
+          document.getElementById("tab_"+v+"_"+serie.volees[v][f].n).innerHTML += "+";
+      }
+
+    }
+  }
   color_marque(userp.color_marque);
-  
 };
 
 function coord(event) 

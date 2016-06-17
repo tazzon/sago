@@ -1,7 +1,7 @@
 
 var infoapp= {
   version : '0.4.0',
-  datecode : 20160616.01,
+  datecode : 20160618.01,
   name : "Sago",
   mail : "tazzon@free.fr",
   git : 'https://github.com/tazzon/sago',
@@ -33,7 +33,10 @@ news[5]={
   new:'<p>La feuille de marque évolue. Elle bénéficie maintenant du cumul volées après volées.</p>',
   datecode:20160614.01
 };
-
+news[6]={
+  new:'<p>Une nouvelle option permet d’avoir ou non le tri des flèches dans la feuille de marque.</p>',
+  datecode:20160618.01
+};
 var el_visible="session";
 var high_contrast=false;
 var target;
@@ -88,6 +91,7 @@ var userp = {
   chrmitemps:30,
   color_marque:false,
   mire:false,
+  tab_tri:true,
 };
 
 var el_visible;

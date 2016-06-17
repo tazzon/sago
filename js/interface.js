@@ -69,7 +69,8 @@ function load_local_data(name)
   serie.id=serieTemp.id;
 
   commentaire();
-
+  tri();
+  
   if(name != "temp")
   {
     isave.actual_key=name;
@@ -216,6 +217,7 @@ function user_pref(a)
     userp.chrmitemps=c.mitemps;
     userp.color_marque=document.getElementById("color_marque").checked;
     userp.mire=document.getElementById("aff_mire").checked;
+    userp.tab_tri=document.getElementById("tab_tri").checked;
     localStorage.setItem('userp',JSON.stringify(userp));
   }
   if(a == "restore")
@@ -237,6 +239,7 @@ function user_pref(a)
     color_marque(userp.color_marque);
     document.getElementById("aff_mire").checked = userp.mire;
     aff_mire(userp.mire);
+    document.getElementById("tab_tri").checked= userp.tab_tri;
   }
 };
 
@@ -902,9 +905,9 @@ function aff_mire(c)
 
 function color_marque(c)
 {
-    for(var v=0;v<n_volee;v++)
+    for(var v=0;v<serie.volees.length;v++)
     {
-      for(var f=0;f<nb_fl_volee;f++)
+      for(var f=0;f<serie.nb_f;f++)
       {
         document.getElementById("tab_"+v+"_"+f).className="cellule";
         if(c==true)
