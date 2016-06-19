@@ -1,7 +1,7 @@
 
 var infoapp= {
   version : '0.4.0',
-  datecode : 20160618.01,
+  datecode : 20160619.01,
   name : "Sago",
   mail : "tazzon@free.fr",
   git : 'https://github.com/tazzon/sago',

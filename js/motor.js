@@ -2,15 +2,17 @@
 function init_() 
 {
   //chargement de la page en 2 fois pour mise à jour du cache sans prise de tête
-  if(localStorage.getItem("reload") == null)
+  if(navigator.onLine==true)
   {
-    localStorage.setItem("reload",true);
-    location.reload();
-    return;
+    if(localStorage.getItem("reload") == null)
+    {
+      localStorage.setItem("reload",true);
+      location.reload(true);
+      return;
+    }
+    else
+      localStorage.removeItem("reload");
   }
-  else
-    localStorage.removeItem("reload");
-
   document.getElementById("page_title").innerHTML = infoapp.name+" "+infoapp.version;
   if (localStorage.getItem("userp") != null)
     user_pref("restore");
@@ -33,7 +35,7 @@ function init_()
       var cat_news="";
       for(var n=news.length-1;n>=0;n--)
       {
-        if(news[n].datecode<oldinfoapp.datecode) break;
+        if(news[n].datecode<=oldinfoapp.datecode) break;
         var d=(""+news[n].datecode).substr(0,8);
         var date = new Date(d.substr(0,4)+"-"+d.substr(4,2)+"-"+d.substr(6,2));
         cat_news+='<h4>'+date_format(date,"day")+'</h4>';
