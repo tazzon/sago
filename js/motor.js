@@ -14,8 +14,19 @@ function init_()
       localStorage.removeItem("reload");
   }
   document.getElementById("page_title").innerHTML = infoapp.name+" "+infoapp.version;
+  
   if (localStorage.getItem("userp") != null)
+  {  
     user_pref("restore");
+    
+    profil.write();
+    if(userp.last_profil !== false)
+    {
+      document.getElementById("select_profil").value=userp.last_profil;
+      profil.load(userp.last_profil);
+    }
+  }
+  
 
   visu("session"); // demande de définir les paramètres
   touch2mouse(document.getElementById("target")); // compatibilité avec le mode tactile
@@ -106,7 +117,8 @@ function valid_session()
   isave.actual_name="sans_nom";
   isave.is_save=true;
   isave.actual_key=""; 
-  
+  profil.savelast();
+
   // remise à l'état initial de la série
   serie = { date : "",
             datemod : "",

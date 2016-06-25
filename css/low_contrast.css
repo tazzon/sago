@@ -62,7 +62,7 @@ input[type=text] {
   box-shadow:0 0 1em rgba(0,0,0,1)
 }
 
-input {
+input,select {
   background: linear-gradient(180deg, rgba(253,246,227,1) 0%,rgba(238,232,213,1) 90%);
   color: black;
   box-shadow:0 0 1em rgba(0,0,0,1)

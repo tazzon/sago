@@ -64,7 +64,6 @@ table {
   height:3em;
   width:14.25%;
 }
-
 .icon-trash {
   color:#dc322f;
 }
@@ -374,7 +373,7 @@ table {
   margin-top: 0.5em;
 }
 #session table {
-  /*margin:2.5em 0 1em 0;*/
+  margin-top:0.5em;
 }
 #session td input{
   margin-left:20%;
@@ -788,6 +787,7 @@ display:none;
   left:410px;
 }
 
+
 button {
   height:2em;
   border:1px solid;
@@ -799,17 +799,8 @@ button {
   /*box-shadow:0em 0em 1em rgba(0,0,0,0.5);*/
 }
 
-/*input[type=text], input[type=password] {
-  width:4em;
-  height:1.2em;
-  border:1px solid;
-  border-radius:0.2em;
-  font-size:1em;
-  font-family:monospace;
-  /*text-align:center;*/
-/*}*/
 
-input {
+input,select {
   width:4em;
   height:2em;
   border:1px solid;
@@ -823,6 +814,22 @@ input[type=file]{
   font-size:1em;
   font-family:monospace;
   
+}
+#profils {
+  border-bottom:0.1em solid;
+}
+#profils button,#select_profil {
+  height:2.5em;
+  width:10%;
+  padding:0;
+  margin: 0.5em 0 .5em 0;
+}
+#select_profil{
+  width:73%;
+  margin:0;
+  padding:0;
+  position:relative;
+  top:-0.05em;
 }
 .center_button {
   text-align:center;

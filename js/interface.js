@@ -1,4 +1,83 @@
 
+var profil={
+  load:function(p){
+    if(p<0) return;
+    var a=userp.profils[p];
+    if(typeof(p) == "object")
+      a=userp.last_profil;
+    document.getElementById("nb_volee").value=a.v;
+    document.getElementById("nb_fl_volee").value=a.f;
+    document.getElementById("distance").value=a.d;
+    document.getElementById("diam_blason").value=a.b;
+    document.getElementById("diam_tube").value=a.t;
+    if(a.s != false)
+    {
+      document.getElementById("mode_spot").checked=true;
+      document.getElementById("nzspot"+a.s).checked=true;
+    }
+    else
+      document.getElementById("mode_spot").checked=false;
+    document.getElementById("mode_x").checked=a.X;
+  },
+  save:function(){
+    var name=prompt("Nom du profil");
+    if(name==null) return;
+    var n=userp.profils.length;
+    userp.profils[n]=this.readcurrent();
+    userp.profils[n].name=name;
+    this.write();
+    document.getElementById("select_profil").value=n;
+    user_pref("save");
+  },
+  write:function(){
+    document.getElementById("select_profil").innerHTML='<option value="-2">Sélectionnez un profil…</option>';
+    document.getElementById("select_profil").innerHTML+='<option value="-1"></option>';
+    for(var i=0;i<userp.profils.length;i++)
+    {
+      document.getElementById("select_profil").innerHTML+='<option value="'+i+'">'+userp.profils[i].name+'</option>';
+    }
+  },
+  delete:function(){
+    p=parseInt(document.getElementById("select_profil").value);
+    if(confirm("Êtes-vous sûr de vouloir supprimer le profil « "+userp.profils[p].name+" » ?") != true)
+      return;
+    userp.profils.splice(p,1);
+    if(userp.last_profil == p)
+      userp.last_profil=false;
+    this.write();
+    user_pref("save");
+  },
+  savelast:function(){
+    if(parseInt(document.getElementById("select_profil").value) < 0)
+      userp.last_profil=this.readcurrent();
+    else
+      userp.last_profil=parseInt(document.getElementById("select_profil").value);
+  },
+  readcurrent:function(){
+    var spot=false;
+    if(document.getElementById("mode_spot").checked == true)
+    {
+      if(document.getElementById("nzspot5").checked == true)
+        spot = 5;
+      if(document.getElementById("nzspot6").checked == true)
+        spot = 6;
+    }
+    return({
+      name:'',
+      v:parseInt(document.getElementById("nb_volee").value),
+      f:parseInt(document.getElementById("nb_fl_volee").value),
+      d:parseInt(document.getElementById("distance").value),
+      b:parseInt(document.getElementById("diam_blason").value),
+      t:parseInt(document.getElementById("diam_tube").value),
+      s:spot,
+      X:document.getElementById("mode_x").checked,
+    });
+  },
+  clear:function(){
+    document.getElementById("select_profil").value=-1;
+  },
+};
+
 function save_local_temp()
 {
   save_local("temp");
@@ -222,7 +301,9 @@ function user_pref(a)
   }
   if(a == "restore")
   {
-    userp = JSON.parse(localStorage.getItem('userp'));
+    var userpTemp = JSON.parse(localStorage.getItem('userp'));
+    for (var attr in userpTemp)
+      userp[attr] = userpTemp[attr];
     document.getElementById("change_style").checked = userp.hc;
     change_style();
     document.getElementById("diam_tube").value = userp.diam_tube;

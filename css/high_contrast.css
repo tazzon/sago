@@ -70,7 +70,7 @@ input[type=text] {
   /*box-shadow:0 0 1em rgba(0,0,0,1)*/
 }
 
-input {
+input,select {
   background-color:#eee8d5;
   color:#002b36;
   /*box-shadow:0 0 1em rgba(0,0,0,1)*/
