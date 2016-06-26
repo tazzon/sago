@@ -634,21 +634,6 @@ function about()
 
 /***** sauvegarde de fichiers *****/
 
-//http://jsfiddle.net/koldev/cw7w5/
-var saveData = (function () {
-    var a = document.createElement("a");
-    document.body.appendChild(a);
-    a.style = "display: none";
-    return function (data, fileName) {
-        var json = JSON.stringify(data),
-            blob = new Blob([json], {type: "octet/stream"}),
-            url = (window.URL || window.webkitURL).createObjectURL(blob);
-        a.href = url;
-        a.download = fileName;
-        a.click();
-        (window.URL || window.webkitURL).revokeObjectURL(url);
-    };
-}());
 function save_as_file()
 {
   var filename="sago_"+date_format(new Date,"dayhour")+'.json';
@@ -664,7 +649,8 @@ function save_as_file()
                     };
     }
   }
-  saveData(save_file,filename);
+  var blob=new Blob([JSON.stringify(save_file)],{type:"text/plain;charset=utf-8"});
+  saveAs(blob,filename);
 };
 
 /***** lecture de fichier *****/
@@ -1000,21 +986,6 @@ function color_marque(c)
     }
 };
 
-var saveCsv = (function () {
-    var a = document.createElement("a");
-    document.body.appendChild(a);
-    a.style = "display: none";
-    return function (data, fileName) {
-        var json = data,
-            blob = new Blob([json], {type: "octet/stream"}),
-            url = (window.URL || window.webkitURL).createObjectURL(blob);
-        a.href = url;
-        a.download = fileName;
-        a.click();
-        (window.URL || window.webkitURL).revokeObjectURL(url);
-    };
-}());
-
 function export_csv(id)
 {
   var data=JSON.parse(localStorage.getItem(id));
@@ -1044,8 +1015,8 @@ function export_csv(id)
     csv+="\r\n";
   }
   csv=csv.replace(/\./g,',');
-  saveCsv(csv,data.id+".csv");
-  //return csv;
+  var blob = new Blob([csv], {type: "text/plain;charset=utf-8"});
+  saveAs(blob, data.id+".csv");
 };
 
 var convertTouchEvent = function (ev) {
