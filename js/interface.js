@@ -322,6 +322,11 @@ function user_pref(a)
     aff_mire(userp.mire);
     document.getElementById("tab_tri").checked= userp.tab_tri;
   }
+  if(a=="file")
+  {
+    var blob=new Blob([JSON.stringify(userp)],{type:"text/plain;charset=utf-8"});
+    saveAs(blob,infoapp.name+"_user_settings.save.json");
+  }
 };
 
 
@@ -671,6 +676,43 @@ function handleFileSelect(evt) {
 
 
 var readFile="";
+function readUserPref(opt_startByte, opt_stopByte)
+{
+  var files = document.getElementById('userp_load').files;
+  if (!files.length) {
+    ialert('Vous devez selectionner un fichier !');
+    return;
+  }
+
+  var file = files[0];
+  var start = parseInt(opt_startByte) || 0;
+  var stop = parseInt(opt_stopByte) || file.size - 1;
+
+  var reader = new FileReader();
+
+  reader.onloadend = function(evt)
+  {
+    if (evt.target.readyState == FileReader.DONE)
+    {
+      var readJson=evt.target.result;
+      if (/^[\],:{}\s]*$/.test(readJson.replace(/\\["\\\/bfnrtu]/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, '')))
+      {
+        var userpTemp=JSON.parse(readJson);
+        for (var attr in userpTemp)
+          userp[attr] = userpTemp[attr];
+        localStorage.setItem('userp',JSON.stringify(userp));
+        user_pref("restore");
+      }
+      else
+      {
+        ialert("Le type de fichier selectionné n’est pas bon !");
+      }
+    }
+  };
+  var blob = file.slice(start, stop + 1);
+  reader.readAsText(blob); // fonctionne mieux car lit en utf8
+};
+
 function readBlob(opt_startByte, opt_stopByte) {
 
     var files = document.getElementById('files').files;

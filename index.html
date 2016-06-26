@@ -180,6 +180,12 @@
     <p>
       <input type="checkbox" onchange="aff_mire(this.checked)" id="aff_mire"><label for="aff_mire">afficher la mire <span class="icon icon-target"></span> sur le zoom</label>
     </p>
+    <h1>Préférences utilisateur</h1>
+    <p>
+      <button onclick="user_pref('file')">Sauvegarder vos préférences</button><br>
+      Restaurer vos préférences<br>
+      <input type="file" id="userp_load" name="userp_file" onchange="readUserPref()">
+    </p>
 </div>
 
 <div id="save_restore_file">
