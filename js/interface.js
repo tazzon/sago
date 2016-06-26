@@ -628,7 +628,7 @@ function about()
         +'<p>Datecode : '+infoapp.datecode+'<br>'
         +'Git : <a href="'+infoapp.git+'" style="position:relative;left:-0.4em"><span class="icon icon-github-circled"></span>'+infoapp.name+'</a></p>'
         +'<hr>'
-        +'<p>'+infoapp.name+' est une application qui fonctionne dans un navigateur. Elle est destinée à la saisie de séries d’entrainement sur cible anglaise.</p>'
+        +'<p>'+infoapp.name+' est une application destinée aux archers qui fonctionne dans un navigateur. Elle permet la saisie de séries d’entraînement de tir à l’arc sur cible anglaise.</p>'
         );
 };
 
