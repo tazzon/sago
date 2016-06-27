@@ -309,6 +309,7 @@ function user_pref(a)
     document.getElementById("diam_tube").value = userp.diam_tube;
     high_contrast = userp.hc;
     ratio = userp.ratio;
+    adapt2viewport();
     nb_zone = userp.nb_zone;
     target_view(userp.nb_zone);
     c.temps=userp.chrtemps;
