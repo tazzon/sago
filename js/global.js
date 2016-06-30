@@ -1,7 +1,7 @@
 
 var infoapp= {
   version : '0.4.0',
-  datecode : 20160625.02,
+  datecode : 20160630.01,
   name : "Sago",
   mail : "tazzon@free.fr",
   git : 'https://github.com/tazzon/sago',
@@ -40,6 +40,10 @@ news[6]={
 news[7]={
   new:'<p>Il est maintenent possible de créer des profils pour sauvegarder les paramètres d’une série et les rappeler rapidement.</p>',
   datecode:20160625.01
+};
+news[8]={
+  new:'<p>Les préférences utilisateur peuvent être sauvegardées et restaurées. Rendez-vous dans le menu « options ».</p>',
+  datecode:20160630.01
 };
 var el_visible="session";
 var high_contrast=false;
