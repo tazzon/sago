@@ -271,7 +271,8 @@ function valid_session()
   document.getElementById("but_saisie").style.display = "initial";
   document.getElementById("chrono_to_saisie").style.display = "block";
   document.getElementById("but_tab_score").style.display = "initial";
-  document.getElementById("but_analyse").style.display = "initial";
+  //document.getElementById("but_analyse").style.display = "initial";
+  tab_ana_maj();
 
 
 
@@ -284,12 +285,12 @@ function valid_session()
   tab_ana += '</tr><tr><td class="cellule"><div class="cellule_but" id="aff_volee_all" onclick="aff_volee_all()">Volées</div></td>';
   for(var v=0;v<nb_volee;v++)
   {
-    tab_ana += '<td class="cellule"><div class="cellule_but" id="v'+v+'" onclick="aff_volee_num('+v+')">'+(v+1)+'</div></td>';
+    tab_ana += '<td class="cellule" style="display:none" id="ana_tab_v'+v+'"><div class="cellule_but" id="v'+v+'" onclick="aff_volee_num('+v+')">'+(v+1)+'</div></td>';
   }
   tab_ana += '</tr><tr><td class="cellule"><div class="cellule_but" id="aff_fl_all" onclick="aff_fl_all()">Flèches</div></td>';
   for(var f=0;f<nb_fl_volee;f++)
   {
-    tab_ana += '<td class="cellule"><div class="cellule_but" id="f'+f+'" onclick="aff_fl_num('+f+')">'+(f+1)+'</div></td>';
+    tab_ana += '<td class="cellule" style="display:none" id="ana_tab_f'+f+'"><div class="cellule_but" id="f'+f+'" onclick="aff_fl_num('+f+')">'+(f+1)+'</div></td>';
   }
   
   /*tab_ana +='<tr>'
@@ -439,13 +440,14 @@ function volee_suivante(a)
     sn[n_volee][f]=false;
   for(var f=0;f<fl.length;f++)
     sn[n_volee][fl[f].n]=fl[f];
-
+  
   if(a != "noConfirm")
   {
     gestion_save();
     gestion_save_name();
   }
 
+  tab_ana_maj();
   tri();
 
   // effacement des scores dans le tableau de la saisie et masquage des flèches
@@ -883,13 +885,13 @@ function target_view(zone)
         document.getElementById("t"+t).style.display="block";
     }
   }
-  for(var f=0;f<fl.length;f++) // masquage des flèches qui ne sont pas dans les zones visibles ou qui sont en cours de saisie
+  /*for(var f=0;f<fl.length;f++) // masquage des flèches qui ne sont pas dans les zones visibles ou qui sont en cours de saisie
   {
     if(fl[f].v()<11-zone || f==n_fl)
       document.getElementById("target_fl"+n_volee+"_"+f).style.display="none";
     else
       document.getElementById("target_fl"+n_volee+"_"+f).style.display="block";
-  }
+  }*/
   if(document.getElementById("center_target"))
     document.getElementById("center_target").setAttribute("transform","matrix("+scale+",0,0,"+scale+","+targetW/2+","+targetH/2+")");
 };
@@ -920,15 +922,28 @@ function zone_reussite(act)
   var borneb=Math.round(i*0.6);
 
   tab_tri.sort(function(a,b){return a-b}).reverse();
-  for(var f=borneb;f<borneh;f++)
-    moy+=tab_tri[f];
 
-  if(act=="value")
-    return moy/(borneh-borneb);
+  if(i == 0)
+    return;
+  
+  var zr;  
+  if(i < 2)
+    zr=tab_tri[0];
+  else if(borneh==borneb)
+   zr=tab_tri[borneh] 
   else
   {
-    document.getElementById("zone_reussite").setAttribute("r",50*(11-moy/(borneh-borneb)));
-    document.getElementById("zone_reussite_val").innerHTML=Math.round(10*moy/(borneh-borneb))/10;
+    for(var f=borneb;f<borneh;f++)
+      moy+=tab_tri[f];
+    zr=moy/(borneh-borneb);
+  }
+
+  if(act=="value")
+    return zr;
+  else
+  {
+    document.getElementById("zone_reussite").setAttribute("r",50*(11-zr));
+    document.getElementById("zone_reussite_val").innerHTML=Math.round(10*zr)/10;
   }
 };
 
@@ -950,6 +965,9 @@ function moyenne_f(act)
       }
     }
   }
+  if(i==0)
+    return;
+
   if(act == "value")
     return moy/i;
   else
@@ -1150,6 +1168,9 @@ function transition_target_view(v)
 
 function aff_volee_num(v)
 {
+  if(v>=serie.volees.length)
+    return;
+    
   aff_fl.v[v] = !aff_fl.v[v];
   for(f=0;f<serie.nb_f;f++)
     aff_fl.f[f]=false;
@@ -1177,16 +1198,16 @@ function aff_volee_all()
 {
   var af=true;
   var count=0;
-  for(var v=0;v<serie.nb_v;v++)
+  for(var v=0;v<serie.volees.length;v++)
     if(aff_fl.v[v]==true)
       count++;
-  if(count==serie.nb_v)
+  if(count==serie.volees.length)
     af=false;
 
   for(f=0;f<serie.nb_f;f++)
     aff_fl.f[f]=false;
 
-  for(var v=0;v<serie.nb_v;v++)
+  for(var v=0;v<serie.volees.length;v++)
     aff_fl.v[v] = af;
   
   auto_trace();
@@ -1288,7 +1309,7 @@ function display_fl()
       document.getElementById("v"+v).className = "cellule_but";
   }
 
-  if(count == serie.nb_v)
+  if(count == serie.volees.length)
     document.getElementById("aff_volee_all").className = "cellule_but_on";
   else
     document.getElementById("aff_volee_all").className = "cellule_but";
@@ -1309,6 +1330,24 @@ function display_fl()
     document.getElementById("aff_fl_all").className = "cellule_but_on";
   else
     document.getElementById("aff_fl_all").className = "cellule_but";
+};
+
+function tab_ana_maj()
+{
+  var f=false;
+  for(var v=0;v<serie.volees.length;v++)
+  {
+    document.getElementById("ana_tab_v"+v).style.display="";
+    f=true;
+  }
+  if(f==true)
+  {
+    document.getElementById("but_analyse").style.display="initial";
+    for(var f=0;f<serie.nb_f;f++)
+      document.getElementById("ana_tab_f"+f).style.display="";
+  }
+  else
+    document.getElementById("but_analyse").style.display="none";
 };
 
 function auto_trace()

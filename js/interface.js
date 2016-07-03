@@ -146,7 +146,7 @@ function load_local_data(name)
   serie.date=serieTemp.date;
   serie.datemod=serieTemp.datemod;
   serie.id=serieTemp.id;
-
+  tab_ana_maj();
   commentaire();
   tri();
   
@@ -354,7 +354,7 @@ function visu_analyse_el(toEl)
     document.getElementById("zone_fleche").style.display="block";
     document.getElementById("zone_reussite").style.display="block";
     document.getElementById("moy_fleche").style.display="block";
-
+    post_exec="";
     for(var v=0;v<serie.nb_v;v++) // sauvegarde des flèches se trouvant sur la saisie et restauration de celles d'analyse
     {
       fl_saisie_save[v]=[];
@@ -365,11 +365,6 @@ function visu_analyse_el(toEl)
         else
           fl_saisie_save[v][f]=false;
         document.getElementById("target_fl"+v+"_"+f).style.display="none";
-
-        if(tab_display[v][f] == true)
-          document.getElementById("target_fl"+v+"_"+f).style.display="block";
-        else
-          document.getElementById("target_fl"+v+"_"+f).style.display="none";
       }
     }
     auto_trace();
