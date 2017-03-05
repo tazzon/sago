@@ -1247,12 +1247,12 @@ var c={
 
     if(this.bellon > 0 && this.bellact==true)
       for(var i=0;i<this.bellon;i++)
-        setTimeout('c.klax.play()',1000*i*(this.klax.duration+0.15));
+        setTimeout('c.klax.play()',1000*i*(this.klax.duration+0.25));
     this.bellon=0;
 
     if(this.bipon > 0 && this.bellact==true)
       for(var i=0;i<this.bipon;i++)
-        setTimeout('c.bip.play()',1000*i*(this.bip.duration+0.15));
+        setTimeout('c.bip.play()',1000*i*(this.bip.duration+0.25));
     this.bipon=0;
   },
   param:function(){
