@@ -1,7 +1,7 @@
 
 var infoapp= {
   version : '0.4.0',
-  datecode : 20160703.01,
+  datecode : 20170305.01,
   name : "Sago",
   mail : "tazzon@free.fr",
   git : 'https://github.com/tazzon/sago',
@@ -45,6 +45,7 @@ news[8]={
   new:'<p>Les préférences utilisateur peuvent être sauvegardées et restaurées. Rendez-vous dans le menu « options ».</p>',
   datecode:20160630.01
 };
+
 var el_visible="session";
 var high_contrast=false;
 var target;
