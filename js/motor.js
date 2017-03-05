@@ -14,7 +14,8 @@ function init_()
       localStorage.removeItem("reload");
   }
   document.getElementById("page_title").innerHTML = infoapp.name+" "+infoapp.version;
-  
+  visu("session");
+  //profil.write();
   if (localStorage.getItem("userp") != null)
   {  
     user_pref("restore");
@@ -22,10 +23,13 @@ function init_()
     profil.write();
     if(userp.last_profil !== false)
     {
-      document.getElementById("select_profil").value=userp.last_profil;
+      //document.getElementById("select_profil").value=userp.last_profil;
       profil.load(userp.last_profil);
     }
   }
+  else
+    profil.write();
+  
   
 
   visu("session"); // demande de définir les paramètres
@@ -799,11 +803,11 @@ function create_target()
   target+='<line x1="0" y1="-5" x2="0" y2="5" stroke="black" stroke-width="1"/><line x1="-5" y1="0" x2="5" y2="0" stroke="black" stroke-width="1"/>';
   // fin de l'image
   
-  //la zone de réussite
-  target+='<circle id="zone_reussite" cx="0" cy="0" r="0" />';
-
   //moyenne des flèches
   target+='<circle id="moy_fleche" cx="0" cy="0" r="0" />';
+  //la zone de réussite
+  
+  target+='<circle id="zone_reussite" cx="0" cy="0" r="0" />';
 
   //moyenne d'une flèches
   target+='<circle id="zone_fleche" cx="0" cy="0" r="0" />';

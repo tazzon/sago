@@ -18,6 +18,7 @@ var profil={
     else
       document.getElementById("mode_spot").checked=false;
     document.getElementById("mode_x").checked=a.X;
+    document.getElementById("select_profil").value=p;
   },
   save:function(){
     var name=prompt("Nom du profil");
@@ -36,6 +37,10 @@ var profil={
     {
       document.getElementById("select_profil").innerHTML+='<option value="'+i+'">'+userp.profils[i].name+'</option>';
     }
+    if(i==0)
+      this.clear();
+    else
+      document.getElementById("select_profil").value="-2";
   },
   delete:function(){
     p=parseInt(document.getElementById("select_profil").value);
@@ -44,6 +49,9 @@ var profil={
     userp.profils.splice(p,1);
     if(userp.last_profil == p)
       userp.last_profil=false;
+    else if(userp.last_profil>p)
+      userp.last_profil--;
+            
     this.write();
     user_pref("save");
   },
