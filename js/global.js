@@ -45,6 +45,10 @@ news[8]={
   new:'<p>Les préférences utilisateur peuvent être sauvegardées et restaurées. Rendez-vous dans le menu « options ».</p>',
   datecode:20160630.01
 };
+news[9]={
+  new:'<p>Le cercle de repérage des flèches en cible a subit quelques modifications pour améliorer le repérage.</p>',
+  datecode:20170419.01
+};
 
 var el_visible="session";
 var high_contrast=false;

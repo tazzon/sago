@@ -496,11 +496,23 @@ function adapt2viewport()
     el_target.height = H-decal;
     el_target.style.width = (H-decal)+"px";
     el_target.style.height = (H-decal)+"px";
+    
+    //droitier
     el_target.style.left = (W-H+decal)+"px";
     el_target.style.top = (decal/2)+"px";
+    
+    // gaucher
+    //el_target.style.left = "0px";
+    //el_target.style.top = (decal/2)+"px";
+    
     targetW = H-decal;
     targetH = H-decal;
+    
+    // droitier
     targetX = W-H+decal;
+    // gaucher
+    //targetX = 0;
+
     targetY = 0+decal/2;
 
     var marge=Math.round(W*0.02);
@@ -508,9 +520,21 @@ function adapt2viewport()
     el_zoom.height = H;
     el_zoom.style.width = (W-H+decal-marge)+"px";
     el_zoom.style.height = H+"px";
+    
+    // droitier
     el_zoom.style.left = "0px";
+
+    // gaucher
+    //el_zoom.style.left = (W-H+decal)+"px";
+    
     el_zoom.style.top = "0px";
+    
+    // droitier
     zoomX=0;
+
+    // gaucher
+    //zoomX=W-H+decal;
+    
     zoomY=0;
     zoomH=H;
     zoomW=W-H+decal-marge;
@@ -521,6 +545,10 @@ function adapt2viewport()
     document.getElementsByTagName("body")[0].style.width="100%";
     document.getElementById("saisie").style.width=(W-H+decal-marge)+"px";
     document.getElementById("analyse").style.width=(W-H+decal-marge)+"px";
+
+    // gaucher
+    //document.getElementById("saisie").style.float="left";
+    //document.getElementById("analyse").style.float="left";
   }
   else // orientation verticale
   {

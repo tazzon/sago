@@ -612,8 +612,9 @@ function stop_coord(event)
   document.getElementById("zoom_fl"+n_volee+"_"+num_fl).style.display="block";
 
   // on place et on motre la flèche dans la cible
-  document.getElementById("target_fl"+n_volee+"_"+num_fl).setAttribute("cx",50*fl[n_fl].x);
-  document.getElementById("target_fl"+n_volee+"_"+num_fl).setAttribute("cy",50*fl[n_fl].y);
+  //document.getElementById("target_fl"+n_volee+"_"+num_fl).setAttribute("cx",50*fl[n_fl].x);
+  //document.getElementById("target_fl"+n_volee+"_"+num_fl).setAttribute("cy",50*fl[n_fl].y);
+  document.getElementById("target_fl"+n_volee+"_"+num_fl).setAttribute('transform','translate('+(50*fl[n_fl].x)+','+(50*fl[n_fl].y)+')');
   document.getElementById("target_fl"+n_volee+"_"+num_fl).style.display="block";
   
   zoom_actif=false;
@@ -821,7 +822,10 @@ function create_target()
   // les flèches qui seront tirées
   for(var v=0;v<serie.nb_v;v++)
     for(var f=0;f<serie.nb_f;f++)
-      target+='<circle cx="1000" cy="1000" r="'+arrowR+'" stroke-width="'+(arrowR*5)+'" style="display:none" class="arrowt" id="target_fl'+v+'_'+f+'"/>';
+      target+='<g id="target_fl'+v+'_'+f+'" style="display:none">'
+            + '<circle cx="0" cy="0" r="'+arrowR+'" class="arrowt"/>' // tube
+            + '<circle cx="0" cy="0" r="30" class="arrowtcirc"/>' // cercle de marquage
+            + '</g>';
     
   target+='</g></svg>';
   
@@ -1261,22 +1265,18 @@ function display_fl()
   {
     for(var f=0;f<serie.nb_f;f++)
     {
-      //if(serie.volees[v][f])
       if(sn[v][f])
       {
         var fd=document.getElementById("target_fl"+v+"_"+f);
         if(tab_display[v][f] == true)
         {
-          //fd.setAttribute("cx",50*serie.volees[v][f].x);
-          //fd.setAttribute("cy",50*serie.volees[v][f].y);          
-          fd.setAttribute("cx",50*sn[v][f].x);
-          fd.setAttribute("cy",50*sn[v][f].y);          
+          //fd.setAttribute("cx",50*sn[v][f].x);
+          //fd.setAttribute("cy",50*sn[v][f].y);
+          fd.setAttribute('transform','translate('+(50*sn[v][f].x)+','+(50*sn[v][f].y)+')');          
           fd.style.display="block";
-          //if(min === false || min < serie.volees[v][f].r())
+
           if(min === false || min < sn[v][f].r())
-            //if(serie.volees[v][f].v(2)>(ignoreInfReussite?zone_reussite("value"):ignore0?0:-1))
             if(sn[v][f].v(2)>(ignoreInfReussite?zone_reussite("value"):ignore0?0:-1))
-              //min=serie.volees[v][f].r();
               min=sn[v][f].r();
             else
               nb_fl_ignore++;
