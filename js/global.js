@@ -1,7 +1,7 @@
 
 var infoapp= {
   version : '0.4.0',
-  datecode : 20170305.02,
+  datecode : 20170420.01,
   name : "Sago",
   mail : "tazzon@free.fr",
   git : 'https://github.com/tazzon/sago',
@@ -47,8 +47,13 @@ news[8]={
 };
 news[9]={
   new:'<p>Le cercle de repérage des flèches en cible a subit quelques modifications pour améliorer le repérage.</p>',
-  datecode:20170419.01
+  datecode:20170419.02
 };
+news[10]={
+  new:'<p>Une nouveau bouton est disponible dans le menu pour passer l’interface en plein écran. Cette fonction reste expérimentale et peut ne pas fonctionner.</p>',
+  datecode:20170420.01
+};
+
 
 var el_visible="session";
 var high_contrast=false;

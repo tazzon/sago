@@ -13,6 +13,9 @@ function init_()
     else
       localStorage.removeItem("reload");
   }
+  //if(JSON.parse(localStorage.getItem('fullscreen')) == true)
+    //toggleFullScreen();
+  
   document.getElementById("page_title").innerHTML = infoapp.name+" "+infoapp.version;
   visu("session");
   //profil.write();
@@ -823,8 +826,8 @@ function create_target()
   for(var v=0;v<serie.nb_v;v++)
     for(var f=0;f<serie.nb_f;f++)
       target+='<g id="target_fl'+v+'_'+f+'" style="display:none">'
+            + '<circle cx="0" cy="0" r="20" class="arrowtcirc"/>' // cercle de marquage de la taille d'une zone
             + '<circle cx="0" cy="0" r="'+arrowR+'" class="arrowt"/>' // tube
-            + '<circle cx="0" cy="0" r="30" class="arrowtcirc"/>' // cercle de marquage
             + '</g>';
     
   target+='</g></svg>';
