@@ -994,7 +994,7 @@ hr {
   float: right;
   margin-right: 1em;
   text-align: center;
-  margin-bottom: 2em;
+  /* margin-bottom: 2em; */
 }
 
 .separateur {
