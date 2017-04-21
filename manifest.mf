@@ -1,6 +1,6 @@
 CACHE MANIFEST
  
-# version : sago_0.4.0 20170421.01
+# version : sago_0.4.0 20170421.02
  
 CACHE:
 index.html

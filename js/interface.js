@@ -486,6 +486,8 @@ function adapt2viewport()
   document.getElementById("local").style.height = H-1+"px";
   document.getElementById("options").style.height = H+"px";
   document.getElementById("tab_score").style.height = H+"px";
+  document.getElementById("session").style.height = H+"px";
+  document.getElementById("chrono").style.height = 0.96*H+"px";
   var decal=0;
   if (W > H) // orientation horizontale
   {
