@@ -1,7 +1,7 @@
 
 var profil={
   load:function(p){
-    if(p<0) return;
+    if(p<0 || p==null) return;
     var a=userp.profils[p];
     if(typeof(p) == "object")
       a=userp.last_profil;
@@ -669,7 +669,7 @@ function about()
         +'<p>Datecode : '+infoapp.datecode+'<br>'
         +'Git : <a href="'+infoapp.git+'" style="position:relative;left:-0.4em"><span class="icon icon-github-circled"></span>'+infoapp.name+'</a></p>'
         +'<hr>'
-        +'<p>'+infoapp.name+' est une application destinée aux archers qui fonctionne dans un navigateur. Elle permet la saisie de séries d’entraînement de tir à l’arc sur cible anglaise.</p>'
+        +'<p>'+infoapp.name+' est une application destinée aux archers. Elle fonctionne dans un navigateur et permet la saisie de séries d’entraînement de tir à l’arc sur cible anglaise.</p>'
         );
 };
 

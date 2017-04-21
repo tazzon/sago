@@ -53,7 +53,7 @@ table {
 
 #calendar{
   /* border-bottom:2px solid; */
-  margin:0.5em auto 0.5em auto;
+  margin: 0em auto;
   width:90%;
 }
 #calendar tr{
@@ -343,8 +343,8 @@ table {
 }
 #analyse table {
   width:100%;
-  margin-top:1em;
-  margin-bottom:0.5em
+  /* margin-top:1em; */
+  margin-bottom:0.5em;
 }
 #analyse table td {
   border:none;
@@ -771,6 +771,7 @@ display:none;
 }
 #analyse {
   display:none;
+  /* margin-top: .5em; */
 }
 #tab_score table {
   /* margin-left:-1em; */
@@ -788,6 +789,7 @@ display:none;
 #local {
   display:none;
   /* width:90%; */
+  /* margin-top: .5em; */
   /* margin-left:5%; */
 }
 .ovf {
@@ -990,7 +992,7 @@ hr {
 }
 .right {
   float: right;
-  margin-right: 4em;
+  margin-right: 1em;
   text-align: center;
   margin-bottom: 2em;
 }
