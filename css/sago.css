@@ -278,8 +278,8 @@ table {
 }
 
 #gotosaisie {
-  right:0;
-  position: absolute;
+  left: 75%;
+  position: relative;
 }
 
 /* solarized colors */
@@ -388,7 +388,7 @@ table {
   margin: 2%;
   /*text-align:center;*/
   /*background-color:red;*/
-  height: 94%;
+  height: 92%;
   text-shadow:0.1em 0.1em 0.2em black;
   border-radius: 0.5em;
   top: 0;
@@ -595,8 +595,14 @@ display:none;
 }
 #options {
   display:none;
-  width:94%;
-  margin-left:3%;
+  overflow-y: scroll;
+  width: 94%;
+  margin-left: 3%;
+  /* height: 100%; */
+  height: 300px;
+  /* position: absolute; */
+  /* top: 0; */
+  /* left: 0; */
 }
 #options p{
   margin-top:1em;
@@ -639,7 +645,9 @@ display:none;
 #tab_score {
   display:none;
   /* padding-left:1em; */
-  padding-top:3%;
+  /* padding-top: 3%; */
+  overflow-y: scroll;
+  height: 300px;
 }
 #saisie {
   display:none;
@@ -724,9 +732,10 @@ display:none;
 }
 #button_menu {
   position:fixed;
-  bottom:0;
-  left:0;
-  z-index:4;
+  bottom: 0.2em;
+  /* left:0; */
+  right: 0;
+  z-index: 1000;
 }
 
 #score {
@@ -752,6 +761,7 @@ display:none;
   font-size:1.2em;
   margin-bottom:1em;
   padding-bottom:0.5em;
+  padding-top: 0.5em;
   border-bottom:0.1em solid;
 }
 #analyse {
@@ -762,6 +772,7 @@ display:none;
   /* width:100%; */
   text-align: center;
   margin-top:1em;
+  margin-bottom: 1em;
 }
 #tab_score button {
   margin:0em 1em 0 1em;
@@ -855,7 +866,7 @@ input[type=file]{
   margin-left: 5%;
   font-size:1em;
   margin-top: 0.2em;
-  height: 8%;
+  height: 7%;
   text-align:left;
   padding-left:12%;
 }
@@ -895,7 +906,11 @@ input[type=file]{
 }
 #but_viseur:before {
   font-family:sago;
-  content:'\e825  '
+  content:'\e81f  '
+}
+#but_fullscreen:before {
+  font-family:sago;
+  content:'\e816  ';
 }
 #but_chrono:before {
   font-family:sago;
@@ -910,6 +925,9 @@ input[type=file]{
   text-align:center;
   vertical-align:middle;
   border-radius:0.2em;
+}
+.result{
+  /* margin-left:1em; */
 }
 .cellule_masq {
   visibility:hidden;
@@ -1057,7 +1075,7 @@ sup {
   #menu button {
     width: 42%;
     font-size:1.3em;
-    height: 16%;
+    height: 13%;
     text-align:left;
     padding-left:3%;
   }

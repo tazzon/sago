@@ -24,7 +24,7 @@
     <button id="but_chrono" onclick="visu('chrono');visu_target(0)">Chronomètre</button>    
     <button id="but_local"  onclick="visu('local');visu_target(0);upcal.update()">Sauvegardes</button>
     <button id="but_options" onclick="visu('options');visu_target(0)">Options</button>
-    <!--button id="but_viseur" onclick="visu('viseur');visu_target(0)">Calcul viseur</button-->
+    <button id="but_viseur" onclick="visu('viseur');visu_target(0)">Calcul viseur</button>
     <button id="but_help" onclick="help()">Besoin d’aide</button>
     <button id="but_fullscreen" onclick="toggleFullScreen()">Plein écran</button>
     <button id="but_about" onclick="about()">À propos</button>
@@ -150,7 +150,7 @@
     </div>
   </div>
 
-  <div id="options">
+<div id="options">
     <h1>Affichage</h1>
     <p>
       Interface
@@ -205,7 +205,7 @@
   <tr><td></td><td>Distances</td><td>Réglages</td></tr>
   <tr><td>1</td><td><input type="text" id="d1"></td><td><input type="text" id="r1"></td></tr>
   <tr><td>2</td><td><input type="text" id="d2"></td><td><input type="text" id="r2"></td></tr>
-  <tr><td>X</td><td><input type="text" id="dx"></td><td><input type="text" readonly="readonly" id="rx"></td></tr>
+  <tr><td>X</td><td><input onchange="calc_rx()" type="text" id="dx"></td><td><input type="text" readonly="readonly" id="rx"></td></tr>
   <tr><td></td><td colspan="2"><button onclick="calc_rx()"><span class="icon icon-calc"></span> Calculer</button></td></tr>
 </table>
 <p>

@@ -481,9 +481,11 @@ function adapt2viewport()
 
   var W = window.innerWidth;
   var H = window.innerHeight;
-  // adaptation de la taille du texte
+  // adaptation de la taille du texte et des conteneur
   document.getElementsByTagName("body")[0].style.height = H-1+"px";
   document.getElementById("local").style.height = H-1+"px";
+  document.getElementById("options").style.height = H+"px";
+  document.getElementById("tab_score").style.height = H+"px";
   var decal=0;
   if (W > H) // orientation horizontale
   {
@@ -1333,7 +1335,7 @@ function getPPI()
 // calcul de la valeur du réglage viseur à partir de deux autres réglages
 function calc_rx()
 {
-  var b=1.3;
+  var b=1.41;
   d1=Math.pow(parseFloat(document.getElementById("d1").value),b);
   d2=Math.pow(parseFloat(document.getElementById("d2").value),b);
   r1=document.getElementById("r1").value;

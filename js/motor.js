@@ -214,8 +214,9 @@ function valid_session()
   // création des tableau de feuille de marque et d'extrapolation
   var tableau = "";
   tableau += '<div id="name_session"></div>';
-  tableau +='<button id="gotosaisie" onclick="visu(\'saisie\');visu_target(1)"><span class="icon icon-bullseye"></span></button>';
+  
   tableau += '<button onclick="save_local()"><span class="icon icon-floppy"></span></button>';
+  tableau +='<button id="gotosaisie" onclick="visu(\'saisie\');visu_target(1)"><span class="icon icon-bullseye"></span></button>';
   tableau += '<table class="marque">';
   var marque_width=95/(nb_fl_volee+4)+"%";
   for (var c = 0 ; c<nb_volee ; c++)
@@ -225,7 +226,7 @@ function valid_session()
     {
       tableau += '<td class="cellule" style="width:'+marque_width+'" id="tab_'+c+'_'+l+'"></td>';
     }
-    tableau += '<td class="cellule" style="width:'+marque_width+'" id="result_'+c+'"></td>';
+    tableau += '<td class="cellule result" style="width:'+marque_width+'" id="result_'+c+'"></td>';
     if(c!=0)
       tableau += '<td class="cellule" style="width:'+marque_width+'" id="cumul_'+c+'"></td>';
     else
