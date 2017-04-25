@@ -314,16 +314,28 @@ function valid_session()
 
   tab_ana += '</tr></table>';
   
-  tab_ana+='<p class="legend">Zone de réussite : <span id="zone_reussite_val"></span><div class="zone_reussite_legend"></div></p>'
-          +'<p class="legend">Moyenne : <span id="moy_fleche_val"></span><div class="moy_fleche_legend"></div></p>';
+  tab_ana += '<table class="optana">'
+          + '<tr><td>Zone réussite > <span id="zone_reussite_val"></span><div class="zone_reussite_legend"></div></td><td>Zoom</td></tr>'
+          + '<tr><td>Moyenne = <span id="moy_fleche_val"></span><div class="moy_fleche_legend"></div></td><td id="zAnaManu"><button onclick="target_view(\'+\');zoomAnalyseAuto=false;markZoomAnalyseAuto()"><span class="icon icon-zoom-out"></span></button><button onclick="target_view(\'-\');zoomAnalyseAuto=false"><span class="icon icon-zoom-in"></span></button></td></tr>'
+          + '<tr><td><input type="checkbox" id="ign0" onclick="ignore0=this.checked;auto_trace()"><label for="ign0">Ignorer = 0</label></td><td id="zAnaAuto"><button onclick="zoomAnalyseAuto=true;markZoomAnalyseAuto();auto_trace()">auto</button></td></tr>'
+          + '<tr><td><input type="checkbox" id="ignInfR" onclick="ignoreInfReussite=this.checked;auto_trace()"/><label for="ignInfR">Ignorer < zone réussite</label></td><td></td></tr>'
+          + '<tr><td colspan="2"><div id="nb_fl_ignore"></div></td></tr>';
+
+  tab_ana += '</table>';
+
+  //tab_ana+='<p class="legend">Zone de réussite : <span id="zone_reussite_val"></span><div class="zone_reussite_legend"></div></p>'
+  //        +'<p class="legend">Moyenne : <span id="moy_fleche_val"></span><div class="moy_fleche_legend"></div></p>';
           
-  tab_ana+='<p><input type="checkbox" id="ign0" onclick="ignore0=this.checked;auto_trace()"><label for="ign0">Ignorer = 0</label><br>';
-  tab_ana+='<input type="checkbox" id="ignInfR" onclick="ignoreInfReussite=this.checked;auto_trace()"/><label for="ignInfR">Ignorer < zone réussite</label>';
-  tab_ana+='<br><div id="nb_fl_ignore"></div></p>';
+  //tab_ana+='<p><input type="checkbox" id="ign0" onclick="ignore0=this.checked;auto_trace()"><label for="ign0">Ignorer = 0</label><br>';
+  //tab_ana+='<input type="checkbox" id="ignInfR" onclick="ignoreInfReussite=this.checked;auto_trace()"/><label for="ignInfR">Ignorer < zone réussite</label>';
+  //tab_ana+='<br><div id="nb_fl_ignore"></div></p>';
+  
+
   document.getElementById("analyse").innerHTML = tab_ana;
   
   document.getElementById("ign0").checked=ignore0;
   document.getElementById("ignInfR").checked=ignoreInfReussite;
+  markZoomAnalyseAuto();
   
   select_arrow("init");
   fl=[];
@@ -838,18 +850,20 @@ function create_target()
 };
 function target_view(zone)
 {
-  if(isNaN(zone))
-    zone=userp.nb_zone;
+  
   if(zone=="+")
   {
     nb_zone++;
     zone=nb_zone;
   }
-  if(zone=="-")
+  else if(zone=="-")
   {
     nb_zone--;
     zone=nb_zone;
   }
+  else if(isNaN(zone))
+    zone=userp.nb_zone;
+
   if(zone>serie.nb_zone_spot+5) // au plus les zones pour le spot
     zone=serie.nb_zone_spot+5;
   if(zone<2) // toujours au moins 9 et 10
@@ -1152,11 +1166,30 @@ function draw_disp(a)
   document.getElementById("displ1").setAttribute("x2",50*dl1);
   document.getElementById("displ2").setAttribute("x1",50*dl2);
   document.getElementById("displ2").setAttribute("x2",50*dl2);
+};
 
+function masqInfReussite(act)
+{
+  for(var v=0;v<serie.volees.length;v++)
+  {
+    for(f=0;f<sn[v].length;f++)
+    {
+      if(sn[v][f] /*&& act==true*/)
+      {
+        if(sn[v][f].v(2)<=(ignoreInfReussite?zone_reussite("value"):ignore0?0:-1))
+          document.getElementById('target_fl'+v+'_'+f).children[0].setAttribute("class",'arrowtcirc arrowtcirc_ign');
+        else
+          document.getElementById('target_fl'+v+'_'+f).children[0].setAttribute("class",'arrowtcirc');
+      }
+    }
+  }
 };
 
 function transition_target_view(v)
 {
+    if(zoomAnalyseAuto != true)
+      return;
+
     max=200; // casse la boucle si il y a un problème. Les mouvement se font par 0.1 zones et maximum 15 zone peuvent être saisies donc 150 d'ou un peu plus
     mvt=11-Math.floor(v)-nb_zone;
     var it=Math.floor(450/Math.abs(mvt));
@@ -1299,7 +1332,9 @@ function display_fl()
     document.getElementById("nb_fl_ignore").innerHTML='<span class="icon icon-info-circled"></span> '+nb_fl_ignore+" flèches ignorées";
   else
     document.getElementById("nb_fl_ignore").innerHTML="";
-
+  
+  masqInfReussite(ignoreInfReussite || ignore0);
+  
   if(min !== false)
     transition_target_view(10.5-min); // une zone de plus que la valeur mini
   else

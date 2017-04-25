@@ -347,9 +347,41 @@ table {
   margin-bottom:0.5em;
 }
 #analyse table td {
-  border:none;
+  border: none;
   padding:0;
 }
+.optana tr:nth-child(3) td:nth-child(2) button {
+  width:94%;
+}
+.optana td {
+  margin:0;
+  padding: 0.2em 0 !important;
+  /*border: 1px solid !important; */
+  /* vertical-align: middle; */
+  height: 1.5em;
+}
+.optana button {
+  width:46%;
+  padding:0;
+  margin:0 2%;
+}
+.optana td:nth-child(2)
+{
+  text-align:center;
+  width:25%
+}
+.zAna button {
+  background-color:#eee8d5;
+  color:#002b36;
+  border: none;
+}
+.zAnaMode button {
+  background-color:#859900;
+  color:#fdf6e3;
+  border: none;
+}
+
+
 .help {
   display:none;
   width:1em;
@@ -520,6 +552,10 @@ table {
   /* stroke-dasharray: 11 20; */
   /* stroke-linecap: round; */
 }
+.arrowtcirc_ign {
+  stroke:grey;
+  fill:lightgray;
+}
 .out_target{
   fill:none;
   stroke:#839496;
@@ -545,21 +581,24 @@ table {
   font-size:0.95em;
 }
 .moy_fleche_legend{
-  border: 0.15em solid #ffa07a;
-  width: 0.6em;
-  height: 0.6em;
-  float:left;
+  border-top: 0.25em solid #ffa07a;
+  width: 1.5em;
+  height: 0 !important;
+  float: left;
+  position: relative;
+  top: .5em;
   margin:0 0.5em 0 0.5em;
-  border-radius: 50%;
-  
+  /* border-radius: 50%; */
 }
 .zone_reussite_legend {
-  border: 0.15em dotted #7cfc00;
-  width: 0.6em;
-  height: 0.6em;
+  border-top: 0.25em dotted #7cfc00;
+  width: 1.5em;
+  height: 0 !important;
+  position: relative;
+  top: .5em;
   margin:0 0.5em 0 0.5em;
   float:left;
-  border-radius: 50%;
+  /* border-radius: 50%; */
 }
 #zone_fleche {
   stroke:#fa58f4;
@@ -740,9 +779,24 @@ display:none;
   bottom: 0.2em;
   /* left:0; */
   right: 0;
-  z-index: 1000;
+  z-index: 2;
 }
-
+#button_help {
+  position:fixed;
+  bottom:.4em;
+  left:0.4em;
+  /*margin:0em 0em 0em 0em;*/
+  /*right: 0;*/
+  z-index: 2;
+}
+#button_help:before {
+  font-size:1.3em;
+  font-family:sago;
+  content:'\e800';
+  color:#268bd2;
+  /*background-color:#eee8d5;*/
+  border-radius:50%;
+}
 #score {
   position:relative;
   top:-45px;

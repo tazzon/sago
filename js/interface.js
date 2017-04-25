@@ -1382,7 +1382,15 @@ function toggleFullScreen() {
   adapt2viewport();
 };
 
-
+function markZoomAnalyseAuto()
+{
+  document.getElementById("zAnaAuto").setAttribute("class",'zAna');
+  document.getElementById("zAnaManu").setAttribute("class",'zAna');
+  if(zoomAnalyseAuto == true)
+    document.getElementById("zAnaAuto").setAttribute("class",'zAnaMode');
+  else
+    document.getElementById("zAnaManu").setAttribute("class",'zAnaMode');
+};
 
 
 
