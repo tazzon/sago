@@ -852,14 +852,16 @@ display:none;
   overflow:scroll;
 }
 .ovfgradtop {
-  height:2%;
+  height: 3%;
   position:relative;
-  top:2%;
+  top: 2%;
+  /* background-color: red; */
 }
 .ovfgradbot {
-  height:4%;
+  height: 5%;
   position:relative;
-  bottom:4%;
+  bottom: 4%;
+  /* background-color: red; */
 }
 #target {
   background-color:rgba(0,0,0,0);
