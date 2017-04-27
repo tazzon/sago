@@ -316,7 +316,7 @@ function valid_session()
   
   tab_ana += '<table class="optana">'
           + '<tr><td>Zone réussite > <span id="zone_reussite_val"></span><div class="zone_reussite_legend"></div></td><td>Zoom</td></tr>'
-          + '<tr><td>Moyenne = <span id="moy_fleche_val"></span><div class="moy_fleche_legend"></div></td><td id="zAnaManu"><button onclick="target_view(\'+\');zoomAnalyseAuto=false;markZoomAnalyseAuto()"><span class="icon icon-zoom-out"></span></button><button onclick="target_view(\'-\');zoomAnalyseAuto=false"><span class="icon icon-zoom-in"></span></button></td></tr>'
+          + '<tr><td>Moyenne = <span id="moy_fleche_val"></span><div class="moy_fleche_legend"></div></td><td id="zAnaManu"><button onclick="if(zoomAnalyseAuto==false) target_view(\'+\');zoomAnalyseAuto=false;markZoomAnalyseAuto()"><span class="icon icon-zoom-out"></span></button><button onclick="if(zoomAnalyseAuto==false) target_view(\'-\');zoomAnalyseAuto=false;;markZoomAnalyseAuto()"><span class="icon icon-zoom-in"></span></button></td></tr>'
           + '<tr><td><input type="checkbox" id="ign0" onclick="ignore0=this.checked;auto_trace()"><label for="ign0">Ignorer = 0</label></td><td id="zAnaAuto"><button onclick="zoomAnalyseAuto=true;markZoomAnalyseAuto();auto_trace()">auto</button></td></tr>'
           + '<tr><td><input type="checkbox" id="ignInfR" onclick="ignoreInfReussite=this.checked;auto_trace()"/><label for="ignInfR">Ignorer < zone réussite</label></td><td></td></tr>'
           + '<tr><td colspan="2"><div id="nb_fl_ignore"></div></td></tr>';

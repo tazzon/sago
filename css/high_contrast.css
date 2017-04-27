@@ -92,4 +92,9 @@ td.today {
   border-color:#073642;
 }
 
-
+.ovfgradtop {
+  background:linear-gradient(to top,  rgba(255,255,255,0) 0%,rgba(253,246,227,1) 70%);
+}
+.ovfgradbot {
+  background:linear-gradient(to bottom,  rgba(255,255,255,0) 0%,rgba(253,246,227,1) 70%);
+}

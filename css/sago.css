@@ -847,11 +847,20 @@ display:none;
   /* margin-left:5%; */
 }
 .ovf {
-  height:70%;
-  /*background-color:red;*/
+  height: 80%;
+  /* background-color:red; */
   overflow:scroll;
 }
-
+.ovfgradtop {
+  height:2%;
+  position:relative;
+  top:2%;
+}
+.ovfgradbot {
+  height:4%;
+  position:relative;
+  bottom:4%;
+}
 #target {
   background-color:rgba(0,0,0,0);
   /* background-color: red; */

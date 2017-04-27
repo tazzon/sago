@@ -1000,7 +1000,7 @@ function list_from_date(d)
       select_local += '<td onclick="calendrier('+date.getFullYear()+','+date.getMonth()+')"><span class="icon icon-up-big"></span><span class="icon icon-calendar"></span></td>';
       select_local += '<td>'+date.getDate()+" "+month[date.getMonth()]+" "+date.getFullYear()+'</td>';
       select_local += '</tr></table>';
-      select_local += "<div class=ovf>";
+      select_local += "<div class=\"ovfgradtop\"></div><div class=\"ovf\">";
 
     }
     // création des éléments sauvegardés
@@ -1024,7 +1024,7 @@ function list_from_date(d)
                    + "</div></div>";
 
   }
-  select_local += '</div>';
+  select_local += '</div><div class=\"ovfgradbot\"></div>';
   if(list_sessions.length==0) //remonte au calendrier si il n'y a plus d'éléments
     calendrier(parseInt(d.substr(0,4)),parseInt(d.substr(5,2)))
   else //sinon actualise la liste
