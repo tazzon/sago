@@ -344,6 +344,7 @@ function visu(el)
 {
   if(document.getElementById(el)==null)
     return;
+
   document.getElementById(el_visible).style.display = "none";
   visu_analyse_el(el);
 
@@ -359,10 +360,10 @@ function visu_analyse_el(toEl)
   }
   if(toEl=="analyse")
   {
-    document.getElementById("zone_fleche").style.display="block";
+    //document.getElementById("zone_fleche").style.display="block";
     document.getElementById("zone_reussite").style.display="block";
     document.getElementById("moy_fleche").style.display="block";
-    post_exec="";
+    //post_exec="";
     for(var v=0;v<serie.nb_v;v++) // sauvegarde des flèches se trouvant sur la saisie et restauration de celles d'analyse
     {
       fl_saisie_save[v]=[];
@@ -375,6 +376,7 @@ function visu_analyse_el(toEl)
         document.getElementById("target_fl"+v+"_"+f).style.display="none";
       }
     }
+
     auto_trace();
     zone_reussite();
     moyenne_f();
@@ -463,15 +465,17 @@ function commentaire(n,consult)
   for (var v=0 ; v<nb_volee ; v++)
   {
     if(serie.com[v] != "")
-    {
       document.getElementById("com_"+v).className = "com_ok";
-    }
     else
-    {
       document.getElementById("com_"+v).className = "no_com";
-    }
   }
-
+  if(n_volee < nb_volee)
+  {
+    if(serie.com[n_volee] != "")
+      document.getElementById("but_comment_saisie").className="icon icon-comment";
+    else
+      document.getElementById("but_comment_saisie").className="icon icon-comment-empty";
+  }
 };
 
 function adapt2viewport()
@@ -1050,6 +1054,8 @@ function aff_mire(c)
 
 function color_marque(c)
 {
+    userp.color_marque=c;
+    user_pref("save");
     for(var v=0;v<serie.volees.length;v++)
     {
       for(var f=0;f<serie.nb_f;f++)
@@ -1062,6 +1068,7 @@ function color_marque(c)
 
       }
     }
+    if(v!=0 || serie.nb_v == n_volee) select_arrow("refresh");
 };
 
 function export_csv(id)

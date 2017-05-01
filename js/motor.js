@@ -254,7 +254,7 @@ function valid_session()
     tableau += '<td id="saisie_fl'+i+'" style="width:'+(100/nb_fl_volee)+'%" class="cellule"></td>';
   }
   tableau += "</tr></table>";
-  //tableau += '<div class="center_button"><button onclick="prev_arrow(\'all\')"><span class="icon icon-reply-all"></span></button><button onclick="prev_arrow()"><span class="icon icon-reply"></span></button><button onclick="commentaire(n_volee)"><span class="icon icon-comment"></span></button><button onclick="volee_suivante()"><span class="icon icon-ok"></span></button></div>';
+  //tableau += '<div class="center_button"><button onclick="prev_arrow(\'all\')"><span class="icon icon-reply-all"></span></button><button onclick="prev_arrow()"><span class="icon icon-reply"></span></button><button onclick="commentaire(n_volee)"><span class="but_comment_saisie"></span></button><button onclick="volee_suivante()"><span class="icon icon-ok"></span></button></div>';
   //tableau += '<div class="center_button"><button onclick="visu(\'tab_score\');visu_target(0)"><span class="icon icon-table"></span></button><button onclick="visu(\'chrono\');visu_target(0)"><span class="icon icon-clock"></span></button></div>';
   tableau += '<div class="center_button">'
           //+  '<button onclick="visu(\'tab_score\');visu_target(0)"><span class="icon icon-table"></span></button>'
@@ -267,7 +267,7 @@ function valid_session()
           +  '</div>';
   tableau += '<div class="center_button">'
           +  '<button onclick="visu(\'tab_score\');visu_target(0)"><span class="icon icon-table"></span></button>'
-          +  '<button onclick="commentaire(n_volee)"><span class="icon icon-comment"></span></button>'
+          +  '<button onclick="commentaire(n_volee)"><span id="but_comment_saisie"></span></button>'
           +  '<button onclick="visu(\'chrono\');visu_target(0)"><span class="icon icon-clock"></span></button>'
           //+  '<button onclick="prev_arrow(\'all\')"><span class="icon icon-reply-all"></span></button>'
           //+  '<button onclick="select_arrow(\'prev\')"><span class="icon icon-reply"></span></button>'
@@ -316,8 +316,8 @@ function valid_session()
   
   tab_ana += '<table class="optana">'
           + '<tr><td>Zone réussite > <span id="zone_reussite_val"></span><div class="zone_reussite_legend"></div></td><td>Zoom</td></tr>'
-          + '<tr><td>Moyenne = <span id="moy_fleche_val"></span><div class="moy_fleche_legend"></div></td><td id="zAnaManu"><button onclick="if(zoomAnalyseAuto==false) target_view(\'+\');zoomAnalyseAuto=false;markZoomAnalyseAuto()"><span class="icon icon-zoom-out"></span></button><button onclick="if(zoomAnalyseAuto==false) target_view(\'-\');zoomAnalyseAuto=false;;markZoomAnalyseAuto()"><span class="icon icon-zoom-in"></span></button></td></tr>'
-          + '<tr><td><input type="checkbox" id="ign0" onclick="ignore0=this.checked;auto_trace()"><label for="ign0">Ignorer = 0</label></td><td id="zAnaAuto"><button onclick="zoomAnalyseAuto=true;markZoomAnalyseAuto();auto_trace()">auto</button></td></tr>'
+          + '<tr><td>Moyenne = <span id="moy_fleche_val"></span><div class="moy_fleche_legend"></div></td><td id="zAnaManu"><button onclick="if(zoomAnalyseAuto==false){target_view(\'+\');zoomAnalyseNbZone=nb_zone;};zoomAnalyseAuto=false;markZoomAnalyseAuto()"><span class="icon icon-zoom-out"></span></button><button onclick="if(zoomAnalyseAuto==false){target_view(\'-\');zoomAnalyseNbZone=nb_zone;};zoomAnalyseAuto=false;;markZoomAnalyseAuto()"><span class="icon icon-zoom-in"></span></button></td></tr>'
+          + '<tr><td><input type="checkbox" id="ign0" onclick="ignore0=this.checked;auto_trace()"><label for="ign0">Ignorer = 0</label></td><td id="zAnaAuto"><button onclick="zoomAnalyseAuto=true;markZoomAnalyseAuto();auto_trace();zoomAnalyseNbZone=nb_zone;">auto</button></td></tr>'
           + '<tr><td><input type="checkbox" id="ignInfR" onclick="ignoreInfReussite=this.checked;auto_trace()"/><label for="ignInfR">Ignorer < zone réussite</label></td><td></td></tr>'
           + '<tr><td colspan="2"><div id="nb_fl_ignore"></div></td></tr>';
 
@@ -375,8 +375,14 @@ function select_arrow(action)
 {
   // effacement de tout
   for(var f=0;f<serie.nb_f;f++)
-    document.getElementById("saisie_fl"+f).className="cellule";
-
+  {
+    if(document.getElementById("saisie_fl"+f))
+    {
+      document.getElementById("saisie_fl"+f).className="cellule";
+      if(userp.color_marque == true)
+        document.getElementById("saisie_fl"+f).className+=" col"+parseInt(document.getElementById("saisie_fl"+f).innerHTML);
+    }
+  }
   if(action == "init")
     num_fl=0;
   else if(action == "prev")
@@ -395,19 +401,26 @@ function select_arrow(action)
     document.getElementById("target_fl"+n_volee+"_"+num_fl).style.display='none';
     document.getElementById("zoom_fl"+n_volee+"_"+num_fl).style.display='none';
     document.getElementById("saisie_fl"+num_fl).innerHTML="";
+    document.getElementById("saisie_fl"+num_fl).className+="cellule";
   }
   else
-    if(num_fl<serie.nb_f) num_fl++;
+  {
+    if(num_fl<serie.nb_f && action != "refresh")
+      num_fl++;
+  }
   
+  if(document.getElementById("saisie_fl"+num_fl))
+  {
   if(num_fl < serie.nb_f)
   {
-    document.getElementById("saisie_fl"+num_fl).className+=" cel_on";
-    document.getElementById("num_fleche").innerHTML=num_fl+1;
-    document.getElementById("aff_num_fleche").style.display="initial";
+      document.getElementById("saisie_fl"+num_fl).className+=" cel_on";
+      document.getElementById("num_fleche").innerHTML=num_fl+1;
+      document.getElementById("aff_num_fleche").style.display="initial";
+    }
+    else
+      document.getElementById("aff_num_fleche").style.display="none";
   }
-  else
-    document.getElementById("aff_num_fleche").style.display="none";
-
+  commentaire();
   /*console.debug("n_fl:"+n_fl+" num_fl:"+num_fl);
   var nf=[];
   for(var f=0;f<fl.length;f++)
@@ -502,7 +515,6 @@ function volee_suivante(a)
       text_objectif='<span class="obj_saisie">Objectif '+diff_tot.replace('small','normal')+'<span>';
     document.getElementById("num_volee").innerHTML=(n_volee+1)+text_objectif;
   }
- 
 };
 
 function tri()
@@ -1187,7 +1199,7 @@ function masqInfReussite(act)
 
 function transition_target_view(v)
 {
-    if(zoomAnalyseAuto != true)
+    if(zoomAnalyseAuto == false && el_visible == "analyse")
       return;
 
     max=200; // casse la boucle si il y a un problème. Les mouvement se font par 0.1 zones et maximum 15 zone peuvent être saisies donc 150 d'ou un peu plus
@@ -1211,15 +1223,33 @@ function transition_target_view(v)
     return i*it;
 };
 
+var dbclick=[];
 function aff_volee_num(v)
 {
   if(v>=serie.volees.length)
     return;
     
-  aff_fl.v[v] = !aff_fl.v[v];
+  var now=new Date().getTime();
+  //console.debug(dbclick);
+
+  var db=now-dbclick[v];
+  dbclick[v]=now;
+
+  //console.debug('db='+ db+" now="+now);
+  if(db < 500)
+  {
+    
+    for(i=0;i<serie.nb_v;i++)
+      aff_fl.v[i]=false;
+    aff_fl.v[v]=true;
+
+  }
+  else
+  {
+    aff_fl.v[v] = !aff_fl.v[v];
+  }
   for(f=0;f<serie.nb_f;f++)
     aff_fl.f[f]=false;
-
   auto_trace();
 };
 function aff_fl_num(f)
@@ -1335,11 +1365,18 @@ function display_fl()
   
   masqInfReussite(ignoreInfReussite || ignore0);
   
-  if(min !== false)
-    transition_target_view(10.5-min); // une zone de plus que la valeur mini
+  if(zoomAnalyseAuto == true)
+  {
+    if(min !== false)
+      transition_target_view(10.5-min); // une zone de plus que la valeur mini
+    else
+      transition_target_view(Math.floor(moyenne_f("value")>zone_reussite("value")?moyenne_f("value"):zone_reussite("value"))-1);
+  }
   else
-    transition_target_view(Math.floor(moyenne_f("value")>zone_reussite("value")?moyenne_f("value"):zone_reussite("value"))-1);
-    //transition_target_view(11-userp.nb_zone);
+  {
+    transition_target_view(11-zoomAnalyseNbZone);
+  }
+
   var count=0;
   for (var v=0;v<serie.nb_v;v++)
   {

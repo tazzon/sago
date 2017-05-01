@@ -1,7 +1,7 @@
 
 var infoapp= {
-  version : '0.4.0',
-  datecode : 20170427.02,
+  version : '0.4.1',
+  datecode : 20170501.01,
   name : "Sago",
   mail : "tazzon@free.fr",
   git : 'https://github.com/tazzon/sago',
@@ -57,6 +57,7 @@ news[11]={
   new:'<p>Le bouton menu passe à droite et l’aide est maintenant accessible directement sur la page concernée sans passer par le menu.</p><p>La gestion du zoom sur la page d’analyse est désormais laissé libre. Deux modes sont disponible : automatique et manuel.</p><p>Lors de l’analyse si les flèches hors zone de réussite ou à 0 sont ignorées, celles-ci deviennent grises pour une meilleure visualisation.</p>',
   datecode:20170425.01
 };
+
 
 var el_visible="session";
 var high_contrast=false;
@@ -147,3 +148,4 @@ var tab_display=[];
 var ignore0=false;
 var ignoreInfReussite=false;
 var zoomAnalyseAuto=true;
+var zoomAnalyseNbZone=10;
