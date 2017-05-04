@@ -746,11 +746,11 @@ function create_zoom_target()
 
   // la mire  
   zoom_target+='<g id="mire">';
-  zoom_target+='<circle id="mirec" cx="'+zoomW/2+'" cy="'+zoomH/2+'" r="'+(arrowR*2)+'"/>';
-  zoom_target+='<line id="mirev1" x1="'+zoomW/2+'" y1="-1000" x2="'+zoomW/2+'" y2="'+(zoomH/2-arrowR*1.5)+'"/>';
-  zoom_target+='<line id="mireh1" y1="'+zoomH/2+'" x1="-1000" y2="'+zoomH/2+'" x2="'+(zoomW/2-arrowR*1.5)+'"/>';
-  zoom_target+='<line id="mirev2" x1="'+zoomW/2+'" y1="1000" x2="'+zoomW/2+'" y2="'+(zoomH/2+arrowR*1.5)+'"/>';
-  zoom_target+='<line id="mireh2" y1="'+zoomH/2+'" x1="1000" y2="'+zoomH/2+'" x2="'+(zoomW/2+arrowR*1.5)+'"/>';
+  zoom_target+='<circle id="mirec" cx="'+zoomW/2+'" cy="'+zoomH/2+'" r="'+(arrowR*3)+'"/>';
+  zoom_target+='<line id="mirev1" x1="'+zoomW/2+'" y1="-1000" x2="'+zoomW/2+'" y2="'+(zoomH/2-arrowR*2)+'"/>';
+  zoom_target+='<line id="mireh1" y1="'+zoomH/2+'" x1="-1000" y2="'+zoomH/2+'" x2="'+(zoomW/2-arrowR*2)+'"/>';
+  zoom_target+='<line id="mirev2" x1="'+zoomW/2+'" y1="1000" x2="'+zoomW/2+'" y2="'+(zoomH/2+arrowR*2)+'"/>';
+  zoom_target+='<line id="mireh2" y1="'+zoomH/2+'" x1="1000" y2="'+zoomH/2+'" x2="'+(zoomW/2+arrowR*2)+'"/>';
 
   zoom_target+='</g>';
 
