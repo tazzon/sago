@@ -304,6 +304,7 @@ function user_pref(a)
     userp.chrmitemps=c.mitemps;
     userp.color_marque=document.getElementById("color_marque").checked;
     userp.mire=document.getElementById("aff_mire").checked;
+    userp.magnet_arrow=document.getElementById("magnetic_arrow").checked;
     userp.tab_tri=document.getElementById("tab_tri").checked;
     localStorage.setItem('userp',JSON.stringify(userp));
   }
@@ -313,23 +314,24 @@ function user_pref(a)
     for (var attr in userpTemp)
       userp[attr] = userpTemp[attr];
     document.getElementById("change_style").checked = userp.hc;
-    change_style();
     document.getElementById("diam_tube").value = userp.diam_tube;
     high_contrast = userp.hc;
     ratio = userp.ratio;
-    adapt2viewport();
     nb_zone = userp.nb_zone;
     target_view(userp.nb_zone);
     c.temps=userp.chrtemps;
     c.pretemps=userp.chrpretemps;
     c.mitemps=userp.chrmitemps;
-    c.reset();
     document.getElementById("save_auto").checked = userp.auto_save;
     document.getElementById("color_marque").checked = userp.color_marque;
-    color_marque(userp.color_marque);
-    document.getElementById("aff_mire").checked = userp.mire;
-    aff_mire(userp.mire);
+    document.getElementById("magnetic_arrow").checked = userp.magnet_arrow;
     document.getElementById("tab_tri").checked= userp.tab_tri;
+    document.getElementById("aff_mire").checked = userp.mire;
+    change_style();
+    adapt2viewport();
+    c.reset();
+    aff_mire(userp.mire);
+    color_marque(userp.color_marque); // garder cette option à la fin
   }
   if(a=="file")
   {

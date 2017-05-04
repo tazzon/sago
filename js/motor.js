@@ -560,23 +560,65 @@ function coord(event)
   fl[n_fl].x = Math.round(1000*x/zone_size)/1000;
   fl[n_fl].y = Math.round(1000*y/zone_size)/1000;
 
-  document.getElementById("valf").innerHTML=fl[n_fl].v();
-  if(fl[n_fl].X()==true)
-    document.getElementById("valf").innerHTML+="+";
-  
-  /*var cordon=Math.abs(fl[n_fl].r()-Math.round(fl[n_fl].r()))-(fl[n_fl].t/fl[n_fl].b);
-  console.debug(cordon);
-  if(cordon < 0)
+  //document.getElementById("valf").innerHTML=fl[n_fl].v();
+  var fl_value="";
+  var cordon_value="";
+  if(userp.magnet_arrow == true) // gestion des flèches magnétique sur cordon
   {
-    //console.debug("Sur le cordon - "+cordon);
-    document.getElementById("valf").innerHTML+=" ·";
-  }
-  else if(cordon < 0.1)
-  {
-    //console.debug("Près du cordon - "+cordon);
-    document.getElementById("valf").innerHTML+=" ··";
-  }*/
+    //console.debug(fl[n_fl].r());
+    //var cordon_value=" ··";
+    var arrondi=Math.round(fl[n_fl].r());
+    var tube=fl[n_fl].t/fl[n_fl].b;
 
+    var magnet=5; // aimantation des flèches : 0<magnet<10 plus la valeur est haute plus l'aimantation est forte
+    
+    if(fl[n_fl].r() < 2-2*tube && fl[n_fl].r() > tube && fl[n_fl].modeX == true)
+      arrondi=0.5;
+    console.debug(arrondi);
+    var cordon=arrondi-fl[n_fl].r();
+    var angle=Math.atan2(fl[n_fl].y,fl[n_fl].x);
+
+    if(Math.abs(cordon) < tube*Math.sqrt(fl[n_fl].b)/(12-magnet)) // sur le cordon
+    {
+      console.debug('c '+tube*Math.sqrt(fl[n_fl].b)/(12-magnet));
+
+      cordon_value="··";
+      
+      x=arrondi*Math.cos(angle);
+      y=arrondi*Math.sin(angle);
+      
+      fl[n_fl].x = x;
+      fl[n_fl].y = y;      
+
+      x=x*targetW/(nb_zone*2);
+      y=y*targetH/(nb_zone*2);
+    }
+    else if(Math.abs(cordon) < tube*Math.sqrt(fl[n_fl].b)/((12-magnet)*0.57)) // proche du cordon
+    {
+      console.debug('p '+tube*Math.sqrt(fl[n_fl].b)/((12-magnet)*0.57));
+
+      var signe=0.95; // extérieur cordon
+      if(cordon < 0) // intérieur cordon
+        signe=-0.95;
+
+      cordon_value="·";
+
+      x=(arrondi-tube*signe)*Math.cos(angle);
+      y=(arrondi-tube*signe)*Math.sin(angle);
+      
+      fl[n_fl].x = x;
+      fl[n_fl].y = y;
+      
+      x=x*targetW/(nb_zone*2);
+      y=y*targetH/(nb_zone*2);
+    }
+  }
+  
+  fl_value=fl[n_fl].v();
+  if(fl[n_fl].X()==true)
+    fl_value+="+";
+  
+  document.getElementById("valf").innerHTML=fl_value+cordon_value;
   if((fl[n_fl].v() < (11-nb_zone) || fl[n_fl].v()==0) && adaptNbZonePlus == false)
   {  
     adaptNbZonePlus=true;
