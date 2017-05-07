@@ -409,10 +409,10 @@ function select_arrow(action)
       num_fl++;
   }
   
-  if(document.getElementById("saisie_fl"+num_fl))
+  if(document.getElementById("aff_num_fleche"))
   {
-  if(num_fl < serie.nb_f)
-  {
+    if(num_fl < serie.nb_f)
+    {
       document.getElementById("saisie_fl"+num_fl).className+=" cel_on";
       document.getElementById("num_fleche").innerHTML=num_fl+1;
       document.getElementById("aff_num_fleche").style.display="initial";
@@ -560,28 +560,25 @@ function coord(event)
   fl[n_fl].x = Math.round(1000*x/zone_size)/1000;
   fl[n_fl].y = Math.round(1000*y/zone_size)/1000;
 
-  //document.getElementById("valf").innerHTML=fl[n_fl].v();
   var fl_value="";
   var cordon_value="";
   if(userp.magnet_arrow == true) // gestion des flèches magnétique sur cordon
   {
-    //console.debug(fl[n_fl].r());
-    //var cordon_value=" ··";
     var arrondi=Math.round(fl[n_fl].r());
     var tube=fl[n_fl].t/fl[n_fl].b;
 
-    var magnet=5; // aimantation des flèches : 0<magnet<10 plus la valeur est haute plus l'aimantation est forte
+    var magnet=0.2; // aimantation des flèches : plus la valeur est haute plus l'aimantation est forte. Un bon point de départ semble tourner autour de 0.15 à 0.25
     
     if(fl[n_fl].r() < 2-2*tube && fl[n_fl].r() > tube && fl[n_fl].modeX == true)
       arrondi=0.5;
-    console.debug(arrondi);
+    if(fl[n_fl].r() < 1-2*tube && fl[n_fl].r() > 2*tube && fl[n_fl].modeX == false)
+      arrondi=0.5;
+      
     var cordon=arrondi-fl[n_fl].r();
     var angle=Math.atan2(fl[n_fl].y,fl[n_fl].x);
 
-    if(Math.abs(cordon) < tube*Math.sqrt(fl[n_fl].b)/(12-magnet)) // sur le cordon
+    if(Math.abs(cordon) < magnet*0.57)//tube*2.8/**Math.sqrt(fl[n_fl].b)/5/(magnet/Math.pow(2*magnet,tube))*/) // sur le cordon
     {
-      console.debug('c '+tube*Math.sqrt(fl[n_fl].b)/(12-magnet));
-
       cordon_value="··";
       
       x=arrondi*Math.cos(angle);
@@ -593,10 +590,8 @@ function coord(event)
       x=x*targetW/(nb_zone*2);
       y=y*targetH/(nb_zone*2);
     }
-    else if(Math.abs(cordon) < tube*Math.sqrt(fl[n_fl].b)/((12-magnet)*0.57)) // proche du cordon
+    else if(Math.abs(cordon) < magnet)//tube*5/**Math.sqrt(fl[n_fl].b)/(5*.57)/((magnet/Math.pow(2*magnet,tube))*0.57)*/) // proche du cordon
     {
-      console.debug('p '+tube*Math.sqrt(fl[n_fl].b)/((12-magnet)*0.57));
-
       var signe=0.95; // extérieur cordon
       if(cordon < 0) // intérieur cordon
         signe=-0.95;
@@ -666,12 +661,6 @@ function stop_coord(event)
   
   adaptNbZonePlus=false;
   adaptNbZoneMinus=false;
-
-  /*var cordon=Math.abs(fl[n_fl].r()-Math.round(fl[n_fl].r()))-(fl[n_fl].t/fl[n_fl].b);
-  if(cordon < 0)
-    console.debug("Sur le cordon - "+cordon);
-  else if(cordon < 0.1)
-    console.debug("Près du cordon - "+cordon);*/
     
   if(nb_zone != userp.nb_zone)
     transition_target_view(11-userp.nb_zone);

@@ -356,7 +356,7 @@ function visu(el)
 
 function visu_analyse_el(toEl)
 {
-  if(document.getElementById("main_target")==null || (el_visible=="zoom" && toEl=="saisie") || (el_visible=="saisie" && toEl=="zoom"))
+  if(document.getElementById("main_target")==null || (el_visible=="zoom" && toEl=="saisie") || (el_visible=="saisie" && toEl=="zoom") || (el_visible=="saisie" && toEl=="options") || (el_visible=="options" && toEl=="saisie"))
   {
     return;
   }

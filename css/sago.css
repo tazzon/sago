@@ -520,8 +520,8 @@ table {
   /*margin:-1.8em .5em 0 0;*/
 }
 .point_arrow {
-  /*stroke:#859900;*/
-  /*fill:#859900;*/
+  /* stroke:#859900; */
+  /* fill:#859900; */
   fill:green;
 }
 #mire {
@@ -536,8 +536,8 @@ table {
 .arrowz {
   fill:#002b36;
   /*fill:black;*/
-  stroke:#586e75;
-  stroke-width:2;
+  /* stroke:#586e75; */
+  /* stroke-width:2; */
 }
 .arrowt {
   fill:#002b36;
