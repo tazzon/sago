@@ -1056,8 +1056,8 @@ function aff_mire(c)
 
 function color_marque(c)
 {
-    userp.color_marque=c;
-    user_pref("save");
+    //userp.color_marque=c;
+    //user_pref("save");
     for(var v=0;v<serie.volees.length;v++)
     {
       for(var f=0;f<serie.nb_f;f++)

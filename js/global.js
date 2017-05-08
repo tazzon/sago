@@ -1,7 +1,7 @@
 
 var infoapp= {
   version : '0.4.1',
-  datecode : 20170502.02,
+  datecode : 20170508.01,
   name : "Sago",
   mail : "tazzon@free.fr",
   git : 'https://github.com/tazzon/sago',
@@ -61,7 +61,10 @@ news[12]={
   new:'<p>Une nouvelle fonctionnalité est disponible : l’aimantation des flèches sur les cordons. Cette options peut être activée dans les options. Elle permet de faciliter la saisie des flèches se trouvant en bordure ou sur les cordons.</p>',
   datecode:20170502.01
 };
-
+news[13]={
+  new:'<p>Lorsque l’on augmente le nombre de zones sur la cible de saisie, le blason ne reprend sont état défini dans les options que lors de la validation de la volée. En passant dans le jaune, on peut bien sûr toujours revenir au nombre de zones choisi dans les options.</p>',
+  datecode:20170508.01
+};
 var el_visible="session";
 var high_contrast=false;
 var target;

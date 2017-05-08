@@ -437,7 +437,9 @@ function volee_suivante(a)
    if(confirm("Vous n'avez pas noté toutes les flèches, voulez-vous tout de même valider ?") == false)
      return;
 
-     
+  if(nb_zone != userp.nb_zone && n_fl==serie.nb_f)
+    transition_target_view(11-userp.nb_zone);
+
   var tot = 0;
   for ( var i=0 ; i<fl.length ; i++) // total de la volée
     tot += fl[i].v();
@@ -662,9 +664,6 @@ function stop_coord(event)
   adaptNbZonePlus=false;
   adaptNbZoneMinus=false;
     
-  if(nb_zone != userp.nb_zone)
-    transition_target_view(11-userp.nb_zone);
-
   // on place et on montre la flèche dans le zoom  
   document.getElementById("zoom_fl"+n_volee+"_"+num_fl).setAttribute("cx",50*fl[n_fl].x);
   document.getElementById("zoom_fl"+n_volee+"_"+num_fl).setAttribute("cy",50*fl[n_fl].y);
@@ -684,6 +683,9 @@ function stop_coord(event)
     
   n_fl++;
   select_arrow();
+
+  //if(nb_zone != userp.nb_zone && n_fl==serie.nb_f)
+    //transition_target_view(11-userp.nb_zone);
   
 };
 

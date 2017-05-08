@@ -158,7 +158,7 @@
       <button onclick="ratio=ratio+0.1;adapt2viewport()"><span class="icon icon-zoom-out"></span></button>
       <button onclick="ratio=ratio-0.1;adapt2viewport()"><span class="icon icon-zoom-in"></span></button><br><br>
       <input type="checkbox" onchange="change_style()" id="change_style"><label id="contrast_label" for="change_style">contraste élevé</label><br>
-      <input type="checkbox" onchange="color_marque(this.checked)" id="color_marque"><label for="color_marque">coloriser la feuille de marque</label><br>
+      <input type="checkbox" onchange="userp.color_marque=this.checked;color_marque(userp.color_marque)" id="color_marque"><label for="color_marque">coloriser la feuille de marque</label><br>
       <input type="checkbox" checked="checked" onchange="userp.tab_tri=this.checked;tri()" id="tab_tri"><label for="tab_tri">trier la feuille de marque</label>
     </p>
     <h1>Gestion des sauvegardes</h1>
