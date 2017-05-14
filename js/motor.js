@@ -549,6 +549,8 @@ function tri()
   color_marque(userp.color_marque);
 };
 
+
+var glue=[0,0.05];
 function coord(event) 
 {
   if(zoom_actif == false)
@@ -569,7 +571,7 @@ function coord(event)
     var arrondi=Math.round(fl[n_fl].r());
     var tube=fl[n_fl].t/fl[n_fl].b;
 
-    var magnet=0.2; // aimantation des flèches : plus la valeur est haute plus l'aimantation est forte. Un bon point de départ semble tourner autour de 0.15 à 0.25
+    var magnet=0.2;//glue[1];//0.05; // aimantation des flèches : plus la valeur est haute plus l'aimantation est forte. Un bon point de départ semble tourner autour de 0.15 à 0.25
     
     if(fl[n_fl].r() < 2-2*tube && fl[n_fl].r() > tube && fl[n_fl].modeX == true)
       arrondi=0.5;
@@ -579,36 +581,140 @@ function coord(event)
     var cordon=arrondi-fl[n_fl].r();
     var angle=Math.atan2(fl[n_fl].y,fl[n_fl].x);
 
-    if(Math.abs(cordon) < magnet*0.57)//tube*2.8/**Math.sqrt(fl[n_fl].b)/5/(magnet/Math.pow(2*magnet,tube))*/) // sur le cordon
+    //console.debug(cordon);
+    //console.debug(['sens','cordon',cordon.toFixed(2),' < glue[0]',glue[0].toFixed(2)," --> ",cordon < glue[0]]);
+    //console.debug(['int->ext collé cordon 1', Math.abs(cordon)<tube , Math.abs(cordon) < magnet , glue[0]-cordon > 0 , (glue[1]==0 || glue[1]==2)]);
+    //console.debug(['int->ext   sur cordon 2', Math.abs(cordon)-magnet<magnet , cordon<0 , glue[1]==2]);
+    //console.debug(['ext->int collé cordon 3', Math.abs(cordon)<tube , Math.abs(cordon) < magnet , cordon-glue[0] > 0 , (glue[1]==0 || glue[1]==1) ]);
+    //console.debug(['ext->int   sur cordon 4', Math.abs(cordon)-magnet < magnet , cordon>0 , glue[1] == 1 ]);
+
+    if( cordon < glue[0] ) // s'éloigne du centre
     {
-      cordon_value="··";
-      
-      x=arrondi*Math.cos(angle);
-      y=arrondi*Math.sin(angle);
-      
-      fl[n_fl].x = x;
-      fl[n_fl].y = y;      
+      if(Math.abs(cordon)<tube && Math.abs(cordon) < magnet && glue[0]-cordon > 0 && (glue[1]==0 || glue[1]==2))
+      {
 
-      x=x*targetW/(nb_zone*2);
-      y=y*targetH/(nb_zone*2);
+        var signe=1; // extérieur cordon
+
+        cordon_value="·";
+
+        glue[1]=2;
+
+        x=(arrondi-tube*signe)*Math.cos(angle);
+        y=(arrondi-tube*signe)*Math.sin(angle);
+
+        fl[n_fl].x = x;
+        fl[n_fl].y = y;
+
+        x=x*targetW/(nb_zone*2);
+        y=y*targetH/(nb_zone*2);
+      }
+      else if(Math.abs(cordon)-magnet < magnet && cordon<0 && glue[1]==2)//*0.57)  /// sur le cordon
+      {
+        cordon_value="··";
+
+        //glue[1]=2;
+
+        x=arrondi*Math.cos(angle);
+        y=arrondi*Math.sin(angle);
+
+        fl[n_fl].x = x;
+        fl[n_fl].y = y;      
+
+        x=x*targetW/(nb_zone*2);
+        y=y*targetH/(nb_zone*2);
+      }
+      else
+      {
+        glue[1]=0;
+      }
     }
-    else if(Math.abs(cordon) < magnet)//tube*5/**Math.sqrt(fl[n_fl].b)/(5*.57)/((magnet/Math.pow(2*magnet,tube))*0.57)*/) // proche du cordon
+    else
     {
-      var signe=0.95; // extérieur cordon
-      if(cordon < 0) // intérieur cordon
-        signe=-0.95;
+      if(Math.abs(cordon)<tube && Math.abs(cordon) < magnet && cordon-glue[0] > 0 && (glue[1]==0 || glue[1]==1))
+      {
+        var signe=-1; // extérieur cordon
 
-      cordon_value="·";
+        cordon_value="·";
 
-      x=(arrondi-tube*signe)*Math.cos(angle);
-      y=(arrondi-tube*signe)*Math.sin(angle);
-      
-      fl[n_fl].x = x;
-      fl[n_fl].y = y;
-      
-      x=x*targetW/(nb_zone*2);
-      y=y*targetH/(nb_zone*2);
-    }
+        glue[1]=1;
+
+        x=(arrondi-tube*signe)*Math.cos(angle);
+        y=(arrondi-tube*signe)*Math.sin(angle);
+
+        fl[n_fl].x = x;
+        fl[n_fl].y = y;
+
+        x=x*targetW/(nb_zone*2);
+        y=y*targetH/(nb_zone*2);
+      }
+      else if(Math.abs(cordon)-magnet < magnet && cordon>0 && glue[1] == 1)//*0.57)  /// sur le cordon
+      {
+        cordon_value="··";
+
+        //glue[1]=1;
+
+        x=arrondi*Math.cos(angle);
+        y=arrondi*Math.sin(angle);
+
+        fl[n_fl].x = x;
+        fl[n_fl].y = y;      
+
+        x=x*targetW/(nb_zone*2);
+        y=y*targetH/(nb_zone*2);
+      }
+      else
+      {
+        glue[1]=0;
+      }
+    }    
+
+    /*else // vers le centre
+    {
+      if(Math.abs(cordon) < magnet*.2)//*0.57)  /// sur le cordon
+      {
+        cordon_value="··";
+        //glue[1]=0.15;
+
+        x=arrondi*Math.cos(angle);
+        y=arrondi*Math.sin(angle);
+
+        fl[n_fl].x = x;
+        fl[n_fl].y = y;      
+
+        x=x*targetW/(nb_zone*2);
+        y=y*targetH/(nb_zone*2);
+
+        //glue[1] = true;
+      }
+      //else if(Math.abs(cordon) < magnet && cordon-glue[0]<0 && cordon > 0)  // proche du cordon
+      else if(Math.abs(cordon)<=tube && cordon-glue[0] > 0 && cordon <0)
+      {
+        var signe=1; // extérieur cordon
+        if(cordon < 0) // intérieur cordon
+          signe=-1;
+
+        cordon_value="·";
+        glue[1]=0.25;
+
+        x=(arrondi-tube*signe)*Math.cos(angle);
+        y=(arrondi-tube*signe)*Math.sin(angle);
+
+        fl[n_fl].x = x;
+        fl[n_fl].y = y;
+
+        x=x*targetW/(nb_zone*2);
+        y=y*targetH/(nb_zone*2);
+
+        //glue[1] = true;
+      }
+      else
+      {
+        glue[1] = 0.05;
+      }
+    }*/
+
+    glue[0]=cordon;
+    console.debug('glue='+glue);
   }
   
   fl_value=fl[n_fl].v();
@@ -663,6 +769,7 @@ function stop_coord(event)
   
   adaptNbZonePlus=false;
   adaptNbZoneMinus=false;
+  glue[1]=0;
     
   // on place et on montre la flèche dans le zoom  
   document.getElementById("zoom_fl"+n_volee+"_"+num_fl).setAttribute("cx",50*fl[n_fl].x);
